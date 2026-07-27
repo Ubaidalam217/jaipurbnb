@@ -1,0 +1,74 @@
+@use '../../utils/' as * ;
+
+/*============= CTA CSS AREA ===============*/
+// Homepage 04 //
+.cta4-section-area {
+    position: relative;
+    z-index: 1;
+    background: var(--ztc-bg-bg-10);
+    .cta-header-area {
+        h2 {
+           color: var(--ztc-text-text-1); 
+        }
+        p {
+            color: var(--ztc-text-text-1);
+            opacity: 0.8 !important;
+        }
+        .btn-area1 {
+            a.header-btn5 {
+                background: var(--ztc-bg-bg-1);
+                color: var(--ztc-text-text-12);
+                &::after {
+                    background: #FDE7CD;
+                }
+            }
+            .popup-youtube {
+                padding-left: 16px;
+                @media #{$xs} {
+                    padding-left: 16px;
+                    padding-top: 20px;
+                }
+                span.play-btn {
+                    height: 36px;
+                    width: 36px;
+                    text-align: center;
+                    line-height: 36px;
+                    border-radius: 50%;
+                    transition: all .4s;
+                    display: inline-block;
+                    background: var(--ztc-bg-bg-1);
+                    color: var(--ztc-text-text-12);
+                    position: relative;
+                    z-index: 1;
+                    &::after {
+                        position: absolute;
+                        content: "";
+                        height: 100%;
+                        width: 100%;
+                        left: 18px;
+                        top: 18px;
+                        background: var(--ztc-bg-bg-1);
+                        transition: all .4s;
+                        z-index: -1;
+                        border-radius: 50%;
+                        animation: pulse-border 1500ms ease-out infinite;
+                        opacity: 40%;
+                        display: inline-block;
+                    }
+                }
+                span.text {
+                    color: var(--ztc-text-text-1);
+                    font-family: var(--ztc-family-font2);
+                    font-size: var(--ztc-font-size-font-s16);
+                    font-style: normal;
+                    font-weight: var(--ztc-weight-bold);
+                    line-height: 16px;
+                    display: inline-block;
+                    transition: all .4s;
+                    padding-left: 10px;                       
+                }
+            }
+        }
+    }
+}
+/*============= CTA CSS AREA ENDS===============*/
