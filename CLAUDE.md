@@ -1,5 +1,12 @@
 # JaipurBnB - Project Context
 
+## Claude Code Rules
+- Never run git push
+- Always run git add and git commit for changes
+- User will handle all pushes to remote
+- Confirm before any destructive operations (delete files, 
+  reset branches, force operations)
+
 ## Overview
 Paid property listing directory for Jaipur only. Hosts pay a flat 
 subscription to list; guests browse free and contact hosts directly 
@@ -112,11 +119,11 @@ are NOT needed for JaipurBnB and should be cleaned up.
   photos, final logo SVG (before Milestone 4)
 
 ## Development Workflow
-- Local dev on D:\Freelancer\Hosue-Laravel_v1.0\Hosue
-- Git remote: https://github.com/Ubaidalam217/jaipurbnb
+- Local dev on D:\uvPackage\Upwork projects\jaipurbnb
+- Git remote: managed by user (Ryden)
 - Main branch: main
-- Deploy target: Hostinger shared hosting (subdomain first, then 
-  jaipurbnb.com)
+- Deploy target: Hostinger shared hosting
+- Rule: Claude Code never runs git push. User handles all pushes.
 
 ## Current Progress
 Phase 1 partial:
