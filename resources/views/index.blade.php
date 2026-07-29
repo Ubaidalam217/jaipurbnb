@@ -1,6 +1,7 @@
-@extends('layouts.landing')
+@extends('layouts.base', ['logo5' => true])
 
 @section('content')
+  @include('layouts.partials.header.navbar5')
   <!-- ===== HERO AREA STARTS ======= -->
   <div class="header-carousel-area3 owl-carousel">
     <div class="main-hero-area">
@@ -809,4 +810,6 @@
     </div>
   </div>
   <!-- ===== BLOG AREA ENDS ======= -->
+
+  @include('layouts.partials.footer')
 @endsection
