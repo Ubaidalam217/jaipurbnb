@@ -19,14 +19,25 @@ via WhatsApp or phone. No guest payments on the platform.
 - Booking flow: Off-platform (direct between guest and host)
 
 ## Tech Stack
-- Laravel 11, PHP 8.2
-- MySQL (InnoDB)
+- Laravel 12, PHP 8.2
+- SQLite (local dev) / MySQL InnoDB (Hostinger production)
 - Bootstrap 5 + Blade templates
 - Vite + SCSS
 - Razorpay for subscriptions
 - sabre/vobject for iCal parsing
 - Hostinger shared hosting (final deployment)
 - Domain: jaipurbnb.com
+
+### Laravel 12 structural notes (differs from Laravel 11)
+- There is NO app/Http/Kernel.php. Middleware (including custom
+  role middleware) is registered in bootstrap/app.php inside the
+  ->withMiddleware(function (Middleware $middleware) { ... }) closure.
+- Exception handling is configured in the ->withExceptions() closure
+  of bootstrap/app.php, not app/Exceptions/Handler.php.
+- The task scheduler lives in routes/console.php using
+  Schedule::command(...)->daily(), NOT a Kernel::schedule() method.
+- Ignore any Laravel 11-or-earlier tutorial steps referencing
+  Http/Kernel.php or Console/Kernel.php - they do not apply here.
 
 ## Brand Identity
 - Primary color: #E07A5F (Jaipur Terracotta)
@@ -80,10 +91,71 @@ lead_analytics, transactions
 Key schema additions from base spec:
 - properties.ical_feed_url VARCHAR(255) NULL 
   (for storing Airbnb iCal link per property)
-- users.role ENUM('host','admin') DEFAULT 'host' 
-  (for admin panel access)
-- properties.listing_status ENUM('pending','approved','rejected') 
-  DEFAULT 'pending' (three-state status)
+- users.role VARCHAR(20) DEFAULT 'host' 
+  (for admin panel access; values host | admin)
+- properties.listing_status VARCHAR(20) DEFAULT 'pending' 
+  (three-state status; values pending | approved | rejected)
+
+NOTE: the original spec described role and listing_status as ENUM.
+They are implemented as plain string/VARCHAR columns instead, so the
+same migrations run on both SQLite (local dev) and MySQL (Hostinger
+production). The allowed values are enforced at the model layer and
+in Form Request validation, NOT by a database constraint. See
+"Milestone 2 Approach" below for the full list of value sets.
+
+## Milestone 2 Approach (Decided)
+
+### Authentication - hand-rolled, NO starter kit
+Do NOT install laravel/breeze, jetstream, fortify, or laravel/ui.
+Breeze ships Tailwind views which would collide with the existing
+Bootstrap 5 + custom SCSS frontend built in Milestone 1.
+Build manually:
+- RegisterController (host signup)
+- LoginController (host + admin, distinguished by users.role)
+- LogoutController
+- Custom Bootstrap 5 Blade views matching the JaipurBnB design
+  system (#E07A5F terracotta, #2F3E46 charcoal, Poppins)
+- Custom role middleware registered in bootstrap/app.php
+
+### Migrations - portable between SQLite and MySQL
+- Local dev runs SQLite (database/database.sqlite); production on
+  Hostinger runs MySQL InnoDB. All migrations must work on both.
+- Use ONLY Laravel schema-builder methods. Do not write raw SQL.
+- Do NOT use ->after() for column ordering - it is a MySQL-only
+  modifier and is silently ignored on SQLite.
+- Do NOT use native ENUM columns. SQLite has no ENUM type and
+  Laravel emits varchar + CHECK, which behaves differently from
+  MySQL on invalid values. Use string columns instead, with the
+  allowed values enforced at BOTH the model layer (constants +
+  casts) and the Form Request validation layer.
+
+### String columns replacing ENUMs - allowed values
+- users.role ......................... host | admin
+- properties.listing_status .......... pending | approved | rejected
+- property_availability.status ....... available | blocked | booked
+- property_availability.source ....... manual | airbnb_sync
+- lead_analytics.lead_type ........... whatsapp_click | call_click |
+                                       profile_view
+- transactions.payment_status ........ pending | success | failed |
+                                       refunded
+
+### listing_status vs is_visible - two independent axes
+These are NOT the same flag and must not be merged:
+- listing_status = admin moderation state (pending/approved/rejected)
+- is_visible     = live-on-site flag, flipped to false by the daily
+                   expiry cron when subscription_expiry passes
+An expired listing stays listing_status='approved' but becomes
+is_visible=false. All listing data is preserved, never deleted.
+
+### File storage for property photos (up to 15 per listing)
+- Local dev: run `php artisan storage:link` and store uploads in
+  storage/app/public/properties/ (served via /storage/properties/...)
+- FALLBACK FOR MILESTONE 4: Hostinger shared hosting sometimes
+  blocks or strips symlinks. If public/storage does not resolve on
+  the live server, switch to writing uploads directly into
+  public/uploads/properties/ and update the disk config plus any
+  stored image_url paths accordingly. Decide this during deployment,
+  not before - do not build the fallback preemptively.
 
 ## Template Origin
 Base template: Hosue Laravel v1.0 (Bootstrap 5 real estate multi-demo 
