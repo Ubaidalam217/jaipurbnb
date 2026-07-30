@@ -21,8 +21,11 @@
         ['label' => 'Contact',           'href' => '#',                  'active' => false],
     ];
 
-    // TODO: point at the host signup/listing route once it exists.
-    $jbCtaHref = '#';
+    $jbUser = auth()->check() ? auth()->user() : null;
+    $jbIsAdmin = $jbUser && $jbUser->isAdmin();
+    $jbDashboard = $jbIsAdmin ? 'admin.dashboard' : 'host.dashboard';
+    $jbCtaHref = $jbUser ? route($jbDashboard) : route('register');
+    $jbCtaLabel = $jbUser ? ($jbIsAdmin ? 'Admin Panel' : 'Dashboard') : 'List Your Property';
 @endphp
 
 <style>
@@ -167,6 +170,42 @@
 
     .jb-nav__cta:active {
         transform: translateY(1px);
+    }
+
+    /* ---------- signed-in state ---------- */
+    .jb-nav__who {
+        max-width: 150px;
+        overflow: hidden;
+        font-size: 14.5px;
+        font-weight: 500;
+        color: var(--jb-ink);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .jb-nav__logout {
+        margin: 0;
+    }
+
+    .jb-nav__signout {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        padding: 0 14px;
+        border: 1px solid var(--jb-border);
+        border-radius: 10px;
+        background: transparent;
+        color: var(--jb-ink);
+        font-family: inherit;
+        font-size: 14.5px;
+        font-weight: 500;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background-color .2s ease;
+    }
+
+    .jb-nav__signout:hover {
+        background: rgba(47, 62, 70, .06);
     }
 
     /* ---------- hamburger ---------- */
@@ -351,7 +390,20 @@
                 @endforeach
             </ul>
 
-            <a class="jb-nav__cta" href="{{ $jbCtaHref }}">List Your Property</a>
+            @if ($jbUser)
+                <span class="jb-nav__who">{{ $jbUser->name }}</span>
+            @endif
+
+            <a class="jb-nav__cta" href="{{ $jbCtaHref }}">{{ $jbCtaLabel }}</a>
+
+            @if ($jbUser)
+                <form method="POST" action="{{ route('logout') }}" class="jb-nav__logout">
+                    @csrf
+                    <button class="jb-nav__signout" type="submit">Sign out</button>
+                </form>
+            @else
+                <a class="jb-nav__link" href="{{ route('login') }}">Sign in</a>
+            @endif
         </div>
 
         <button class="jb-nav__toggle"
@@ -395,7 +447,20 @@
                 @endforeach
             </ul>
 
-            <a class="jb-offcanvas__cta" href="{{ $jbCtaHref }}">List Your Property</a>
+            <a class="jb-offcanvas__cta" href="{{ $jbCtaHref }}">{{ $jbCtaLabel }}</a>
+
+            @if ($jbUser)
+                <form method="POST" action="{{ route('logout') }}" style="margin-top:12px;">
+                    @csrf
+                    <button class="jb-offcanvas__link" type="submit"
+                            style="width:100%;border:1px solid var(--jb-border);background:transparent;cursor:pointer;justify-content:center;">
+                        Sign out
+                    </button>
+                </form>
+            @else
+                <a class="jb-offcanvas__link" href="{{ route('login') }}"
+                   style="margin-top:12px;justify-content:center;border:1px solid var(--jb-border);">Sign in</a>
+            @endif
         </div>
     </div>
 </nav>
