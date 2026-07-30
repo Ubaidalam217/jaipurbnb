@@ -1,5 +1,7 @@
 @extends('layouts.base', ['logo5' => true])
 
+@section('title', 'JaipurBnB - Authentic Jaipur Stays')
+
 @section('content')
   @include('layouts.partials.navbar')
   <!-- ===== HERO AREA STARTS ======= -->
@@ -19,14 +21,14 @@
                 <img src="/img/elements/elements3.png" alt="" />
               </div>
               <div class="header-heading2">
-                <h5><i class="fa-solid fa-location-dot"></i>538 Joanie Fort Apt. 933 Louisiana</h5>
+                <h5><i class="fa-solid fa-location-dot"></i>Serving all of Jaipur, Rajasthan</h5>
                 <div class="space20"></div>
-                <h2>Welcome to Your Luxurious Haven</h2>
+                <h2>Discover Jaipur's Hidden Gems</h2>
                 <div class="space20"></div>
-                <p>Our exclusive property offers a seamless blend of luxury to and comfort, designed to meet your every need. From the</p>
+                <p>Browse verified heritage havelis, boutique apartments and villas across Jaipur. Contact hosts directly on WhatsApp.</p>
                 <div class="space32"></div>
                 <div class="btn-area1">
-                  <a href="{{ url('/pages/contact') }}" class="header-btn3">Schedule A Visit</a>
+                  <a href="{{ url('/apartment/v4') }}" class="header-btn3">Browse Properties</a>
                   <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube">
                     <span class="play-btn"><i class="fa-solid fa-play"></i></span>
                     <span class="text">Video</span>
@@ -43,9 +45,9 @@
                   <img src="/img/all-images/others/others-img1.png" alt="" />
                 </div>
                 <div class="text">
-                  <h3>Luxury Suite Villa</h3>
+                  <h3>The Royal Walled City Haveli</h3>
                   <div class="space10"></div>
-                  <p>$1.800,000</p>
+                  <p>Approx Rs 2,500 / night</p>
                 </div>
               </div>
             </div>
@@ -69,14 +71,14 @@
                 <img src="/img/elements/elements3.png" alt="" />
               </div>
               <div class="header-heading2">
-                <h5><i class="fa-solid fa-location-dot"></i>538 Joanie Fort Apt. 933 Louisiana</h5>
+                <h5><i class="fa-solid fa-location-dot"></i>Verified Local Hosts</h5>
                 <div class="space20"></div>
-                <h2>Welcome to Your Luxurious Haven</h2>
+                <h2>Authentic Stays. Personal Service.</h2>
                 <div class="space20"></div>
-                <p>Our exclusive property offers a seamless blend of luxury to and comfort, designed to meet your every need. From the</p>
+                <p>Every property on JaipurBnB is checked by our local team. No surprises, just genuine Jaipur hospitality.</p>
                 <div class="space32"></div>
                 <div class="btn-area1">
-                  <a href="{{ url('/pages/contact') }}" class="header-btn3">Schedule A Visit</a>
+                  <a href="{{ url('/apartment/v4') }}" class="header-btn3">Browse Properties</a>
                   <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube">
                     <span class="play-btn"><i class="fa-solid fa-play"></i></span>
                     <span class="text">Video</span>
@@ -93,9 +95,9 @@
                   <img src="/img/all-images/others/others-img1.png" alt="" />
                 </div>
                 <div class="text">
-                  <h3>Luxury Suite Villa</h3>
+                  <h3>The Royal Walled City Haveli</h3>
                   <div class="space10"></div>
-                  <p>$1.800,000</p>
+                  <p>Approx Rs 2,500 / night</p>
                 </div>
               </div>
             </div>
@@ -119,14 +121,14 @@
                 <img src="/img/elements/elements3.png" alt="" />
               </div>
               <div class="header-heading2">
-                <h5><i class="fa-solid fa-location-dot"></i>538 Joanie Fort Apt. 933 Louisiana</h5>
+                <h5><i class="fa-solid fa-location-dot"></i>17 Neighborhoods Covered</h5>
                 <div class="space20"></div>
-                <h2>Welcome to Your Luxurious Haven</h2>
+                <h2>From Walled City to Amer, Find Your Perfect Stay</h2>
                 <div class="space20"></div>
-                <p>Our exclusive property offers a seamless blend of luxury to and comfort, designed to meet your every need. From the</p>
+                <p>Whether you want a heritage haveli in the old city or a modern apartment in C-Scheme, we have you covered.</p>
                 <div class="space32"></div>
                 <div class="btn-area1">
-                  <a href="{{ url('/pages/contact') }}" class="header-btn3">Schedule A Visit</a>
+                  <a href="{{ url('/apartment/v4') }}" class="header-btn3">Browse Properties</a>
                   <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube">
                     <span class="play-btn"><i class="fa-solid fa-play"></i></span>
                     <span class="text">Video</span>
@@ -143,9 +145,9 @@
                   <img src="/img/all-images/others/others-img1.png" alt="" />
                 </div>
                 <div class="text">
-                  <h3>Luxury Suite Villa</h3>
+                  <h3>The Royal Walled City Haveli</h3>
                   <div class="space10"></div>
-                  <p>$1.800,000</p>
+                  <p>Approx Rs 2,500 / night</p>
                 </div>
               </div>
             </div>
@@ -178,14 +180,14 @@
           <div class="property-content heading3">
             <h5 data-aos="fade-left" data-aos-duration="800">Property Overview</h5>
             <div class="space20"></div>
-            <h2 class="text-anime-style-3">Elegance Every Detail Welcome Suite Villa</h2>
+            <h2 class="text-anime-style-3">Authentic Jaipur Experiences</h2>
             <div class="space16"></div>
-            <p data-aos="fade-left" data-aos-duration="900">Experience the pinnacle of luxury living at our exclusive property, where every detail has been meticulously crafted to provide an unparalleled retreat. Nestled in the heart of, this haven offers.</p>
+            <p data-aos="fade-left" data-aos-duration="900">Discover the essence of Jaipur through our verified properties. From heritage havelis in the Walled City to modern apartments in C-Scheme, find a stay that matches your journey.</p>
             <div class="space16"></div>
-            <p data-aos="fade-left" data-aos-duration="1000">Discover the essence of luxury our exclusive property in Dallas, where timeless elegance and modern best comfort converge.</p>
+            <p data-aos="fade-left" data-aos-duration="1000">Every listing is checked by our local team, and you speak to the host directly. No booking fees, no middlemen.</p>
             <div class="space32"></div>
             <div class="btn-area1" data-aos="fade-left" data-aos-duration="1200">
-              <a href="{{ url('/apartment/v1') }}" class="header-btn4">View Our Property</a>
+              <a href="{{ url('/apartment/v4') }}" class="header-btn4">View Our Property</a>
             </div>
           </div>
         </div>
@@ -200,9 +202,9 @@
       <div class="row">
         <div class="col-lg-6 m-auto">
           <div class="heading3 text-center space-margin60">
-            <h5 data-aos="fade-left" data-aos-duration="800">Villa amenities</h5>
+            <h5 data-aos="fade-left" data-aos-duration="800">Why JaipurBnB</h5>
             <div class="space20"></div>
-            <h2 class="text-anime-style-3">Our Property Amenities</h2>
+            <h2 class="text-anime-style-3">Why Choose JaipurBnB</h2>
           </div>
         </div>
       </div>
@@ -214,9 +216,9 @@
             </div>
             <div class="space32"></div>
             <div class="content-area">
-              <a href="{{ url('/apartment/single') }}">New Construction</a>
+              <a href="{{ url('/apartment/v4') }}">Verified Local Hosts</a>
               <div class="space18"></div>
-              <p>Discover the epitome of luxury living at Luxury, every detail .</p>
+              <p>Every host is checked by our Jaipur team before going live.</p>
               <h3>01</h3>
             </div>
           </div>
@@ -230,10 +232,10 @@
             </div>
             <div class="space32"></div>
             <div class="content-area">
-              <a href="{{ url('/apartment/single') }}">Swimming Pool</a>
+              <a href="{{ url('/apartment/v4') }}">Direct Host Contact</a>
               <div class="space18"></div>
               <p>
-                Explore our meticulously best <br class="d-lg-block d-block" /> designed spaces and indulge.
+                Message or call the host <br class="d-lg-block d-block" /> directly. No booking fees.
               </p>
               <h3>02</h3>
             </div>
@@ -247,10 +249,10 @@
             </div>
             <div class="space32"></div>
             <div class="content-area">
-              <a href="{{ url('/apartment/single') }}">Fitness Facilities</a>
+              <a href="{{ url('/apartment/v4') }}">Real-Time Availability</a>
               <div class="space18"></div>
               <p>
-                Uncover the essence of luxury <br class="d-lg-block d-block" /> as you explore our exclusive.
+                Calendars sync automatically <br class="d-lg-block d-block" /> so dates stay accurate.
               </p>
               <h3>03</h3>
             </div>
@@ -265,10 +267,10 @@
             </div>
             <div class="space32"></div>
             <div class="content-area">
-              <a href="{{ url('/apartment/single') }}">Eco Construction</a>
+              <a href="{{ url('/apartment/v4') }}">Authentic Jaipur Stays</a>
               <div class="space18"></div>
               <p>
-                Step into sophistication and <br class="d-lg-block d-block" /> serenity at new construction.
+                Heritage havelis and homestays <br class="d-lg-block d-block" /> run by local families.
               </p>
               <h3>04</h3>
             </div>
@@ -285,9 +287,9 @@
       <div class="row">
         <div class="col-lg-5 m-auto">
           <div class="about-header text-center heading3 space-margin60">
-            <h5 data-aos="fade-left" data-aos-duration="800">our best properties</h5>
+            <h5 data-aos="fade-left" data-aos-duration="800">our best stays</h5>
             <div class="space20"></div>
-            <h2 class="text-anime-style-3">Explore Our Premier Of Single Property Retreat</h2>
+            <h2 class="text-anime-style-3">Featured Stays in Jaipur</h2>
           </div>
         </div>
       </div>
@@ -324,13 +326,13 @@
           <div class="row">
             <div class="col-lg-6 col-md-6">
               <div class="experience-box">
-                <h2><span class="counter">25</span>+</h2>
+                <h2><span class="counter">500</span>+</h2>
                 <div class="space12"></div>
-                <p>Years Of Experience</p>
+                <p>Verified Listings</p>
                 <div class="space20"></div>
                 <img src="/img/all-images/about/about-img6.png" alt="" />
                 <div class="space18"></div>
-                <p>Our Happy Clients</p>
+                <p>Our Happy Guests</p>
               </div>
               <div class="space30 d-md-none d-block"></div>
             </div>
@@ -354,22 +356,22 @@
             </div>
             <div class="content-area">
               <div class="text">
-                <a href="{{ url('/apartment/single') }}">Luxury Suite Villa</a>
+                <a href="{{ url('/single/index5') }}">The Royal Walled City Haveli</a>
                 <div class="space20"></div>
                 <ul>
                   <li>
-                    <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" /> x2</a> <span>|</span>
+                    <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" /> 2 BR</a> <span>|</span>
                   </li>
                   <li>
-                    <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" /> x2</a> <span>|</span>
+                    <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" /> 2 BA</a> <span>|</span>
                   </li>
                   <li>
-                    <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" /> 2000 sq</a>
+                    <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" /> 1500 sq ft</a>
                   </li>
                 </ul>
               </div>
               <div class="arrow">
-                <a href="{{ url('/apartment/single') }}"><i class="fa-solid fa-arrow-right"></i></a>
+                <a href="{{ url('/single/index5') }}"><i class="fa-solid fa-arrow-right"></i></a>
               </div>
             </div>
             <div class="elements3">
@@ -388,9 +390,9 @@
       <div class="row">
         <div class="col-lg-5 m-auto">
           <div class="gallery-header heading2 text-center">
-            <h5 data-aos="fade-left" data-aos-duration="800">Building Gallery</h5>
+            <h5 data-aos="fade-left" data-aos-duration="800">Property Gallery</h5>
             <div class="space20"></div>
-            <h2 class="text-anime-style-3">Residence Building View</h2>
+            <h2 class="text-anime-style-3">Jaipur Heritage Views</h2>
           </div>
         </div>
       </div>
@@ -401,7 +403,7 @@
       <div class="row">
         <div class="col-lg-10 m-auto">
           <div class="rotate-img">
-            <iframe src="https://momento360.com/e/u/163e1a90974845d988fa0ec66e9b1859?utm_campaign=embed&utm_source=other&heading=0&pitch=0&field-of-view=75&size=medium&display-plan=true"></iframe>
+            <img src="/img/all-images/gallery/gallery-img1.png" alt="Jaipur heritage property" style="width:100%;height:auto;display:block;" />
             <img src="/img/elements/elements3.png" alt="" class="elements3" />
           </div>
         </div>
@@ -418,16 +420,16 @@
       <div class="row">
         <div class="col-lg-5">
           <div class="testimonia-header heading3">
-            <h5 data-aos="fade-left" data-aos-duration="800">client feedback</h5>
+            <h5 data-aos="fade-left" data-aos-duration="800">guest feedback</h5>
             <div class="space20"></div>
-            <h2 class="text-anime-style-3">Hear What Our Client Say About Property</h2>
+            <h2 class="text-anime-style-3">Hear What Our Guests Say About Jaipur</h2>
             <div class="space16"></div>
             <p data-aos="fade-left" data-aos-duration="1000">
-              Indulge in the epitome of luxury living at Luxury, where every <br class="d-lg-block d-none" /> amenity is meticulously designed to elevate your lifestyle.
+              Real guests, real stays. Every review comes from someone who <br class="d-lg-block d-none" /> booked directly with a verified Jaipur host.
             </p>
             <div class="space32"></div>
             <div class="btn-area1" data-aos="fade-left" data-aos-duration="1200">
-              <a href="{{ url('/pages/testimonial') }}" class="header-btn4">View All Testimonials</a>
+              <a href="{{ url('/apartment/v4') }}" class="header-btn4">Browse Properties</a>
             </div>
           </div>
           <div class="space86"></div>
@@ -451,8 +453,8 @@
                       <img src="/img/all-images/testimonial/testimonial-img4.png" alt="" />
                     </div>
                     <div class="text">
-                      <a href="#">Alexy Queen</a>
-                      <p>Happy Client</p>
+                      <a href="#">Priya Sharma</a>
+                      <p>Happy Guest</p>
                     </div>
                   </div>
                   <div class="quito">
@@ -460,9 +462,9 @@
                   </div>
                 </div>
                 <div class="space24"></div>
-                <span>Highly recommend Suite Luxury Suite Villa!</span>
+                <span>Highly recommend this Walled City haveli!</span>
                 <div class="space16"></div>
-                <p>“After staying at Luxury, I can confidently say it was one of the most luxurious best experiences of luxury villa.”</p>
+                <p>“Booking was simple — I messaged the host on WhatsApp and had everything confirmed the same day. The haveli was exactly as listed.”</p>
                 <div class="space24"></div>
                 <ul>
                   <li>
@@ -489,8 +491,8 @@
                       <img src="/img/all-images/testimonial/testimonial-img5.png" alt="" />
                     </div>
                     <div class="text">
-                      <a href="#">Jofra Archer</a>
-                      <p>Happy Client</p>
+                      <a href="#">Rajesh Kumar</a>
+                      <p>Happy Guest</p>
                     </div>
                   </div>
                   <div class="quito">
@@ -498,9 +500,9 @@
                   </div>
                 </div>
                 <div class="space24"></div>
-                <span>Unforgettable Experience Of Luxury & Comfort!</span>
+                <span>An unforgettable stay in the Pink City!</span>
                 <div class="space16"></div>
-                <p>"Celebrated my anniversary at Property Villa, and it was beyond magical. The attention to detail, the of serene.”</p>
+                <p>"Celebrated our anniversary at a Bani Park boutique stay, and it was beyond magical. The host arranged everything herself.”</p>
                 <div class="space24"></div>
                 <ul>
                   <li>
@@ -527,8 +529,8 @@
                       <img src="/img/all-images/testimonial/testimonial-img4.png" alt="" />
                     </div>
                     <div class="text">
-                      <a href="#">Alexy Queen</a>
-                      <p>Happy Client</p>
+                      <a href="#">Priya Sharma</a>
+                      <p>Happy Guest</p>
                     </div>
                   </div>
                   <div class="quito">
@@ -536,9 +538,9 @@
                   </div>
                 </div>
                 <div class="space24"></div>
-                <span>Highly recommend Suite Luxury Suite Villa!</span>
+                <span>Highly recommend this Walled City haveli!</span>
                 <div class="space16"></div>
-                <p>“After staying at Luxury, I can confidently say it was one of the most luxurious best experiences of luxury villa.”</p>
+                <p>“Booking was simple — I messaged the host on WhatsApp and had everything confirmed the same day. The haveli was exactly as listed.”</p>
                 <div class="space24"></div>
                 <ul>
                   <li>
@@ -565,8 +567,8 @@
                       <img src="/img/all-images/testimonial/testimonial-img5.png" alt="" />
                     </div>
                     <div class="text">
-                      <a href="#">Jofra Archer</a>
-                      <p>Happy Client</p>
+                      <a href="#">Rajesh Kumar</a>
+                      <p>Happy Guest</p>
                     </div>
                   </div>
                   <div class="quito">
@@ -574,9 +576,9 @@
                   </div>
                 </div>
                 <div class="space24"></div>
-                <span>Unforgettable Experience Of Luxury & Comfort!</span>
+                <span>An unforgettable stay in the Pink City!</span>
                 <div class="space16"></div>
-                <p>"Celebrated my anniversary at Property Villa, and it was beyond magical. The attention to detail, the of serene.”</p>
+                <p>"Celebrated our anniversary at a Bani Park boutique stay, and it was beyond magical. The host arranged everything herself.”</p>
                 <div class="space24"></div>
                 <ul>
                   <li>
@@ -603,8 +605,8 @@
                       <img src="/img/all-images/testimonial/testimonial-img4.png" alt="" />
                     </div>
                     <div class="text">
-                      <a href="#">Alexy Queen</a>
-                      <p>Happy Client</p>
+                      <a href="#">Priya Sharma</a>
+                      <p>Happy Guest</p>
                     </div>
                   </div>
                   <div class="quito">
@@ -612,9 +614,9 @@
                   </div>
                 </div>
                 <div class="space24"></div>
-                <span>Highly recommend Suite Luxury Suite Villa!</span>
+                <span>Highly recommend this Walled City haveli!</span>
                 <div class="space16"></div>
-                <p>“After staying at Luxury, I can confidently say it was one of the most luxurious best experiences of luxury villa.”</p>
+                <p>“Booking was simple — I messaged the host on WhatsApp and had everything confirmed the same day. The haveli was exactly as listed.”</p>
                 <div class="space24"></div>
                 <ul>
                   <li>
@@ -641,8 +643,8 @@
                       <img src="/img/all-images/testimonial/testimonial-img5.png" alt="" />
                     </div>
                     <div class="text">
-                      <a href="#">Jofra Archer</a>
-                      <p>Happy Client</p>
+                      <a href="#">Rajesh Kumar</a>
+                      <p>Happy Guest</p>
                     </div>
                   </div>
                   <div class="quito">
@@ -650,9 +652,9 @@
                   </div>
                 </div>
                 <div class="space24"></div>
-                <span>Unforgettable Experience Of Luxury & Comfort!</span>
+                <span>An unforgettable stay in the Pink City!</span>
                 <div class="space16"></div>
-                <p>"Celebrated my anniversary at Property Villa, and it was beyond magical. The attention to detail, the of serene.”</p>
+                <p>"Celebrated our anniversary at a Bani Park boutique stay, and it was beyond magical. The host arranged everything herself.”</p>
                 <div class="space24"></div>
                 <ul>
                   <li>
@@ -708,14 +710,14 @@
         <div class="col-lg-1"></div>
         <div class="col-lg-5">
           <div class="others-header heading3">
-            <h5 data-aos="fade-left" data-aos-duration="800">schedule a tour</h5>
+            <h5 data-aos="fade-left" data-aos-duration="800">start exploring</h5>
             <div class="space20"></div>
-            <h2 class="text-anime-style-3">Home Waiting For You Here Schedule A Tour</h2>
+            <h2 class="text-anime-style-3">Ready to Explore Jaipur?</h2>
             <div class="space16"></div>
-            <p data-aos="fade-left" data-aos-duration="1000">Indulge in the epitome of luxury living at Luxury, where every amenity is meticulously designed to elevate your lifestyle.</p>
+            <p data-aos="fade-left" data-aos-duration="1000">Browse verified stays across every neighborhood of the Pink City.</p>
             <div class="space24"></div>
             <div class="btn-area1" data-aos="fade-left" data-aos-duration="1200">
-              <a href="{{ url('/pages/contact') }}" class="header-btn3">Schedule A Visit</a>
+              <a href="{{ url('/apartment/v4') }}" class="header-btn3">Browse Properties</a>
               <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube">
                 <span class="play-btn"><i class="fa-solid fa-play"></i></span>
                 <span class="text">Video</span>
@@ -727,89 +729,6 @@
     </div>
   </div>
   <!-- ===== OTHERS AREA ENDS ======= -->
-
-  <!-- ===== BLOG AREA STARTS ======= -->
-  <div class="blog3-section-area sp7">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-5 m-auto">
-          <div class="blog-header text-center heading3 space-margin60">
-            <h5 data-aos="fade-left" data-aos-duration="800">Our Blog</h5>
-            <div class="space20"></div>
-            <h2 class="text-anime-style-3">Our News & Articles</h2>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="800">
-          <div class="blog-boxarea">
-            <div class="img1 image-anime">
-              <img src="/img/all-images/blog/blog-img1.png" alt="" />
-            </div>
-            <div class="content-area">
-              <ul>
-                <li>
-                  <a href="#"><img src="/img/icons/user.svg" alt="" /> Joe Root</a> <span>|</span>
-                </li>
-                <li>
-                  <a href="#"><img src="/img/icons/calender.svg" alt="" /> 16 April, 2024</a>
-                </li>
-              </ul>
-              <div class="space20"></div>
-              <a href="{{ url('/blogs/single') }}">How Luxury Suite Offers the Perfect Blend the Comfort</a>
-              <div class="space24"></div>
-              <a href="{{ url('/blogs/single') }}" class="readmore">Read More <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="1000">
-          <div class="blog-boxarea">
-            <div class="img1 image-anime">
-              <img src="/img/all-images/blog/blog-img2.png" alt="" />
-            </div>
-            <div class="content-area">
-              <ul>
-                <li>
-                  <a href="#"><img src="/img/icons/user.svg" alt="" /> Joe Root</a> <span>|</span>
-                </li>
-                <li>
-                  <a href="#"><img src="/img/icons/calender.svg" alt="" /> 16 April, 2024</a>
-                </li>
-              </ul>
-              <div class="space20"></div>
-              <a href="{{ url('/blogs/single') }}">Guest Spotlight: Memorable Moments at Luxury Suite Villa</a>
-              <div class="space24"></div>
-              <a href="{{ url('/blogs/single') }}" class="readmore">Read More <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="1200">
-          <div class="blog-boxarea">
-            <div class="img1 image-anime">
-              <img src="/img/all-images/blog/blog-img3.png" alt="" />
-            </div>
-            <div class="content-area">
-              <ul>
-                <li>
-                  <a href="#"><img src="/img/icons/user.svg" alt="" /> Joe Root</a> <span>|</span>
-                </li>
-                <li>
-                  <a href="#"><img src="/img/icons/calender.svg" alt="" /> 16 April, 2024</a>
-                </li>
-              </ul>
-              <div class="space20"></div>
-              <a href="{{ url('/blogs/single') }}">Behind the Scenes: The Art of Creating Luxury Suite Villa</a>
-              <div class="space24"></div>
-              <a href="{{ url('/blogs/single') }}" class="readmore">Read More <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- ===== BLOG AREA ENDS ======= -->
 
   @include('layouts.partials.footer')
 @endsection

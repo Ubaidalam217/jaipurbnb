@@ -98,31 +98,33 @@
                     <div class="footer-bottom-area">
                         <div class="footer-menu-area">
                             <div class="footer-logo">
-                                <a href="{{ url('/') }}"><img src="/img/logo/logo3.png" alt=""></a>
+                                <a href="{{ url('/') }}" style="color:#E07A5F;font-family:'Poppins',sans-serif;font-size:24px;font-weight:700;letter-spacing:-.02em;text-decoration:none;">JaipurBnB</a>
                             </div>
                             <div class="footer-menu">
                                 <ul>
                                     <li><a href="{{ url('/') }}">Home</a></li>
                                     <li class="space24"></li>
-                                    <li><a href="{{ url('/apartment/v1') }}">Properties</a></li>
+                                    <li><a href="{{ url('/apartment/v4') }}">Browse Properties</a></li>
                                     <li class="space24"></li>
-                                    <li><a href="{{ url('/pages/gallery-v1') }}">Gallery</a></li>
+                                    <li><a href="#">Neighborhoods</a></li>
                                 </ul>
                             </div>
                             <div class="footer-menu">
                                 <ul>
-                                    <li><a href="{{ url('/blogs/blog') }}">Blog</a></li>
+                                    <li><a href="#">List Your Property</a></li>
                                     <li class="space24"></li>
-                                    <li><a href="#">Pages</a></li>
+                                    <li><a href="#">How It Works</a></li>
                                     <li class="space24"></li>
-                                    <li><a href="{{ url('/pages/contact') }}">Contact</a></li>
+                                    <li><a href="#">Contact</a></li>
                                 </ul>
                             </div>
                             <div class="footer-menu2">
                                 <ul>
-                                    <li><a href="#"> <span><i class="fa-solid fa-location-dot"></i></span> <span>65, Brand Tower <br> New York, USA </span></a></li>
+                                    <li><a href="#"> <span><i class="fa-solid fa-location-dot"></i></span> <span>Jaipur, Rajasthan <br> India </span></a></li>
                                     <li class="space24"></li>
-                                    <li><a href="tel:123-456-7890"><span><i class="fa-solid fa-phone"></i></span> <span>123-456-7890</span></a></li>
+                                    <li><a href="tel:+91XXXXXXXXXX"><span><i class="fa-solid fa-phone"></i></span> <span>+91 XXXXX XXXXX</span></a></li>
+                                    <li class="space24"></li>
+                                    <li><a href="mailto:hello@jaipurbnb.com" style="text-transform: none"><span><i class="fa-solid fa-envelope"></i></span> <span>hello@jaipurbnb.com</span></a></li>
                                 </ul>
                             </div>
                             <div class="footer-social">
@@ -138,7 +140,7 @@
                             <div class="col-lg-12">
                                 <div class="space48"></div>
                                 <div class="copyright-area">
-                                    <p>© 2024 Hosue -Single Property Template.</p>
+                                    <p>© 2026 JaipurBnB. All rights reserved.</p>
                                 </div>
                             </div>
                         </div>

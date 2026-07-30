@@ -1,5 +1,7 @@
 @extends('layouts.base', ['logo5' => true])
 
+@section('title', 'Browse Properties in Jaipur - JaipurBnB')
+
 @section('content')
   @include('layouts.partials.navbar')
   <!-- ===== HERO AREA STARTS ======= -->
@@ -14,10 +16,10 @@
     <div class="row">
       <div class="col-lg-5">
       <div class="inner-heading header-heading">
-        <h2>Apartment V4</h2>
+        <h2>Browse Properties in Jaipur</h2>
         <div class="space24"></div>
         <p>
-        <a href="{{ url('/') }}">Home <i class="fa-solid fa-angle-right"></i></a> <a href="{{ url('/apartment/v1') }}">Apartment V4</a>
+        <a href="{{ url('/') }}">Home <i class="fa-solid fa-angle-right"></i></a> <a href="{{ url('/apartment/v4') }}">Browse Properties</a>
         </p>
       </div>
       </div>
@@ -29,9 +31,9 @@
           <img src="/img/all-images/others/others-img1.png" alt="" />
         </div>
         <div class="text">
-          <h3>Luxury Suite Villa</h3>
+          <h3>The Royal Walled City Haveli</h3>
           <div class="space10"></div>
-          <p>$1.800,000</p>
+          <p>Approx Rs 2,500 / night</p>
         </div>
         </div>
       </div>
@@ -49,35 +51,46 @@
       <div class="apartment-list-area space-margin60">
         <div class="select-area">
         <select name="country" class="nice-select">
-          <option value="1" data-display="All USA City">All USA City</option>
-          <option value="">New York City, New York</option>
-          <option value="">Los Angeles, California</option>
-          <option value="">Chicago, Illinois</option>
-          <option value="">Houston, Texas</option>
-          <option value="">Phoenix, Arizona</option>
-          <option value="">Philadelphia, Pennsylvania</option>
+          <option value="1" data-display="All Neighborhoods">All Neighborhoods</option>
+          <option value="">Walled City</option>
+          <option value="">Amer</option>
+          <option value="">Nahargarh</option>
+          <option value="">C-Scheme</option>
+          <option value="">Civil Lines</option>
+          <option value="">Bani Park</option>
+          <option value="">Vaishali Nagar</option>
+          <option value="">Mansarovar</option>
+          <option value="">Malviya Nagar</option>
+          <option value="">Jagatpura</option>
+          <option value="">Raja Park</option>
+          <option value="">Sitapura</option>
+          <option value="">Tonk Road</option>
+          <option value="">Sanganer</option>
+          <option value="">Delhi Road</option>
+          <option value="">Ajmer Road</option>
+          <option value="">Agra Road</option>
         </select>
         </div>
 
         <div class="select-area2">
         <select name="country" class="nice-select">
-          <option value="1" data-display="Min Price">$90000</option>
-          <option value="">$100000</option>
-          <option value="">$110000</option>
-          <option value="">$120000</option>
-          <option value="">$130000</option>
-          <option value="">$140000</option>
+          <option value="1" data-display="Min Price">Any</option>
+          <option value="">Rs 1,000</option>
+          <option value="">Rs 2,000</option>
+          <option value="">Rs 3,000</option>
+          <option value="">Rs 5,000</option>
+          <option value="">Rs 10,000</option>
         </select>
         </div>
 
         <div class="select-area2">
         <select name="country" class="nice-select">
-          <option value="1" data-display="Max Price">$90000</option>
-          <option value="">$100000</option>
-          <option value="">$110000</option>
-          <option value="">$120000</option>
-          <option value="">$130000</option>
-          <option value="">$140000</option>
+          <option value="1" data-display="Max Price">Any</option>
+          <option value="">Rs 3,000</option>
+          <option value="">Rs 5,000</option>
+          <option value="">Rs 10,000</option>
+          <option value="">Rs 15,000</option>
+          <option value="">Rs 25,000+</option>
         </select>
         </div>
         <div class="btn-area1">
@@ -93,27 +106,27 @@
         <img src="/img/all-images/apartment/apartment-img1.png" alt="" />
         </div>
         <div class="content-area">
-        <a href="{{ url('/apartment/single') }}">Apartment Complex</a>
+        <a href="{{ url('/single/index5') }}">The Royal Walled City Haveli Room</a>
         <div class="space16"></div>
         <ul>
           <li>
-          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />x2</a> <span>|</span>
+          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />2 BR</a> <span>|</span>
           </li>
           <li>
-          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />x2</a> <span>|</span>
+          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />2 BA</a> <span>|</span>
           </li>
           <li>
-          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />1200 sq</a>
+          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />1200 sq ft</a>
           </li>
         </ul>
         <div class="space20"></div>
         <div class="price-area">
-          <a href="#">$23,000</a>
-          <p>$25,000</p>
+          <a href="#">Approx Rs 2,500 / night</a>
+          <p>Walled City</p>
         </div>
         </div>
         <div class="arrow">
-        <a href="{{ url('/apartment/single') }}">View</a>
+        <a href="{{ url('/single/index5') }}">View</a>
         </div>
       </div>
       </div>
@@ -124,27 +137,27 @@
         <img src="/img/all-images/apartment/apartment-img2.png" alt="" />
         </div>
         <div class="content-area">
-        <a href="{{ url('/apartment/single') }}">Diamond Apartment</a>
+        <a href="{{ url('/single/index5') }}">Premium Terrace Studio near Central Cafes</a>
         <div class="space16"></div>
         <ul>
           <li>
-          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />x2</a> <span>|</span>
+          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />1 BR</a> <span>|</span>
           </li>
           <li>
-          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />x2</a> <span>|</span>
+          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />1 BA</a> <span>|</span>
           </li>
           <li>
-          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />1400 sq</a>
+          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />800 sq ft</a>
           </li>
         </ul>
         <div class="space20"></div>
         <div class="price-area">
-          <a href="#">$23,000</a>
-          <p>$25,000</p>
+          <a href="#">Approx Rs 3,800 / night</a>
+          <p>C-Scheme</p>
         </div>
         </div>
         <div class="arrow">
-        <a href="{{ url('/apartment/single') }}">View</a>
+        <a href="{{ url('/single/index5') }}">View</a>
         </div>
       </div>
       </div>
@@ -155,27 +168,27 @@
         <img src="/img/all-images/apartment/apartment-img3.png" alt="" />
         </div>
         <div class="content-area">
-        <a href="{{ url('/apartment/single') }}">Luxury Suite Villa</a>
+        <a href="{{ url('/single/index5') }}">Aravali Hills View Family Escape</a>
         <div class="space16"></div>
         <ul>
           <li>
-          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />x2</a> <span>|</span>
+          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />4 BR</a> <span>|</span>
           </li>
           <li>
-          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />x2</a> <span>|</span>
+          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />3 BA</a> <span>|</span>
           </li>
           <li>
-          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />1600 sq</a>
+          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />2500 sq ft</a>
           </li>
         </ul>
         <div class="space20"></div>
         <div class="price-area">
-          <a href="#">$23,000</a>
-          <p>$25,000</p>
+          <a href="#">Approx Rs 6,500 / night</a>
+          <p>Delhi Road</p>
         </div>
         </div>
         <div class="arrow">
-        <a href="{{ url('/apartment/single') }}">View</a>
+        <a href="{{ url('/single/index5') }}">View</a>
         </div>
       </div>
       </div>
@@ -186,27 +199,27 @@
         <img src="/img/all-images/apartment/apartment-img5.png" alt="" />
         </div>
         <div class="content-area">
-        <a href="{{ url('/apartment/single') }}">Villa Grean Complex</a>
+        <a href="{{ url('/single/index5') }}">Cozy Amer Fort View Homestay</a>
         <div class="space16"></div>
         <ul>
           <li>
-          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />x2</a> <span>|</span>
+          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />1 BR</a> <span>|</span>
           </li>
           <li>
-          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />x2</a> <span>|</span>
+          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />1 BA</a> <span>|</span>
           </li>
           <li>
-          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />1100 sq</a>
+          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />900 sq ft</a>
           </li>
         </ul>
         <div class="space20"></div>
         <div class="price-area">
-          <a href="#">$23,000</a>
-          <p>$25,000</p>
+          <a href="#">Approx Rs 1,800 / night</a>
+          <p>Amer</p>
         </div>
         </div>
         <div class="arrow">
-        <a href="{{ url('/apartment/single') }}">View</a>
+        <a href="{{ url('/single/index5') }}">View</a>
         </div>
       </div>
       </div>
@@ -217,27 +230,27 @@
         <img src="/img/all-images/apartment/apartment-img15.png" alt="" />
         </div>
         <div class="content-area">
-        <a href="{{ url('/apartment/single') }}">Villa Grean Complex</a>
+        <a href="{{ url('/single/index5') }}">Bani Park Boutique Getaway</a>
         <div class="space16"></div>
         <ul>
           <li>
-          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />x2</a> <span>|</span>
+          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />2 BR</a> <span>|</span>
           </li>
           <li>
-          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />x2</a> <span>|</span>
+          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />2 BA</a> <span>|</span>
           </li>
           <li>
-          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />1100 sq</a>
+          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />1100 sq ft</a>
           </li>
         </ul>
         <div class="space20"></div>
         <div class="price-area">
-          <a href="#">$23,000</a>
-          <p>$25,000</p>
+          <a href="#">Approx Rs 3,200 / night</a>
+          <p>Bani Park</p>
         </div>
         </div>
         <div class="arrow">
-        <a href="{{ url('/apartment/single') }}">View</a>
+        <a href="{{ url('/single/index5') }}">View</a>
         </div>
       </div>
       </div>
@@ -248,27 +261,27 @@
         <img src="/img/all-images/apartment/apartment-img20.png" alt="" />
         </div>
         <div class="content-area">
-        <a href="{{ url('/apartment/single') }}">Amazing Complex Villa</a>
+        <a href="{{ url('/single/index5') }}">Nahargarh Heritage Retreat</a>
         <div class="space16"></div>
         <ul>
           <li>
-          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />x2</a> <span>|</span>
+          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />3 BR</a> <span>|</span>
           </li>
           <li>
-          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />x2</a> <span>|</span>
+          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />3 BA</a> <span>|</span>
           </li>
           <li>
-          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />1100 sq</a>
+          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />1800 sq ft</a>
           </li>
         </ul>
         <div class="space20"></div>
         <div class="price-area">
-          <a href="#">$23,000</a>
-          <p>$25,000</p>
+          <a href="#">Approx Rs 5,500 / night</a>
+          <p>Nahargarh</p>
         </div>
         </div>
         <div class="arrow">
-        <a href="{{ url('/apartment/single') }}">View</a>
+        <a href="{{ url('/single/index5') }}">View</a>
         </div>
       </div>
       </div>
@@ -310,9 +323,9 @@
     <div class="row">
       <div class="col-lg-6 m-auto">
       <div class="heading3 text-center space-margin60">
-        <h5 data-aos="fade-left" data-aos-duration="800">Villa amenities</h5>
+        <h5 data-aos="fade-left" data-aos-duration="800">Why JaipurBnB</h5>
         <div class="space20"></div>
-        <h2 class="text-anime-style-3">Our Property Amenities</h2>
+        <h2 class="text-anime-style-3">Why Guests Choose Us</h2>
       </div>
       </div>
     </div>
@@ -324,10 +337,10 @@
         </div>
         <div class="space32"></div>
         <div class="content-area">
-        <a href="{{ url('/apartment/single') }}">New Construction</a>
+        <a href="#">Verified Listings</a>
         <div class="space18"></div>
         <p>
-          Discover the epitome of luxury living at Luxury, <br class="d-lg-block d-block" /> every detail .
+          Every property is checked in person <br class="d-lg-block d-block" /> by our Jaipur team.
         </p>
         <h3>01</h3>
         </div>
@@ -342,10 +355,10 @@
         </div>
         <div class="space32"></div>
         <div class="content-area">
-        <a href="{{ url('/apartment/single') }}">Swimming Pool</a>
+        <a href="#">Local Support</a>
         <div class="space18"></div>
         <p>
-          Explore our meticulously best <br class="d-lg-block d-block" /> designed spaces and indulge.
+          A Jaipur-based team on hand <br class="d-lg-block d-block" /> if anything goes wrong.
         </p>
         <h3>02</h3>
         </div>
@@ -359,10 +372,10 @@
         </div>
         <div class="space32"></div>
         <div class="content-area">
-        <a href="{{ url('/apartment/single') }}">Fitness Facilities</a>
+        <a href="#">Airport Pickup</a>
         <div class="space18"></div>
         <p>
-          Uncover the essence of luxury <br class="d-lg-block d-block" /> as you explore our exclusive.
+          Many hosts arrange transfers <br class="d-lg-block d-block" /> from Jaipur airport on request.
         </p>
         <h3>03</h3>
         </div>
@@ -377,10 +390,10 @@
         </div>
         <div class="space32"></div>
         <div class="content-area">
-        <a href="{{ url('/apartment/single') }}">Eco Construction</a>
+        <a href="#">Home-Cooked Meals</a>
         <div class="space18"></div>
         <p>
-          Step into sophistication and <br class="d-lg-block d-block" /> serenity at new construction.
+          Traditional Rajasthani cooking <br class="d-lg-block d-block" /> offered by many families.
         </p>
         <h3>04</h3>
         </div>
