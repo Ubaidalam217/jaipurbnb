@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-  @include('layouts.partials.header.navbar5')
+  @include('layouts.partials.navbar')
 
   <!-- ===== HERO AREA STARTS ======= -->
   <div class="space80"></div>

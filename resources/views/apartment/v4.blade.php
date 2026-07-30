@@ -1,7 +1,7 @@
 @extends('layouts.base', ['logo5' => true])
 
 @section('content')
-  @include('layouts.partials.header.navbar5')
+  @include('layouts.partials.navbar')
   <!-- ===== HERO AREA STARTS ======= -->
   <div class="inner-main-hero-area">
     <div class="img1">

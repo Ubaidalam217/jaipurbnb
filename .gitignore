@@ -24,3 +24,8 @@ Homestead.yaml
 npm-debug.log
 Thumbs.db
 yarn-error.log
+
+# Local QA artefacts and generated sourcemaps
+/screenshots
+/.playwright-mcp
+*.map
