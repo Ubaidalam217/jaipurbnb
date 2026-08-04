@@ -116,7 +116,11 @@ AOS.init;
 AOS.init({disable: 'mobile'});
 
 //========== NICE SELECT ============= //
-$('select').niceSelect();
+// nice-select swaps the native <select> for a styled div and hides the
+// original. That is fine for the template's filter bars, but the host
+// property forms use native selects on purpose (label association,
+// keyboard behaviour, validation focus), so opt them out.
+$('select:not(.jb-native-select)').niceSelect();
 
 //========== CASE IMAGE ============= //
 $('.cs_hover_active').hover(function () {

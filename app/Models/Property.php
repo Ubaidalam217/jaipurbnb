@@ -75,6 +75,7 @@ class Property extends Model
         'subscription_expiry',
         'verification_doc_url',
         'ical_feed_url',
+        'rejection_reason',
     ];
 
     /** @return array<string, string> */

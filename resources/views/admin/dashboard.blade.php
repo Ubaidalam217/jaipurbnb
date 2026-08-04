@@ -14,21 +14,25 @@
       <p class="jb-dash__sub">Review submitted listings and manage approvals.</p>
 
       <div class="jb-dash__grid">
-        <div class="jb-dash__card">
-          <span class="jb-dash__stat">0</span>
+        <a class="jb-dash__card" style="text-decoration:none;"
+           href="{{ route('admin.properties.index', ['status' => 'pending']) }}">
+          <span class="jb-dash__stat">{{ $pendingCount }}</span>
           <span class="jb-dash__label">Pending Approvals</span>
-        </div>
-        <div class="jb-dash__card">
-          <span class="jb-dash__stat">0</span>
+        </a>
+        <a class="jb-dash__card" style="text-decoration:none;"
+           href="{{ route('admin.properties.index', ['status' => 'approved']) }}">
+          <span class="jb-dash__stat">{{ $approvedCount }}</span>
           <span class="jb-dash__label">Approved Properties</span>
-        </div>
-        <div class="jb-dash__card">
-          <span class="jb-dash__stat">0</span>
+        </a>
+        <a class="jb-dash__card" style="text-decoration:none;"
+           href="{{ route('admin.properties.index', ['status' => 'rejected']) }}">
+          <span class="jb-dash__stat">{{ $rejectedCount }}</span>
           <span class="jb-dash__label">Rejected</span>
-        </div>
+        </a>
       </div>
 
       <div class="jb-dash__actions">
+        <a class="jb-dash__cta" href="{{ route('admin.properties.index') }}">Open Moderation Queue</a>
         <form method="POST" action="{{ route('logout') }}">
           @csrf
           <button class="jb-dash__ghost" type="submit">Sign out</button>
