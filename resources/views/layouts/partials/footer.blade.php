@@ -104,7 +104,7 @@
                                 <ul>
                                     <li><a href="{{ url('/') }}">Home</a></li>
                                     <li class="space24"></li>
-                                    <li><a href="{{ url('/apartment/v4') }}">Browse Properties</a></li>
+                                    <li><a href="{{ route('properties.browse') }}">Browse Properties</a></li>
                                     <li class="space24"></li>
                                     <li><a href="#">Neighborhoods</a></li>
                                 </ul>

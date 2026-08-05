@@ -16,7 +16,7 @@
 @php
     $jbNavLinks = [
         ['label' => 'Home',              'href' => url('/'),             'active' => request()->is('/')],
-        ['label' => 'Browse Properties', 'href' => url('/apartment/v4'), 'active' => request()->is('apartment/*')],
+        ['label' => 'Browse Properties', 'href' => route('properties.browse'), 'active' => request()->is('browse', 'property/*')],
         // TODO: no contact route exists yet. Swap to url('/contact') once it is created.
         ['label' => 'Contact',           'href' => '#',                  'active' => false],
     ];

@@ -19,24 +19,26 @@
         <h2>Browse Properties in Jaipur</h2>
         <div class="space24"></div>
         <p>
-        <a href="{{ url('/') }}">Home <i class="fa-solid fa-angle-right"></i></a> <a href="{{ url('/apartment/v4') }}">Browse Properties</a>
+        <a href="{{ url('/') }}">Home <i class="fa-solid fa-angle-right"></i></a> <a href="{{ route('properties.browse') }}">Browse Properties</a>
         </p>
       </div>
       </div>
       <div class="col-lg-2"></div>
       <div class="col-lg-4">
+      @if ($properties->total() > 0)
       <div class="auhtor-box">
         <div class="others-box">
         <div class="img3">
           <img src="/img/all-images/others/others-img1.png" alt="" />
         </div>
         <div class="text">
-          <h3>The Royal Walled City Haveli</h3>
+          <h3>{{ $properties->total() }} {{ Str::plural('stay', $properties->total()) }} available</h3>
           <div class="space10"></div>
-          <p>Approx Rs 2,500 / night</p>
+          <p>Across {{ count($neighborhoods) }} Jaipur neighborhoods</p>
         </div>
         </div>
       </div>
+      @endif
       </div>
     </div>
     </div>
@@ -46,272 +48,120 @@
   <!-- ===== APARTMENT AREA STARTS ======= -->
   <div class="apartment-inner2-section-area sp7 bg2">
     <div class="container">
+    {{--
+      Filter bar. GET so results stay linkable and bookmarkable.
+      The selects are styled by jquery-nice-select (resources/js/main.js),
+      which keeps the underlying native <select> in sync, so a plain
+      submit carries the real values.
+    --}}
+    <form method="GET" action="{{ route('properties.browse') }}">
     <div class="row">
-      <div class="col-lg-9">
+      <div class="col-lg-12">
       <div class="apartment-list-area space-margin60">
         <div class="select-area">
-        <select name="country" class="nice-select">
-          <option value="1" data-display="All Neighborhoods">All Neighborhoods</option>
-          <option value="">Walled City</option>
-          <option value="">Amer</option>
-          <option value="">Nahargarh</option>
-          <option value="">C-Scheme</option>
-          <option value="">Civil Lines</option>
-          <option value="">Bani Park</option>
-          <option value="">Vaishali Nagar</option>
-          <option value="">Mansarovar</option>
-          <option value="">Malviya Nagar</option>
-          <option value="">Jagatpura</option>
-          <option value="">Raja Park</option>
-          <option value="">Sitapura</option>
-          <option value="">Tonk Road</option>
-          <option value="">Sanganer</option>
-          <option value="">Delhi Road</option>
-          <option value="">Ajmer Road</option>
-          <option value="">Agra Road</option>
+        <select name="neighborhood" class="nice-select">
+          <option value="" data-display="All Neighborhoods">All Neighborhoods</option>
+          @foreach ($neighborhoods as $neighborhood)
+          <option value="{{ $neighborhood }}" @selected($filters['neighborhood'] === $neighborhood)>{{ $neighborhood }}</option>
+          @endforeach
+        </select>
+        </div>
+
+        <div class="select-area">
+        <select name="stay_type" class="nice-select">
+          <option value="" data-display="All Stay Types">All Stay Types</option>
+          @foreach ($stayTypes as $stayType)
+          <option value="{{ $stayType }}" @selected($filters['stay_type'] === $stayType)>{{ $stayType }}</option>
+          @endforeach
         </select>
         </div>
 
         <div class="select-area2">
-        <select name="country" class="nice-select">
-          <option value="1" data-display="Min Price">Any</option>
-          <option value="">Rs 1,000</option>
-          <option value="">Rs 2,000</option>
-          <option value="">Rs 3,000</option>
-          <option value="">Rs 5,000</option>
-          <option value="">Rs 10,000</option>
+        <select name="min_price" class="nice-select">
+          <option value="" data-display="Min Price">Min Price: Any</option>
+          @foreach ([1000, 2000, 3000, 5000, 10000] as $price)
+          <option value="{{ $price }}" @selected($filters['min_price'] === $price)>Rs {{ number_format($price) }}+</option>
+          @endforeach
         </select>
         </div>
 
         <div class="select-area2">
-        <select name="country" class="nice-select">
-          <option value="1" data-display="Max Price">Any</option>
-          <option value="">Rs 3,000</option>
-          <option value="">Rs 5,000</option>
-          <option value="">Rs 10,000</option>
-          <option value="">Rs 15,000</option>
-          <option value="">Rs 25,000+</option>
+        <select name="max_price" class="nice-select">
+          <option value="" data-display="Max Price">Max Price: Any</option>
+          @foreach ([3000, 5000, 10000, 15000, 25000] as $price)
+          <option value="{{ $price }}" @selected($filters['max_price'] === $price)>Up to Rs {{ number_format($price) }}</option>
+          @endforeach
         </select>
         </div>
+
+        <div class="select-area2">
+        <select name="sort" class="nice-select">
+          <option value="newest" @selected($filters['sort'] === 'newest')>Newest First</option>
+          <option value="price_low" @selected($filters['sort'] === 'price_low')>Price: Low to High</option>
+          <option value="price_high" @selected($filters['sort'] === 'price_high')>Price: High to Low</option>
+        </select>
+        </div>
+
         <div class="btn-area1">
         <button type="submit" class="header-btn4">Search Now</button>
         </div>
       </div>
       </div>
     </div>
+    </form>
+
     <div class="row">
-      <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="800">
+      @forelse ($properties as $property)
+      <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="800">
       <div class="apartment-boxarea">
         <div class="img1">
-        <img src="/img/all-images/apartment/apartment-img1.png" alt="" />
+        @if ($property->coverImage)
+        <img src="{{ Storage::url($property->coverImage->image_url) }}" alt="{{ $property->title }}" />
+        @else
+        <img src="/img/all-images/apartment/apartment-img1.png" alt="{{ $property->title }}" />
+        @endif
         </div>
         <div class="content-area">
-        <a href="{{ url('/single/index5') }}">The Royal Walled City Haveli Room</a>
+        <a href="{{ route('properties.show', $property) }}">{{ $property->title }}</a>
         <div class="space16"></div>
         <ul>
           <li>
-          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />2 BR</a> <span>|</span>
-          </li>
-          <li>
-          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />2 BA</a> <span>|</span>
-          </li>
-          <li>
-          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />1200 sq ft</a>
+          <span>{{ $property->stay_type }}</span>
           </li>
         </ul>
         <div class="space20"></div>
         <div class="price-area">
-          <a href="#">Approx Rs 2,500 / night</a>
-          <p>Walled City</p>
+          <a href="{{ route('properties.show', $property) }}">Approx Rs {{ number_format($property->approx_price) }} / night</a>
+          <p>{{ $property->neighborhood }}</p>
         </div>
         </div>
         <div class="arrow">
-        <a href="{{ url('/single/index5') }}">View</a>
+        <a href="{{ route('properties.show', $property) }}">View</a>
         </div>
       </div>
       </div>
+      @empty
+      <div class="col-lg-8 m-auto">
+      <div class="heading3 text-center">
+        <div class="space30"></div>
+        <h3>No properties found matching your filters. Try adjusting your search.</h3>
+        <div class="space24"></div>
+        <div class="btn-area1">
+        <a href="{{ route('properties.browse') }}" class="header-btn4">Clear all filters</a>
+        </div>
+        <div class="space30"></div>
+      </div>
+      </div>
+      @endforelse
 
-      <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="900">
-      <div class="apartment-boxarea">
-        <div class="img1">
-        <img src="/img/all-images/apartment/apartment-img2.png" alt="" />
-        </div>
-        <div class="content-area">
-        <a href="{{ url('/single/index5') }}">Premium Terrace Studio near Central Cafes</a>
-        <div class="space16"></div>
-        <ul>
-          <li>
-          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />1 BR</a> <span>|</span>
-          </li>
-          <li>
-          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />1 BA</a> <span>|</span>
-          </li>
-          <li>
-          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />800 sq ft</a>
-          </li>
-        </ul>
-        <div class="space20"></div>
-        <div class="price-area">
-          <a href="#">Approx Rs 3,800 / night</a>
-          <p>C-Scheme</p>
-        </div>
-        </div>
-        <div class="arrow">
-        <a href="{{ url('/single/index5') }}">View</a>
-        </div>
-      </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="1000">
-      <div class="apartment-boxarea">
-        <div class="img1">
-        <img src="/img/all-images/apartment/apartment-img3.png" alt="" />
-        </div>
-        <div class="content-area">
-        <a href="{{ url('/single/index5') }}">Aravali Hills View Family Escape</a>
-        <div class="space16"></div>
-        <ul>
-          <li>
-          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />4 BR</a> <span>|</span>
-          </li>
-          <li>
-          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />3 BA</a> <span>|</span>
-          </li>
-          <li>
-          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />2500 sq ft</a>
-          </li>
-        </ul>
-        <div class="space20"></div>
-        <div class="price-area">
-          <a href="#">Approx Rs 6,500 / night</a>
-          <p>Delhi Road</p>
-        </div>
-        </div>
-        <div class="arrow">
-        <a href="{{ url('/single/index5') }}">View</a>
-        </div>
-      </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="1100">
-      <div class="apartment-boxarea">
-        <div class="img1">
-        <img src="/img/all-images/apartment/apartment-img5.png" alt="" />
-        </div>
-        <div class="content-area">
-        <a href="{{ url('/single/index5') }}">Cozy Amer Fort View Homestay</a>
-        <div class="space16"></div>
-        <ul>
-          <li>
-          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />1 BR</a> <span>|</span>
-          </li>
-          <li>
-          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />1 BA</a> <span>|</span>
-          </li>
-          <li>
-          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />900 sq ft</a>
-          </li>
-        </ul>
-        <div class="space20"></div>
-        <div class="price-area">
-          <a href="#">Approx Rs 1,800 / night</a>
-          <p>Amer</p>
-        </div>
-        </div>
-        <div class="arrow">
-        <a href="{{ url('/single/index5') }}">View</a>
-        </div>
-      </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="1300">
-      <div class="apartment-boxarea">
-        <div class="img1">
-        <img src="/img/all-images/apartment/apartment-img15.png" alt="" />
-        </div>
-        <div class="content-area">
-        <a href="{{ url('/single/index5') }}">Bani Park Boutique Getaway</a>
-        <div class="space16"></div>
-        <ul>
-          <li>
-          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />2 BR</a> <span>|</span>
-          </li>
-          <li>
-          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />2 BA</a> <span>|</span>
-          </li>
-          <li>
-          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />1100 sq ft</a>
-          </li>
-        </ul>
-        <div class="space20"></div>
-        <div class="price-area">
-          <a href="#">Approx Rs 3,200 / night</a>
-          <p>Bani Park</p>
-        </div>
-        </div>
-        <div class="arrow">
-        <a href="{{ url('/single/index5') }}">View</a>
-        </div>
-      </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="1300">
-      <div class="apartment-boxarea">
-        <div class="img1">
-        <img src="/img/all-images/apartment/apartment-img20.png" alt="" />
-        </div>
-        <div class="content-area">
-        <a href="{{ url('/single/index5') }}">Nahargarh Heritage Retreat</a>
-        <div class="space16"></div>
-        <ul>
-          <li>
-          <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" />3 BR</a> <span>|</span>
-          </li>
-          <li>
-          <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" />3 BA</a> <span>|</span>
-          </li>
-          <li>
-          <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" />1800 sq ft</a>
-          </li>
-        </ul>
-        <div class="space20"></div>
-        <div class="price-area">
-          <a href="#">Approx Rs 5,500 / night</a>
-          <p>Nahargarh</p>
-        </div>
-        </div>
-        <div class="arrow">
-        <a href="{{ url('/single/index5') }}">View</a>
-        </div>
-      </div>
-      </div>
+      @if ($properties->hasPages())
       <div class="col-lg-12">
       <div class="space30"></div>
       <div class="pagination-area">
-        <nav aria-label="Page navigation example">
-        <ul class="pagination">
-          <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous"><i class="fa-solid fa-angle-left"></i></a>
-          </li>
-          <li class="page-item">
-          <a class="page-link active" href="#">1</a>
-          </li>
-          <li class="page-item">
-          <a class="page-link" href="#">2</a>
-          </li>
-          <li class="page-item">
-          <a class="page-link" href="#">...</a>
-          </li>
-          <li class="page-item">
-          <a class="page-link" href="#">12</a>
-          </li>
-          <li class="page-item">
-          <a class="page-link m-0" href="#" aria-label="Next"><i class="fa-solid fa-angle-right"></i></a>
-          </li>
-        </ul>
-        </nav>
+        {{ $properties->links() }}
       </div>
       </div>
+      @endif
     </div>
     </div>
   </div>

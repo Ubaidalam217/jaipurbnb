@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,6 +24,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Property extends Model
 {
+    /** @use HasFactory<\Database\Factories\PropertyFactory> */
+    use HasFactory;
+
     public const STATUS_PENDING  = 'pending';
     public const STATUS_APPROVED = 'approved';
     public const STATUS_REJECTED = 'rejected';
@@ -33,6 +37,16 @@ class Property extends Model
         self::STATUS_REJECTED,
     ];
 
+    /**
+     * The 22 filterable Jaipur neighborhoods, in the order given in
+     * CLAUDE.md (roughly centre-out, then the outlying towns) - NOT
+     * alphabetical. The browse filter renders this order verbatim.
+     *
+     * The three "... Road" entries are stored without CLAUDE.md's
+     * parenthetical landmarks: 'Delhi Road', not
+     * 'Delhi Road (Kukas/Achrol)'. Changing that would invalidate the
+     * neighborhood already saved on every existing listing.
+     */
     public const NEIGHBORHOODS = [
         'Walled City',
         'Amer',
@@ -45,12 +59,17 @@ class Property extends Model
         'Malviya Nagar',
         'Jagatpura',
         'Raja Park',
+        'Pratap Nagar',
+        'Chitrakoot',
         'Sitapura',
         'Tonk Road',
         'Sanganer',
+        'Jhotwara',
         'Delhi Road',
         'Ajmer Road',
         'Agra Road',
+        'Chomu',
+        'Bagru',
     ];
 
     public const STAY_TYPES = [

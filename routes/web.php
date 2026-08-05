@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\PropertyController as AdminPropertyController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Host\PropertyController as HostPropertyController;
+use App\Http\Controllers\PropertyController as PublicPropertyController;
 use App\Models\Property;
 use Illuminate\Support\Facades\Route;
 
@@ -17,13 +18,16 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/apartment/v4', function () {
-    return view('apartment.v4');
-});
+Route::get('/browse', [PublicPropertyController::class, 'index'])->name('properties.browse');
+Route::get('/property/{id}', [PublicPropertyController::class, 'show'])
+    ->whereNumber('id')
+    ->name('properties.show');
 
-Route::get('/single/index5', function () {
-    return view('single.index5');
-});
+// Legacy template URLs. Milestone 1 shipped these as static demo pages and
+// they are still linked from the homepage; keep them resolving so no old
+// link 404s. Remove once every view has been repointed.
+Route::get('/apartment/v4', fn () => redirect()->route('properties.browse'));
+Route::get('/single/index5', fn () => redirect()->route('properties.browse'));
 
 /*
 |--------------------------------------------------------------------------
