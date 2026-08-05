@@ -191,7 +191,7 @@ are NOT needed for JaipurBnB and should be cleaned up.
   photos, final logo SVG (before Milestone 4)
 
 ## Development Workflow
-- Local dev on D:\uvPackage\Upwork projects\jaipurbnb
+- Local dev on D:\Freelancer\jaipurbnb
 - Git remote: managed by user (Ryden)
 - Main branch: main
 - Deploy target: Hostinger shared hosting
