@@ -2296,15 +2296,23 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    // JaipurBnB: the browse filter bar carries 5 dropdowns plus the submit
+    // button. At the template's fixed 370px + 180px widths that totals
+    // ~1430px and overflowed the 1320px container on one row, so the
+    // controls now flex and the row wraps. `gap` replaces the per-control
+    // margin-bottom the old stacked (display:block) mobile layout used.
+    flex-wrap: wrap;
+    gap: 16px;
     @media #{$xs} {
-        display: block;
+        display: flex;
     }
     @media #{$md} {
-        display: block;
+        display: flex;
     }
     .select-area {
+        flex: 1 1 240px;
         .nice-select {
-            width: 370px;
+            width: 100%;
             border-radius: none;
             outline: none;
             box-shadow: none;
@@ -2322,11 +2330,11 @@
             display:block;
             @media #{$xs} {
                 width: 100%;
-                margin-bottom: 20px;
+                margin-bottom: 0;
             }
             @media #{$md} {
                 width: 100%;
-                margin-bottom: 20px;
+                margin-bottom: 0;
             }
             &::after {
                 width: 7px;
@@ -2348,8 +2356,9 @@
     }
 
     .select-area2 {
+        flex: 1 1 170px;
         .nice-select {
-            width: 180px;
+            width: 100%;
             border-radius: none;
             outline: none;
             box-shadow: none;
@@ -2369,11 +2378,11 @@
             @media #{$xs} {
                 width: 100%;
                 display: block;
-                margin-bottom: 20px;
+                margin-bottom: 0;
             }
             @media #{$md} {
                 width: 100%;
-                margin-bottom: 20px;
+                margin-bottom: 0;
             }
             &::after {
                 width: 7px;
@@ -2394,10 +2403,31 @@
         }
     }
     .btn-area1 {
+        flex: 0 0 auto;
         button {
             border: none;
             outline: none;
             transition: all .4s;
+        }
+        // The global .header-btn4 is `display:inline-block` with
+        // `padding:17px 24px; line-height:16px`, which renders a 50px-tall
+        // pill - 6px shorter than the 56px dropdowns beside it - and leaves
+        // the label baseline-positioned rather than centred. Scoped here so
+        // the homepage and footer .header-btn4 buttons keep their own sizing.
+        .header-btn4 {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 56px;
+            padding: 0 32px;
+            line-height: 1;
+            white-space: nowrap;
+            // Re-centre the decorative circle: it is a fixed 40px tall and
+            // was pinned to top:5px for the old 50px button, so in a 56px
+            // pill it sat 6px high. (56 - 40) / 2 = 8.
+            &::after {
+                top: 8px;
+            }
         }
     }
 }

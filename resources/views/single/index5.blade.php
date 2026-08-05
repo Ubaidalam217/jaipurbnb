@@ -3,7 +3,7 @@
 @section('title', $property->title . ' - JaipurBnB')
 
 @section('body_attribute')
-  class="homepage5-body"
+  class="homepage5-body" data-property-id="{{ $property->id }}"
 @endsection
 
 @php
@@ -15,9 +15,8 @@
   $jbGallery = $property->images->where('id', '!=', $jbCover?->id)->values();
   $jbPrice = 'Approx Rs ' . number_format($property->approx_price) . ' / night';
 
-  // MILESTONE 3 wires these to real wa.me / tel: links plus lead logging
-  // (lead_analytics.whatsapp_click / call_click). Deliberately inert for now.
-  $jbContactHref = '#';
+  // data-property-id on <body> above is read by main.js on page load to
+  // fire a profile_view beacon - see resources/js/main.js.
 @endphp
 
 @section('content')
@@ -60,7 +59,7 @@
             </div>
             <div class="space24"></div>
             <div class="btn-area1">
-              <a href="{{ $jbContactHref }}" style="display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:130px;background:#25D366;color:#0F3D2E;font-family:'Poppins',sans-serif;font-size:16px;font-weight:600;text-decoration:none;margin-right:12px;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a><a href="{{ $jbContactHref }}" style="display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:130px;background:#B34D33;color:#fff;font-family:'Poppins',sans-serif;font-size:16px;font-weight:600;text-decoration:none;"><i class="fa-solid fa-phone"></i> Call</a>
+              @include('layouts.partials.contact-buttons', ['property' => $property])
             </div>
           </div>
         </div>
@@ -140,7 +139,7 @@
               <p data-aos="fade-left" data-aos-duration="900" style="white-space: pre-line;">{{ $property->description }}</p>
               <div class="space32"></div>
               <div class="btn-area1" data-aos="fade-left" data-aos-duration="1200">
-                <a href="{{ $jbContactHref }}" style="display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:130px;background:#25D366;color:#0F3D2E;font-family:'Poppins',sans-serif;font-size:16px;font-weight:600;text-decoration:none;margin-right:12px;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a><a href="{{ $jbContactHref }}" style="display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:130px;background:#B34D33;color:#fff;font-family:'Poppins',sans-serif;font-size:16px;font-weight:600;text-decoration:none;"><i class="fa-solid fa-phone"></i> Call</a>
+                @include('layouts.partials.contact-buttons', ['property' => $property])
               </div>
             </div>
           </div>
@@ -209,7 +208,7 @@
                     </div>
                     <div class="space40"></div>
                     <div class="btn-area1" data-aos="fade-up" data-aos-duration="1200">
-                      <a href="{{ $jbContactHref }}" style="display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:130px;background:#25D366;color:#0F3D2E;font-family:'Poppins',sans-serif;font-size:16px;font-weight:600;text-decoration:none;margin-right:12px;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a><a href="{{ $jbContactHref }}" style="display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:130px;background:#B34D33;color:#fff;font-family:'Poppins',sans-serif;font-size:16px;font-weight:600;text-decoration:none;"><i class="fa-solid fa-phone"></i> Call</a>
+                      @include('layouts.partials.contact-buttons', ['property' => $property])
                     </div>
                   </div>
                 </div>
@@ -220,6 +219,32 @@
       </div>
     </div>
     <!-- ===== DETAILS AREA ENDS ======= -->
+
+    <!-- ===== AVAILABILITY AREA STARTS ======= -->
+    <div class="apartment5-area sp6" id="availability">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="apartment-header heading5 space-margin60">
+              <h5 data-aos="fade-left" data-aos-duration="800">availability</h5>
+              <div class="space20"></div>
+              <h2 class="text-anime-style-3">Check Available Dates</h2>
+              <div class="space16"></div>
+              <p data-aos="fade-left" data-aos-duration="900">
+                Dates the host has already blocked are greyed out. Message them on WhatsApp to
+                confirm before you plan around it — bookings are agreed directly with the host.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12" data-aos="fade-up" data-aos-duration="1000">
+            @include('layouts.partials.jb-calendar', ['calendar' => $calendar])
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ===== AVAILABILITY AREA ENDS ======= -->
 
     <!-- ===== RELATED LISTINGS AREA STARTS ======= -->
     @if ($related->isNotEmpty())
@@ -313,7 +338,7 @@
               <p data-aos="fade-left" data-aos-duration="1000">Message {{ $property->host->name }} on WhatsApp or call directly to check dates and agree a price. JaipurBnB takes no booking fee and no commission — you deal with the host, not us.</p>
               <div class="space32"></div>
               <div class="btn-area1" data-aos="fade-left" data-aos-duration="1200">
-                <a href="{{ $jbContactHref }}" style="display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:130px;background:#25D366;color:#0F3D2E;font-family:'Poppins',sans-serif;font-size:16px;font-weight:600;text-decoration:none;margin-right:12px;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a><a href="{{ $jbContactHref }}" style="display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:130px;background:#B34D33;color:#fff;font-family:'Poppins',sans-serif;font-size:16px;font-weight:600;text-decoration:none;"><i class="fa-solid fa-phone"></i> Call</a>
+                @include('layouts.partials.contact-buttons', ['property' => $property])
               </div>
             </div>
           </div>

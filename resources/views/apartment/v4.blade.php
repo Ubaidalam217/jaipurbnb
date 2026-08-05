@@ -4,6 +4,113 @@
 
 @section('content')
   @include('layouts.partials.navbar')
+  {{--
+    Browse-card content styling.
+
+    SPECIFICITY: these selectors deliberately repeat the template's own
+    ancestor chain. The template styles bare <a> descendants of
+    .content-area at (0,3,1):
+
+      .apartment-inner2-section-area .apartment-boxarea .content-area a
+          { color:...; font-size:20px; font-weight:bold; display:inline-block }
+
+    so a lone `.jb-card-price` (0,1,0) loses and the price badge renders
+    as 20px bold body text instead of a compact chip. Repeating the chain
+    and appending our own class scores (0,4,1), which wins cleanly with
+    no !important. The same rule is why the contact buttons are rendered
+    as a SIBLING of .content-area rather than inside it - see the
+    matching note in contact-buttons.blade.php.
+
+    Related template landmine: `.content-area ul li span { color:#EDEDEE }`
+    was written for a separator dot, so reusing that markup for the stay
+    type made it near-white on white. Hence the dedicated <p> below.
+  --}}
+  <style>
+    .apartment-inner2-section-area .apartment-boxarea .content-area {
+      /* The contact row supplies the card's bottom padding now. */
+      padding-bottom: 18px;
+    }
+
+    .apartment-inner2-section-area .apartment-boxarea .content-area .jb-card-title {
+      margin: 0 0 4px;
+    }
+
+    .apartment-inner2-section-area .apartment-boxarea .content-area .jb-card-title a {
+      display: block;
+      color: #2F3E46;
+      font-family: 'Poppins', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.35;
+      text-decoration: none;
+    }
+
+    .apartment-inner2-section-area .apartment-boxarea .content-area .jb-card-title a:hover {
+      color: #B34D33;
+      text-decoration: none;
+    }
+
+    .apartment-inner2-section-area .apartment-boxarea .content-area .jb-card-stay-type {
+      margin: 0 0 14px;
+      color: #6B7A82;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .apartment-inner2-section-area .apartment-boxarea .content-area .jb-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .apartment-inner2-section-area .apartment-boxarea .content-area a.jb-card-price {
+      display: inline-flex;
+      align-items: center;
+      padding: 9px 14px;
+      border-radius: 8px;
+      background: rgba(224, 122, 95, .12);
+      color: #B34D33;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .apartment-inner2-section-area .apartment-boxarea .content-area a.jb-card-price:hover {
+      background: rgba(224, 122, 95, .2);
+      color: #B34D33;
+      text-decoration: none;
+    }
+
+    .apartment-inner2-section-area .apartment-boxarea .content-area .jb-card-neighborhood {
+      /* margin-left:auto pins it right even if the row wraps. */
+      margin-left: auto;
+      color: #6B7A82;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    /* Sibling of .content-area, so it carries the card's own side padding
+       (matching .content-area's 32px / 15px) instead of inheriting it. */
+    .jb-card-contact {
+      padding: 16px 32px 24px;
+      border-top: 1px solid rgba(47, 62, 70, .08);
+    }
+
+    @media (max-width: 767px) {
+      .jb-card-contact {
+        padding: 16px 15px 24px;
+      }
+    }
+  </style>
   <!-- ===== HERO AREA STARTS ======= -->
   <div class="inner-main-hero-area">
     <div class="img1">
@@ -122,18 +229,20 @@
         @endif
         </div>
         <div class="content-area">
-        <a href="{{ route('properties.show', $property) }}">{{ $property->title }}</a>
-        <div class="space16"></div>
-        <ul>
-          <li>
-          <span>{{ $property->stay_type }}</span>
-          </li>
-        </ul>
-        <div class="space20"></div>
-        <div class="price-area">
-          <a href="{{ route('properties.show', $property) }}">Approx Rs {{ number_format($property->approx_price) }} / night</a>
-          <p>{{ $property->neighborhood }}</p>
+        <div class="jb-card-title">
+          <a href="{{ route('properties.show', $property) }}">{{ $property->title }}</a>
         </div>
+        <p class="jb-card-stay-type">{{ $property->stay_type }}</p>
+        <div class="jb-card-meta">
+          <a href="{{ route('properties.show', $property) }}" class="jb-card-price">Approx Rs {{ number_format($property->approx_price) }} / night</a>
+          <span class="jb-card-neighborhood">{{ $property->neighborhood }}</span>
+        </div>
+        </div>
+        {{-- Outside .content-area on purpose: the template's
+             `.content-area a` rule would force display:inline-block onto
+             the buttons and kill their flex centring. See style block above. --}}
+        <div class="jb-card-contact">
+          @include('layouts.partials.contact-buttons', ['property' => $property, 'size' => 'sm', 'fullWidth' => true])
         </div>
         <div class="arrow">
         <a href="{{ route('properties.show', $property) }}">View</a>

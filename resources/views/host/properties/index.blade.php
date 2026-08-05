@@ -66,6 +66,7 @@
               <div class="jb-row__actions">
                 <a class="jb-btn-sm" href="{{ route('host.properties.show', $property) }}">View</a>
                 <a class="jb-btn-sm" href="{{ route('host.properties.edit', $property) }}">Edit</a>
+                <a class="jb-btn-sm" href="{{ route('host.properties.availability', $property) }}">Manage Calendar</a>
                 <form method="POST" action="{{ route('host.properties.destroy', $property) }}"
                       onsubmit="return confirm('Delete “{{ $property->title }}” and all its photos? This cannot be undone.');">
                   @csrf

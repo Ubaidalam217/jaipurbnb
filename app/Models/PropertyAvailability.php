@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -48,12 +50,27 @@ class PropertyAvailability extends Model
         'source',
     ];
 
-    /** @return array<string, string> */
-    protected function casts(): array
+    /**
+     * calendar_date is stored as a bare Y-m-d string and read back as a
+     * CarbonImmutable at midnight.
+     *
+     * This is a hand-rolled mutator rather than a `'calendar_date' => 'date'`
+     * cast on purpose. That cast writes through Eloquent's datetime
+     * formatter, which produces 'Y-m-d 00:00:00' - so a lookup by the
+     * plain date ('2026-08-13') never matched the stored value, every
+     * "find or create this day" turned into an INSERT, and the
+     * unique(property_id, calendar_date) index rejected it. Storing a
+     * true date keeps that index usable, which the Airbnb iCal sync
+     * depends on for its per-day upsert.
+     */
+    protected function calendarDate(): Attribute
     {
-        return [
-            'calendar_date' => 'date',
-        ];
+        return Attribute::make(
+            get: fn (?string $value) => $value === null ? null : CarbonImmutable::parse($value)->startOfDay(),
+            set: fn ($value) => $value instanceof \DateTimeInterface
+                ? $value->format('Y-m-d')
+                : CarbonImmutable::parse($value)->toDateString(),
+        );
     }
 
     public function property(): BelongsTo

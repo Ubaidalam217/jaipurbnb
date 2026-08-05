@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Property;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Support\AvailabilityCalendar;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -38,7 +38,7 @@ class PropertyController extends Controller
         $filters = $this->filters($request);
 
         $properties = $this->visible()
-            ->with('coverImage')
+            ->with(['coverImage', 'host'])
             ->when($filters['neighborhood'], fn (Builder $q, $v) => $q->where('neighborhood', $v))
             ->when($filters['stay_type'], fn (Builder $q, $v) => $q->where('stay_type', $v))
             ->when($filters['min_price'] !== null, fn (Builder $q) => $q->where('approx_price', '>=', $filters['min_price']))
@@ -76,7 +76,13 @@ class PropertyController extends Controller
             ->limit(6)
             ->get();
 
-        return view('single.index5', compact('property', 'related'));
+        return view('single.index5', [
+            'property' => $property,
+            'related'  => $related,
+            // Read-only 3-month view. Dates with no availability row are
+            // available by default, so this is populated for every listing.
+            'calendar' => AvailabilityCalendar::build($property),
+        ]);
     }
 
     /* ------------------------------------------------------------------ */

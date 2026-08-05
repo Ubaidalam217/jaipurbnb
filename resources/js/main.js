@@ -38,6 +38,39 @@ window.addEventListener('load', function() {
   });
 });
 
+//========== LEAD ANALYTICS BEACON ============= //
+// sendBeacon (not fetch) is required here: a WhatsApp/tel: click
+// navigates or backgrounds the tab immediately, which can abort an
+// in-flight fetch() - sendBeacon is guaranteed to be delivered even
+// though the page is unloading right after the click.
+function jbSendLead(propertyId, leadType) {
+  if (!navigator.sendBeacon || !propertyId || !leadType) return;
+
+  var payload = new Blob(
+    [JSON.stringify({ property_id: propertyId, lead_type: leadType })],
+    { type: 'application/json' }
+  );
+
+  navigator.sendBeacon('/api/analytics/log', payload);
+}
+
+// Delegated so it also covers WhatsApp/Call buttons rendered inside
+// paginated/AJAX-free browse cards without needing per-card wiring.
+document.addEventListener('click', function (event) {
+  var trigger = event.target.closest('[data-lead-type]');
+  if (!trigger) return;
+
+  jbSendLead(trigger.dataset.propertyId, trigger.dataset.leadType);
+});
+
+// Single property pages stamp their id onto <body data-property-id="...">
+// (see resources/views/single/index5.blade.php). type="module" scripts
+// run after the document is parsed, so document.body is already
+// populated here - no DOMContentLoaded wrapper needed.
+if (document.body.dataset.propertyId) {
+  jbSendLead(document.body.dataset.propertyId, 'profile_view');
+}
+
 ;(function($){
 
 $(document).ready(function(){

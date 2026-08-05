@@ -3,8 +3,10 @@
 use App\Http\Controllers\Admin\PropertyController as AdminPropertyController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Host\AvailabilityController;
 use App\Http\Controllers\Host\PropertyController as HostPropertyController;
 use App\Http\Controllers\PropertyController as PublicPropertyController;
+use App\Models\LeadAnalytic;
 use App\Models\Property;
 use Illuminate\Support\Facades\Route;
 
@@ -60,20 +62,49 @@ Route::post('/logout', [LoginController::class, 'logout'])
 Route::middleware(['auth', 'host'])->prefix('host')->name('host.')->group(function () {
     Route::get('/dashboard', function () {
         $properties = auth()->user()->properties();
+        $propertyIds = (clone $properties)->pluck('id');
+        $since30Days = now()->subDays(30);
+
+        // One grouped query for the three 30-day counters, rather than
+        // three separate COUNT queries.
+        $leads30 = LeadAnalytic::whereIn('property_id', $propertyIds)
+            ->where('clicked_at', '>=', $since30Days)
+            ->selectRaw('lead_type, COUNT(*) as total')
+            ->groupBy('lead_type')
+            ->pluck('total', 'lead_type');
+
+        $recentProperties = (clone $properties)
+            ->withCount([
+                'leads as profile_views_count' => fn ($q) => $q->where('lead_type', LeadAnalytic::TYPE_PROFILE_VIEW),
+                'leads as whatsapp_clicks_count' => fn ($q) => $q->where('lead_type', LeadAnalytic::TYPE_WHATSAPP),
+                'leads as call_clicks_count' => fn ($q) => $q->where('lead_type', LeadAnalytic::TYPE_CALL),
+            ])
+            ->latest()
+            ->limit(5)
+            ->get();
 
         return view('host.dashboard', [
-            'totalProperties' => (clone $properties)->count(),
-            'activeListings'  => (clone $properties)->where('is_visible', true)->count(),
-            'approvedCount'   => (clone $properties)->where('listing_status', Property::STATUS_APPROVED)->count(),
-            'pendingCount'    => (clone $properties)->where('listing_status', Property::STATUS_PENDING)->count(),
-            'totalLeads'      => \App\Models\LeadAnalytic::whereIn(
-                'property_id', (clone $properties)->pluck('id')
-            )->count(),
+            'totalProperties'   => (clone $properties)->count(),
+            'activeListings'    => (clone $properties)->where('is_visible', true)->count(),
+            'approvedCount'     => (clone $properties)->where('listing_status', Property::STATUS_APPROVED)->count(),
+            'pendingCount'      => (clone $properties)->where('listing_status', Property::STATUS_PENDING)->count(),
+            'totalLeads'        => LeadAnalytic::whereIn('property_id', $propertyIds)->count(),
+            'profileViews30'    => (int) $leads30->get(LeadAnalytic::TYPE_PROFILE_VIEW, 0),
+            'whatsappClicks30'  => (int) $leads30->get(LeadAnalytic::TYPE_WHATSAPP, 0),
+            'callClicks30'      => (int) $leads30->get(LeadAnalytic::TYPE_CALL, 0),
+            'recentProperties'  => $recentProperties,
         ]);
     })->name('dashboard');
 
     Route::resource('properties', HostPropertyController::class)->except(['show']);
     Route::get('/properties/{property}', [HostPropertyController::class, 'show'])->name('properties.show');
+
+    // Availability calendar. Registered after the resource routes; the
+    // extra path segment keeps it from colliding with properties.show.
+    Route::get('/properties/{property}/availability', [AvailabilityController::class, 'show'])
+        ->name('properties.availability');
+    Route::post('/properties/{property}/availability/toggle', [AvailabilityController::class, 'toggle'])
+        ->name('properties.availability.toggle');
 });
 
 /*

@@ -137,4 +137,36 @@ class Property extends Model
     {
         return $this->hasOne(PropertyImage::class)->where('is_cover', true);
     }
+
+    /**
+     * Pre-filled wa.me link, or null if the host has no usable phone
+     * number. Uses urlencode() (not rawurlencode()) deliberately: wa.me
+     * expects the classic application/x-www-form-urlencoded style,
+     * where a space becomes "+" rather than "%20".
+     *
+     * Access via $property->host->cleanPhoneNumber() assumes 'host' is
+     * loaded - every caller of this method already eager-loads it.
+     */
+    public function whatsappUrl(): ?string
+    {
+        $phone = $this->host->cleanPhoneNumber();
+
+        if (! $phone) {
+            return null;
+        }
+
+        $message = "Hi, I am interested in {$this->title} listed on JaipurBnB. Can you share more details?";
+
+        return 'https://wa.me/91'.$phone.'?text='.urlencode($message);
+    }
+
+    /**
+     * tel: link for the host's phone, or null if none is on file.
+     */
+    public function callUrl(): ?string
+    {
+        $phone = $this->host->cleanPhoneNumber();
+
+        return $phone ? 'tel:+91'.$phone : null;
+    }
 }

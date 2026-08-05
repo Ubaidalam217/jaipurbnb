@@ -29,6 +29,9 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            // 10-digit Indian mobile format, so factory-made hosts have a
+            // usable number for the WhatsApp/Call link tests out of the box.
+            'phone_number' => fake()->unique()->numerify('9#########'),
         ];
     }
 

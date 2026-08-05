@@ -83,4 +83,27 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class, 'host_id');
     }
+
+    /**
+     * phone_number as bare local digits, for building wa.me / tel: links.
+     *
+     * Registration only requires a string (any spacing/punctuation the
+     * host types is accepted), so this strips everything but digits and
+     * drops a redundant +91/91 country code if present - callers always
+     * prepend "91" themselves. Returns null if there is nothing usable.
+     */
+    public function cleanPhoneNumber(): ?string
+    {
+        if (! $this->phone_number) {
+            return null;
+        }
+
+        $digits = preg_replace('/\D+/', '', $this->phone_number);
+
+        if (strlen($digits) > 10 && str_starts_with($digits, '91')) {
+            $digits = substr($digits, 2);
+        }
+
+        return $digits !== '' ? $digits : null;
+    }
 }

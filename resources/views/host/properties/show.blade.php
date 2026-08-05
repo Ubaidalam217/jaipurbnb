@@ -21,6 +21,7 @@
         </div>
         <div class="jb-row__actions">
           <a class="jb-btn-sm" href="{{ route('host.properties.index') }}">Back</a>
+          <a class="jb-btn-sm" href="{{ route('host.properties.availability', $property) }}">Manage Availability</a>
           <a class="jb-btn-sm jb-btn-sm--primary" href="{{ route('host.properties.edit', $property) }}">Edit</a>
         </div>
       </div>
