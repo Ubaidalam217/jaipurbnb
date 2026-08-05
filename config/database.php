@@ -44,7 +44,13 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'url' => env('DB_URL'),
+            // Laravel parses a full connection URL here and it wins over the
+            // individual host/port/database/username/password keys below.
+            // Railway injects DATABASE_URL (and MYSQL_URL from the MySQL
+            // service), so fall back to those when DB_URL is not set. On
+            // Hostinger none of the three exist, so the discrete DB_* vars
+            // are used exactly as before.
+            'url' => env('DB_URL', env('DATABASE_URL', env('MYSQL_URL'))),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'laravel'),
