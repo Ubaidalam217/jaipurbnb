@@ -12,6 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Railway terminates TLS at its edge and forwards to the container
+        // over plain HTTP, so without this Laravel ignores X-Forwarded-Proto,
+        // treats every request as insecure, and asset()/@vite emit http://
+        // URLs that browsers then block as mixed content on the https page.
+        $middleware->trustProxies(at: '*');
+
         $middleware->alias([
             'host'  => \App\Http\Middleware\EnsureUserIsHost::class,
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
