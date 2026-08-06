@@ -197,7 +197,8 @@
   <!-- ===== PROPERTY AREA ENDS ======= -->
 
   <!-- ===== SERVICE AREA STARTS ======= -->
-  <div class="service3-section-area sp1">
+  {{-- Anchor target for the footer's "How It Works" link (/#how-it-works). --}}
+  <div class="service3-section-area sp1" id="how-it-works">
     <div class="container">
       <div class="row">
         <div class="col-lg-6 m-auto">
@@ -218,7 +219,7 @@
             <div class="content-area">
               <a href="{{ url('/apartment/v4') }}">Verified Local Hosts</a>
               <div class="space18"></div>
-              <p>Every host is checked by our Jaipur team before going live.</p>
+              <p>Every listing is reviewed by our team before it goes live.</p>
               <h3>01</h3>
             </div>
           </div>
@@ -249,10 +250,10 @@
             </div>
             <div class="space32"></div>
             <div class="content-area">
-              <a href="{{ url('/apartment/v4') }}">Real-Time Availability</a>
+              <a href="{{ url('/apartment/v4') }}">Availability Calendar</a>
               <div class="space18"></div>
               <p>
-                Calendars sync automatically <br class="d-lg-block d-block" /> so dates stay accurate.
+                Hosts mark blocked dates <br class="d-lg-block d-block" /> on each listing's calendar.
               </p>
               <h3>03</h3>
             </div>
@@ -326,9 +327,10 @@
           <div class="row">
             <div class="col-lg-6 col-md-6">
               <div class="experience-box">
-                <h2><span class="counter">500</span>+</h2>
+                {{-- Real count of live listings. Was a hardcoded "500+". --}}
+                <h2><span class="counter">{{ $listingCount }}</span></h2>
                 <div class="space12"></div>
-                <p>Verified Listings</p>
+                <p>{{ $listingCount === 1 ? 'Live Listing' : 'Live Listings' }}</p>
                 <div class="space20"></div>
                 <img src="/img/all-images/about/about-img6.png" alt="" />
                 <div class="space18"></div>
@@ -351,27 +353,37 @@
         <div class="col-lg-6">
           <div class="space30 d-lg-none d-block"></div>
           <div class="about-widget-images">
+            @php
+                // Real listing when one is live, otherwise fall back to the
+                // browse page rather than the legacy /single/index5 URL,
+                // which redirects to /browse and never opens a property.
+                $jbFeaturedUrl = $featured
+                    ? route('properties.show', $featured)
+                    : route('properties.browse');
+            @endphp
+            {{-- Photo is clickable too, not just the title and arrow. --}}
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img4.png" alt="" />
+              <a href="{{ $jbFeaturedUrl }}" style="display:block;" aria-label="View {{ $featured?->title ?? 'properties' }}">
+                <img src="{{ $featured?->coverImage?->display_url ?? '/img/all-images/about/about-img4.png' }}" alt="{{ $featured?->title ?? '' }}" />
+              </a>
             </div>
             <div class="content-area">
               <div class="text">
-                <a href="{{ url('/single/index5') }}">The Royal Walled City Haveli</a>
+                <a href="{{ $jbFeaturedUrl }}">{{ $featured?->title ?? 'Browse Jaipur stays' }}</a>
                 <div class="space20"></div>
                 <ul>
                   <li>
-                    <a href="#"><img src="/img/icons/bed-icon1.svg" alt="" /> 2 BR</a> <span>|</span>
+                    <span><img src="/img/icons/bed-icon1.svg" alt="" /> {{ $featured?->stay_type ?? 'Heritage stays' }}</span>
                   </li>
-                  <li>
-                    <a href="#"><img src="/img/icons/bat-icon1.svg" alt="" /> 2 BA</a> <span>|</span>
-                  </li>
-                  <li>
-                    <a href="#"><img src="/img/icons/squre-icon1.svg" alt="" /> 1500 sq ft</a>
-                  </li>
+                  @if ($featured)
+                    <li>
+                      <span>|</span> <span><img src="/img/icons/squre-icon1.svg" alt="" /> {{ $featured->neighborhood }}</span>
+                    </li>
+                  @endif
                 </ul>
               </div>
               <div class="arrow">
-                <a href="{{ url('/single/index5') }}"><i class="fa-solid fa-arrow-right"></i></a>
+                <a href="{{ $jbFeaturedUrl }}" aria-label="View {{ $featured?->title ?? 'properties' }}"><i class="fa-solid fa-arrow-right"></i></a>
               </div>
             </div>
             <div class="elements3">
@@ -424,8 +436,14 @@
             <div class="space20"></div>
             <h2 class="text-anime-style-3">Hear What Our Guests Say About Jaipur</h2>
             <div class="space16"></div>
+            {{-- These reviews are placeholder content from the template, not real
+                 guests. Badge stays until the client supplies genuine reviews. --}}
+            <span style="display:inline-block;padding:6px 14px;border-radius:999px;background:rgba(224,122,95,.14);color:#B34D33;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;">
+              Demo content — sample reviews
+            </span>
+            <div class="space16"></div>
             <p data-aos="fade-left" data-aos-duration="1000">
-              Real guests, real stays. Every review comes from someone who <br class="d-lg-block d-none" /> booked directly with a verified Jaipur host.
+              The reviews below are samples for demonstration only. <br class="d-lg-block d-none" /> Real guest feedback will replace them at launch.
             </p>
             <div class="space32"></div>
             <div class="btn-area1" data-aos="fade-left" data-aos-duration="1200">

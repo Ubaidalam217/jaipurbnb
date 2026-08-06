@@ -106,35 +106,32 @@
                                     <li class="space24"></li>
                                     <li><a href="{{ route('properties.browse') }}">Browse Properties</a></li>
                                     <li class="space24"></li>
-                                    <li><a href="#">Neighborhoods</a></li>
+                                    {{-- No dedicated neighbourhoods page; /browse filters by neighbourhood. --}}
+                                    <li><a href="{{ route('properties.browse') }}">Neighborhoods</a></li>
                                 </ul>
                             </div>
                             <div class="footer-menu">
                                 <ul>
-                                    <li><a href="#">List Your Property</a></li>
+                                    <li><a href="{{ route('register') }}">List Your Property</a></li>
                                     <li class="space24"></li>
-                                    <li><a href="#">How It Works</a></li>
+                                    <li><a href="{{ url('/#how-it-works') }}">How It Works</a></li>
                                     <li class="space24"></li>
-                                    <li><a href="#">Contact</a></li>
+                                    <li><a href="{{ route('contact') }}">Contact</a></li>
                                 </ul>
                             </div>
                             <div class="footer-menu2">
                                 <ul>
-                                    <li><a href="#"> <span><i class="fa-solid fa-location-dot"></i></span> <span>Jaipur, Rajasthan <br> India </span></a></li>
+                                    <li><span> <span><i class="fa-solid fa-location-dot"></i></span> <span>Jaipur, Rajasthan <br> India </span></span></li>
                                     <li class="space24"></li>
-                                    <li><a href="tel:+91XXXXXXXXXX"><span><i class="fa-solid fa-phone"></i></span> <span>+91 XXXXX XXXXX</span></a></li>
+                                    {{-- Placeholder number, clearly labelled. Replace with the
+                                         client's real number before launch. --}}
+                                    <li><a href="tel:+919876543210"><span><i class="fa-solid fa-phone"></i></span> <span>+91 98765 43210 (demo)</span></a></li>
                                     <li class="space24"></li>
                                     <li><a href="mailto:hello@jaipurbnb.com" style="text-transform: none"><span><i class="fa-solid fa-envelope"></i></span> <span>hello@jaipurbnb.com</span></a></li>
                                 </ul>
                             </div>
-                            <div class="footer-social">
-                                <ul>
-                                    <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
-                                    <li><a href="#"><i class="fa-brands fa-google-plus-g"></i></a></li>
-                                    <li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
-                                    <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
-                                </ul>
-                            </div>
+                            {{-- Social icons removed: all four pointed at "#" and JaipurBnB has no
+                                 social profiles yet. Restore with real URLs when the client has them. --}}
                         </div>
                         <div class="row">
                             <div class="col-lg-12">

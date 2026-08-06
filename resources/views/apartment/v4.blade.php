@@ -221,12 +221,17 @@
       @forelse ($properties as $property)
       <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="800">
       <div class="apartment-boxarea">
+        {{-- The photo is the biggest click target on the card, so it has to
+             open the listing. It was previously a bare <img> with no anchor:
+             only the title, price and "View" arrow were clickable. --}}
         <div class="img1">
+        <a href="{{ route('properties.show', $property) }}" style="display:block;" aria-label="View {{ $property->title }}">
         @if ($property->coverImage)
         <img src="{{ $property->coverImage->display_url }}" alt="{{ $property->title }}" />
         @else
         <img src="/img/all-images/apartment/apartment-img1.png" alt="{{ $property->title }}" />
         @endif
+        </a>
         </div>
         <div class="content-area">
         <div class="jb-card-title">
@@ -296,10 +301,10 @@
         </div>
         <div class="space32"></div>
         <div class="content-area">
-        <a href="#">Verified Listings</a>
+        <a href="{{ route('properties.browse') }}">Reviewed Listings</a>
         <div class="space18"></div>
         <p>
-          Every property is checked in person <br class="d-lg-block d-block" /> by our Jaipur team.
+          Every listing is reviewed by our team <br class="d-lg-block d-block" /> before it goes live.
         </p>
         <h3>01</h3>
         </div>
@@ -314,7 +319,7 @@
         </div>
         <div class="space32"></div>
         <div class="content-area">
-        <a href="#">Local Support</a>
+        <a href="{{ route('properties.browse') }}">Local Support</a>
         <div class="space18"></div>
         <p>
           A Jaipur-based team on hand <br class="d-lg-block d-block" /> if anything goes wrong.
@@ -331,7 +336,7 @@
         </div>
         <div class="space32"></div>
         <div class="content-area">
-        <a href="#">Airport Pickup</a>
+        <a href="{{ route('properties.browse') }}">Airport Pickup</a>
         <div class="space18"></div>
         <p>
           Many hosts arrange transfers <br class="d-lg-block d-block" /> from Jaipur airport on request.
@@ -349,7 +354,7 @@
         </div>
         <div class="space32"></div>
         <div class="content-area">
-        <a href="#">Home-Cooked Meals</a>
+        <a href="{{ route('properties.browse') }}">Home-Cooked Meals</a>
         <div class="space18"></div>
         <p>
           Traditional Rajasthani cooking <br class="d-lg-block d-block" /> offered by many families.

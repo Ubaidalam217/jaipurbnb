@@ -6,15 +6,19 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 
 /**
- * Creates the initial admin account.
+ * Creates the admin accounts.
  *
  * Credentials come from the environment, never from source control:
  *   ADMIN_EMAIL / ADMIN_PASSWORD / ADMIN_NAME
+ *   REVIEW_ADMIN_PASSWORD           (second, review-only admin)
  *
  * 'role' is not mass-assignable (see User::$fillable), so it is set
  * explicitly here - which is the intended way to mint an admin.
  *
- * Idempotent: safe to re-run, it will not duplicate the account.
+ * Idempotent: both accounts are keyed on email, so re-running updates in
+ * place and never duplicates. Note this also means a rerun REWRITES the
+ * password back to the env value - change the env var, not the password
+ * in the UI, or the next deploy will undo it.
  *
  * NOTE ON env() -- Laravel returns null from env() once config has been
  * cached (php artisan config:cache), because .env is no longer read at
@@ -28,7 +32,23 @@ class AdminSeeder extends Seeder
 {
     private const PLACEHOLDER_PASSWORD = 'change_me_before_deploy';
 
+    /**
+     * Second admin used only for client review sessions, so the primary
+     * admin password never has to be shared.
+     */
+    private const REVIEW_EMAIL = 'reviewadmin@jaipurbnb.com';
+    private const REVIEW_NAME = 'Review Admin';
+    private const REVIEW_FALLBACK_PASSWORD = 'ReviewTemp2026';
+
     public function run(): void
+    {
+        $this->runPrimaryAdmin();
+        $this->runReviewAdmin();
+    }
+
+    /* ------------------------------------------------------------------ */
+
+    private function runPrimaryAdmin(): void
     {
         $email    = env('ADMIN_EMAIL', 'admin@example.com');
         $password = env('ADMIN_PASSWORD', self::PLACEHOLDER_PASSWORD);
@@ -42,6 +62,36 @@ class AdminSeeder extends Seeder
             return;
         }
 
+        $admin = $this->upsertAdmin($email, $password, $name);
+
+        $this->command->info("Admin ready: {$email} (role={$admin->role})");
+    }
+
+    /**
+     * The review admin deliberately has a fallback password so a review
+     * environment can be stood up without extra configuration. That makes
+     * it a KNOWN credential whenever REVIEW_ADMIN_PASSWORD is unset - set
+     * that variable on any deployment reachable from the internet, and
+     * delete this account once the review window closes.
+     */
+    private function runReviewAdmin(): void
+    {
+        $password = env('REVIEW_ADMIN_PASSWORD', self::REVIEW_FALLBACK_PASSWORD);
+
+        $review = $this->upsertAdmin(self::REVIEW_EMAIL, $password, self::REVIEW_NAME);
+
+        if ($password === self::REVIEW_FALLBACK_PASSWORD) {
+            $this->command->warn('REVIEW_ADMIN_PASSWORD is not set - '.self::REVIEW_EMAIL.' is using the default password from source.');
+        }
+
+        $this->command->info("Review admin ready: {$review->email} (role={$review->role})");
+    }
+
+    /**
+     * Create or update one admin, keyed on email.
+     */
+    private function upsertAdmin(string $email, string $password, string $name): User
+    {
         $admin = User::firstOrNew(['email' => $email]);
 
         $admin->name         = $name;
@@ -50,6 +100,6 @@ class AdminSeeder extends Seeder
         $admin->role         = User::ROLE_ADMIN;
         $admin->save();
 
-        $this->command->info("Admin ready: {$email} (role={$admin->role})");
+        return $admin;
     }
 }
