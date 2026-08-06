@@ -209,7 +209,12 @@ class AvailabilityCalendarTest extends TestCase
 
         $this->get(route('properties.show', $property))
             ->assertOk()
-            ->assertSee($blocked->format('j F Y').' — blocked by Airbnb sync', false);
+            // The date is unavailable to a guest, but the REASON is withheld:
+            // "blocked by Airbnb sync" would tell every visitor that this host
+            // also lists on a competing marketplace. The host's own calendar
+            // still spells it out - see the host test above.
+            ->assertSee($blocked->format('j F Y').' — unavailable', false)
+            ->assertDontSee('Airbnb');
     }
 
     /* ---------------- helper ---------------- */

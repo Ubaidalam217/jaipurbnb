@@ -42,9 +42,15 @@
                                 $jbState = 'past';
                             } elseif ($day['is_locked']) {
                                 $jbClasses[] = 'jb-cal__day--locked';
-                                $jbState = $day['source'] === \App\Models\PropertyAvailability::SOURCE_AIRBNB
-                                    ? 'blocked by Airbnb sync'
-                                    : 'booked';
+                                // Only the host is told WHY a date is locked. A guest
+                                // seeing "blocked by Airbnb sync" would learn the host
+                                // also lists on a competing marketplace - that is the
+                                // host's business, not a browsing guest's.
+                                $jbState = ! $jbInteractive
+                                    ? 'unavailable'
+                                    : ($day['source'] === \App\Models\PropertyAvailability::SOURCE_AIRBNB
+                                        ? 'blocked by Airbnb sync'
+                                        : 'booked');
                             } elseif ($day['is_available']) {
                                 $jbClasses[] = 'jb-cal__day--available';
                                 $jbState = 'available';

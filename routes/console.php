@@ -27,3 +27,14 @@ Artisan::command('inspire', function () {
 Schedule::command('properties:hide-expired')
     ->dailyAt('00:00')
     ->withoutOverlapping();
+
+// Pull Airbnb .ics feeds and block booked dates (one-way, never pushes back).
+// Every 30 minutes per the agreed scope.
+//   withoutOverlapping() - feeds are external and can be slow; a run that
+//     overruns must not have the next one start on top of it.
+//   runInBackground()    - keeps this off the critical path of the
+//     per-minute schedule:run tick, so a slow feed cannot delay other tasks.
+Schedule::command('ical:sync')
+    ->everyThirtyMinutes()
+    ->withoutOverlapping()
+    ->runInBackground();

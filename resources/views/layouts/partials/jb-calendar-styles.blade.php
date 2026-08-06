@@ -126,8 +126,11 @@
         text-decoration: none;
     }
 
-    /* Airbnb-synced (or booked) dates the host cannot edit. The stripe
-       reads as "locked" without depending on an icon font. */
+    /* Externally-synced or booked dates the host cannot edit. The stripe
+       reads as "locked" without depending on an icon font.
+       Deliberately does not name the sync source: this stylesheet is inlined
+       on the PUBLIC property page, so a comment naming a competing
+       marketplace would be readable in view-source. */
     .jb-cal__day--locked {
         background:
             repeating-linear-gradient(-45deg,
