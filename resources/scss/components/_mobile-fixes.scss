@@ -1,0 +1,100 @@
+@use '../utils' as *;
+
+/*============= MOBILE RESPONSIVENESS FIXES ===============*/
+// Imported last in main.scss so these land after the template's own rules
+// and win on source order, without editing the 2600-line vendor _hero.scss.
+// Everything here is scoped to $xs (max-width: 767px) except the overflow
+// guard, so desktop rendering is untouched.
+
+// Safety net against horizontal scroll. The template positions several
+// decorative layers with large negative offsets (e.g. the hero .elements
+// swirl is 700px wide at left: -180px, roughly double a 375px viewport).
+// Most are already clipped by an ancestor overflow: hidden, but this
+// guarantees the page itself can never scroll sideways.
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+@media #{$xs} {
+
+    /* ---- Hero: make the copy visible independently of JavaScript ---- */
+    // The template parks the hero copy off-canvas to the LEFT as its
+    // entrance animation:
+    //     h5 -600px, h2 -800px, p -900px, .btn-area1 -1000px, opacity 0
+    // and only slides it back via
+    //     .header-carousel-area3 .active .main-hero-area ...
+    // where .active is applied by Owl Carousel at runtime. If the carousel
+    // has not initialised, the text stays parked and reads exactly as
+    // "cut off on the left edge". On a phone the animation is not worth
+    // that fragility, so pin it in place and always show it.
+    .header-carousel-area3 .main-hero-area .header-content-area {
+        h5,
+        h2,
+        p,
+        .btn-area1 {
+            transform: none !important;
+            opacity: 1 !important;
+            transition: none !important;
+        }
+    }
+
+    // This hero variant is the only one that never got an $xs type scale,
+    // so a 375px screen renders desktop-sized headings.
+    .header-carousel-area3 .main-hero-area .header-content-area h2 {
+        font-size: var(--ztc-font-size-font-s32);
+        line-height: 40px;
+    }
+
+    // Desktop-only garnish. Every decorative swirl/pattern lives under
+    // /img/elements/ and is wrapped in .elements / .elements2 / .elements3 /
+    // .bg-elements. Measured at 375px they were badly oversized:
+    //   elements9.png  .elements.reveal.image-anime  800x665  spanning -83..717
+    //   elements3.png  .elements3                    501x500  spanning  12..513
+    //   elements3.png  .elements3                    222x222  spanning 341..563
+    //   elements8.png  .elements                     351x351  spanning  12..363
+    // Hiding the wrapper (not just the img) so no empty box is left behind.
+    .elements,
+    .elements2,
+    .elements3,
+    .elements4,
+    .bg-elements {
+        display: none !important;
+    }
+
+    // Belt and braces for any decorative artwork not wrapped in the classes
+    // above - they are all served out of /img/elements/.
+    img[src*="/img/elements/"] {
+        display: none !important;
+    }
+
+    // Tighten the hero band. The template already steps 280px down to
+    // 200px at $xs, which is still a lot of empty green above the fold.
+    .header-carousel-area3 .main-hero-area {
+        padding: 150px 0 80px;
+    }
+
+    // The template parks the prev/next buttons at bottom: 220px; left: 37%,
+    // which lands them squarely on top of the hero paragraph once the
+    // padding above is tightened. Move them to the foot of the slide.
+    .header-carousel-area3 .owl-nav {
+        bottom: 16px;
+        left: 50%;
+        right: auto;
+        top: auto;
+        transform: translateX(-50%);
+    }
+
+    /* ---- Blank vertical bands between sections ---- */
+    // AOS holds every [data-aos] element at opacity 0 until it initialises
+    // and adds .aos-animate. The homepage leans on data-aos heavily, so if
+    // AOS is slow or fails the page shows tall empty bands where content
+    // should be - which is what the large white gaps actually are. Reveal
+    // them unconditionally on mobile; scroll animation is a desktop nicety.
+    [data-aos] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}

@@ -14,3 +14,6 @@
 @import 'theme';
 @import 'components';
 @import 'layout';
+
+// Last on purpose: mobile overrides that must win on source order.
+@import './components/mobile-fixes';
