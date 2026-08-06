@@ -34,6 +34,12 @@ Route::get('/', function () {
     ]);
 });
 
+// Razorpay server-to-server callback. Deliberately public and outside the
+// auth middleware - Razorpay has no session. It authenticates by HMAC
+// signature instead, and is exempt from CSRF in bootstrap/app.php.
+Route::post('/webhooks/razorpay', [PaymentController::class, 'webhook'])
+    ->name('webhooks.razorpay');
+
 Route::get('/contact', fn () => view('pages.contact'))->name('contact');
 
 Route::get('/browse', [PublicPropertyController::class, 'index'])->name('properties.browse');

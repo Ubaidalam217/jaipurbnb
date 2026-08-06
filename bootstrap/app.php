@@ -18,6 +18,13 @@ return Application::configure(basePath: dirname(__DIR__))
         // URLs that browsers then block as mixed content on the https page.
         $middleware->trustProxies(at: '*');
 
+        // Razorpay posts server-to-server and has no session, so it cannot
+        // carry a CSRF token. Safe to exempt because the route authenticates
+        // by HMAC signature instead - see PaymentController::webhook().
+        $middleware->validateCsrfTokens(except: [
+            'webhooks/razorpay',
+        ]);
+
         $middleware->alias([
             'host'  => \App\Http\Middleware\EnsureUserIsHost::class,
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,

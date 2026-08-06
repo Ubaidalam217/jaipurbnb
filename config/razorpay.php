@@ -22,6 +22,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Webhook secret
+    |--------------------------------------------------------------------------
+    |
+    | A SEPARATE secret from key_secret, set when you create the webhook in the
+    | Razorpay dashboard (Settings -> Webhooks). It signs the request body so
+    | we can tell a genuine Razorpay callback from anyone who found the URL -
+    | the webhook route is public and unauthenticated, so this signature is
+    | the only thing standing between a stranger and a free listing.
+    |
+    | Endpoint to register:  https://<your-domain>/webhooks/razorpay
+    | Event to subscribe to: payment.captured
+    |
+    */
+
+    'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Currency
     |--------------------------------------------------------------------------
     |

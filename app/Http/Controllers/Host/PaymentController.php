@@ -191,30 +191,7 @@ class PaymentController extends Controller
                 ->with('error', 'We could not verify that payment. Nothing has been charged to your listing - please try again.');
         }
 
-        // Never trust an amount from the browser: re-read it from the price list.
-        $rupees = Transaction::DURATION_PRICES[$duration];
-
-        DB::transaction(function () use ($property, $validated, $duration, $rupees) {
-            // Renewals extend from the current expiry when one is still
-            // running, so a host who renews early keeps the days already
-            // paid for. Otherwise the window starts today.
-            $start = $property->hasActiveSubscription()
-                ? $property->subscription_expiry
-                : now();
-
-            $property->forceFill([
-                'subscription_expiry' => $start->copy()->addDays($duration),
-                'is_visible'          => true,
-            ])->save();
-
-            $this->recordTransaction(
-                $property,
-                $validated['razorpay_payment_id'],
-                $duration,
-                Transaction::STATUS_SUCCESS,
-                $rupees
-            );
-        });
+        $this->activateSubscription($property, $duration, $validated['razorpay_payment_id']);
 
         return redirect()->route('host.properties.index')->with(
             'status',
@@ -233,7 +210,178 @@ class PaymentController extends Controller
             ->with('error', 'That payment did not go through. Nothing has been charged - you can try again below.');
     }
 
+    /**
+     * Razorpay server-to-server callback.
+     *
+     * WHY THIS EXISTS. verify() only runs if the host's browser comes back
+     * after paying. Close the tab, lose signal, kill the app - the money is
+     * taken and the listing never goes live. Razorpay reports the capture
+     * here regardless, so this is the safety net.
+     *
+     * PUBLIC AND UNAUTHENTICATED. The HMAC signature over the raw body is
+     * the only thing separating a real callback from anyone who guesses the
+     * URL, so it is checked before a single field of the payload is read.
+     *
+     * ALWAYS 200 ON A GENUINE EVENT, even one we choose not to act on -
+     * Razorpay retries anything non-2xx, and retrying will not fix "this
+     * order is not ours". An invalid signature is the exception: that is not
+     * Razorpay talking, so it gets a 400.
+     */
+    public function webhook(Request $request): JsonResponse
+    {
+        $secret = config('razorpay.webhook_secret');
+
+        if (blank($secret)) {
+            Log::error('Razorpay webhook received but RAZORPAY_WEBHOOK_SECRET is not set - ignoring.');
+
+            return response()->json(['status' => 'not configured'], 200);
+        }
+
+        // Raw body, NOT $request->all(): the signature covers the exact bytes
+        // Razorpay sent. Re-encoding a decoded array would change them.
+        $payload   = $request->getContent();
+        $signature = (string) $request->header('X-Razorpay-Signature', '');
+
+        if ($signature === '') {
+            return response()->json(['status' => 'missing signature'], 400);
+        }
+
+        try {
+            $this->api()->utility->verifyWebhookSignature($payload, $signature, $secret);
+        } catch (Throwable $e) {
+            Log::warning('Razorpay webhook: signature rejected', [
+                'error' => $e->getMessage(),
+                'ip'    => $request->ip(),
+            ]);
+
+            return response()->json(['status' => 'invalid signature'], 400);
+        }
+
+        // Past this line the payload is trustworthy.
+        try {
+            return $this->handleVerifiedWebhook($payload);
+        } catch (Throwable $e) {
+            // Never let an unexpected error reach Razorpay as a 5xx - it would
+            // retry the same broken event indefinitely. Log and accept.
+            Log::error('Razorpay webhook: processing failed', ['error' => $e->getMessage()]);
+
+            return response()->json(['status' => 'error logged'], 200);
+        }
+    }
+
     /* ------------------------------------------------------------------ */
+
+    private function handleVerifiedWebhook(string $payload): JsonResponse
+    {
+        $data  = json_decode($payload, true) ?: [];
+        $event = $data['event'] ?? null;
+
+        if ($event !== 'payment.captured') {
+            return response()->json(['status' => 'ignored', 'event' => $event], 200);
+        }
+
+        $entity    = $data['payload']['payment']['entity'] ?? [];
+        $paymentId = $entity['id'] ?? null;
+
+        if (! $paymentId) {
+            Log::warning('Razorpay webhook: payment.captured without a payment id');
+
+            return response()->json(['status' => 'no payment id'], 200);
+        }
+
+        // Already handled - either verify() got there first, or this is a
+        // repeat delivery. Doing nothing is the point: re-running would
+        // extend the subscription a second time for one payment.
+        $existing = Transaction::where('gateway_payment_id', $paymentId)->first();
+
+        if ($existing && $existing->payment_status === Transaction::STATUS_SUCCESS) {
+            return response()->json(['status' => 'already processed'], 200);
+        }
+
+        // notes are set by us in createOrder() and echoed back by Razorpay.
+        // They are inside the signed payload, so they are as trustworthy as
+        // the signature itself.
+        $notes = $entity['notes'] ?? ($data['payload']['order']['entity']['notes'] ?? []);
+
+        $propertyId = isset($notes['property_id']) ? (int) $notes['property_id'] : ($existing?->property_id);
+        $duration   = isset($notes['duration_days']) ? (int) $notes['duration_days'] : ($existing?->pack_duration_days);
+
+        if (! $propertyId || ! in_array($duration, Transaction::DURATIONS, true)) {
+            Log::warning('Razorpay webhook: cannot identify listing or duration', [
+                'payment_id' => $paymentId,
+                'notes'      => $notes,
+            ]);
+
+            return response()->json(['status' => 'unidentified'], 200);
+        }
+
+        $property = Property::find($propertyId);
+
+        if (! $property) {
+            Log::warning('Razorpay webhook: listing no longer exists', [
+                'payment_id'  => $paymentId,
+                'property_id' => $propertyId,
+            ]);
+
+            return response()->json(['status' => 'property missing'], 200);
+        }
+
+        // Guard against a payload claiming a duration cheaper than what was
+        // actually paid. amount is in paise.
+        $expectedPaise = Transaction::DURATION_PRICES[$duration] * 100;
+        $paidPaise     = isset($entity['amount']) ? (int) $entity['amount'] : $expectedPaise;
+
+        if ($paidPaise !== $expectedPaise) {
+            Log::warning('Razorpay webhook: amount does not match the plan', [
+                'payment_id' => $paymentId,
+                'expected'   => $expectedPaise,
+                'paid'       => $paidPaise,
+            ]);
+
+            return response()->json(['status' => 'amount mismatch'], 200);
+        }
+
+        $this->activateSubscription($property, $duration, $paymentId);
+
+        Log::info('Razorpay webhook: subscription activated', [
+            'payment_id'  => $paymentId,
+            'property_id' => $property->id,
+            'duration'    => $duration,
+        ]);
+
+        return response()->json(['status' => 'ok'], 200);
+    }
+
+    /**
+     * Publish a listing for the paid duration and record the transaction.
+     *
+     * Shared by verify() and webhook() on purpose: the renewal-extension
+     * rule must not be implemented twice and drift apart. Renewals extend
+     * from the current expiry when one is still running, so a host who
+     * renews early keeps the days already paid for.
+     */
+    private function activateSubscription(Property $property, int $duration, string $paymentId): void
+    {
+        DB::transaction(function () use ($property, $duration, $paymentId) {
+            $start = $property->hasActiveSubscription()
+                ? $property->subscription_expiry
+                : now();
+
+            $property->forceFill([
+                'subscription_expiry' => $start->copy()->addDays($duration),
+                'is_visible'          => true,
+            ])->save();
+
+            // Amount re-read from the price list, never from the request.
+            $this->recordTransaction(
+                $property,
+                $paymentId,
+                $duration,
+                Transaction::STATUS_SUCCESS,
+                Transaction::DURATION_PRICES[$duration]
+            );
+        });
+    }
 
     private function api(): Api
     {
