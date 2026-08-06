@@ -65,8 +65,7 @@
             <input type="checkbox" id="remember" name="remember" value="1" {{ old('remember') ? 'checked' : '' }}>
             Remember me
           </label>
-          {{-- "Forgot password?" removed: no password-reset flow is built, so the
-               link went nowhere. Restore it when the reset routes exist. --}}
+          <a class="jb-auth__link" href="{{ route('password.request') }}">Forgot password?</a>
         </div>
 
         <button class="jb-auth__btn" type="submit">Sign in</button>

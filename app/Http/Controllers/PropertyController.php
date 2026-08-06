@@ -26,6 +26,14 @@ class PropertyController extends Controller
 {
     private const PER_PAGE = 9;
 
+    /**
+     * Offered values for the two capacity dropdowns, both read as
+     * "n or more". Kept as allow-lists so a crafted ?guests=999 is
+     * treated as "no filter" rather than silently returning nothing.
+     */
+    public const GUEST_OPTIONS = [1, 2, 4, 6, 8];
+    public const BEDROOM_OPTIONS = [1, 2, 3, 4];
+
     /** Query-param value => ORDER BY clause. */
     private const SORTS = [
         'newest'     => ['created_at', 'desc'],
@@ -43,6 +51,8 @@ class PropertyController extends Controller
             ->when($filters['stay_type'], fn (Builder $q, $v) => $q->where('stay_type', $v))
             ->when($filters['min_price'] !== null, fn (Builder $q) => $q->where('approx_price', '>=', $filters['min_price']))
             ->when($filters['max_price'] !== null, fn (Builder $q) => $q->where('approx_price', '<=', $filters['max_price']))
+            ->when($filters['guests'] !== null, fn (Builder $q) => $q->where('max_guests', '>=', $filters['guests']))
+            ->when($filters['bedrooms'] !== null, fn (Builder $q) => $q->where('bedrooms', '>=', $filters['bedrooms']))
             ->orderBy(...self::SORTS[$filters['sort']])
             // Tie-break so paginated pages never repeat or drop a row when
             // several listings share a price / timestamp.
@@ -56,6 +66,8 @@ class PropertyController extends Controller
             'filters'       => $filters,
             'neighborhoods' => Property::NEIGHBORHOODS,
             'stayTypes'     => Property::STAY_TYPES,
+            'guestOptions'  => self::GUEST_OPTIONS,
+            'bedroomOptions' => self::BEDROOM_OPTIONS,
             'sorts'         => array_keys(self::SORTS),
         ]);
     }
@@ -101,7 +113,7 @@ class PropertyController extends Controller
      * Coerce query params into a safe, fully-populated filter set.
      * Unrecognised values become null (= filter off).
      *
-     * @return array{neighborhood: ?string, stay_type: ?string, min_price: ?int, max_price: ?int, sort: string}
+     * @return array{neighborhood: ?string, stay_type: ?string, min_price: ?int, max_price: ?int, guests: ?int, bedrooms: ?int, sort: string}
      */
     private function filters(Request $request): array
     {
@@ -121,6 +133,11 @@ class PropertyController extends Controller
             'stay_type'    => $this->oneOf($request->query('stay_type'), Property::STAY_TYPES),
             'min_price'    => $min,
             'max_price'    => $max,
+            // Capacity filters are "n or more". Anything not on the offered
+            // list falls back to null (= no filter), same as every other
+            // param here: a junk value must not bounce a guest to an error.
+            'guests'       => $this->oneOfInt($request->query('guests'), self::GUEST_OPTIONS),
+            'bedrooms'     => $this->oneOfInt($request->query('bedrooms'), self::BEDROOM_OPTIONS),
             'sort'         => is_string($sort) && isset(self::SORTS[$sort]) ? $sort : 'newest',
         ];
     }
@@ -131,6 +148,18 @@ class PropertyController extends Controller
     private function oneOf(mixed $value, array $allowed): ?string
     {
         return is_string($value) && in_array($value, $allowed, true) ? $value : null;
+    }
+
+    /**
+     * Same idea as oneOf() but for the numeric capacity filters.
+     *
+     * @param  list<int>  $allowed
+     */
+    private function oneOfInt(mixed $value, array $allowed): ?int
+    {
+        $int = $this->positiveInt($value);
+
+        return $int !== null && in_array($int, $allowed, true) ? $int : null;
     }
 
     private function positiveInt(mixed $value): ?int

@@ -52,6 +52,9 @@ class PropertyController extends Controller
                 'neighborhood'   => $data['neighborhood'],
                 'stay_type'      => $data['stay_type'],
                 'approx_price'   => $data['approx_price'],
+                'max_guests'     => $data['max_guests'],
+                'bedrooms'       => $data['bedrooms'],
+                'bathrooms'      => $data['bathrooms'],
                 'ical_feed_url'  => $data['ical_feed_url'] ?? null,
                 // Set by us, never by the host:
                 'listing_status' => Property::STATUS_PENDING,
@@ -96,6 +99,9 @@ class PropertyController extends Controller
                 'neighborhood'  => $data['neighborhood'],
                 'stay_type'     => $data['stay_type'],
                 'approx_price'  => $data['approx_price'],
+                'max_guests'    => $data['max_guests'],
+                'bedrooms'      => $data['bedrooms'],
+                'bathrooms'     => $data['bathrooms'],
                 'ical_feed_url' => $data['ical_feed_url'] ?? null,
             ]);
 

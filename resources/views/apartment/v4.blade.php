@@ -88,6 +88,23 @@
       text-decoration: none;
     }
 
+    /* Capacity line: guests / bedrooms / bathrooms from the listing. */
+    .apartment-inner2-section-area .apartment-boxarea .content-area .jb-card-capacity {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 0 14px;
+      color: #2F3E46;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .apartment-inner2-section-area .apartment-boxarea .content-area .jb-card-capacity span[aria-hidden] {
+      color: #A9B4BA;
+    }
+
     .apartment-inner2-section-area .apartment-boxarea .content-area .jb-card-neighborhood {
       /* margin-left:auto pins it right even if the row wraps. */
       margin-left: auto;
@@ -202,6 +219,24 @@
         </div>
 
         <div class="select-area2">
+        <select name="guests" class="nice-select">
+          <option value="" data-display="Guests">Guests: Any</option>
+          @foreach ($guestOptions as $option)
+          <option value="{{ $option }}" @selected($filters['guests'] === $option)>{{ $option }}+ guests</option>
+          @endforeach
+        </select>
+        </div>
+
+        <div class="select-area2">
+        <select name="bedrooms" class="nice-select">
+          <option value="" data-display="Bedrooms">Bedrooms: Any</option>
+          @foreach ($bedroomOptions as $option)
+          <option value="{{ $option }}" @selected($filters['bedrooms'] === $option)>{{ $option }}+ bedrooms</option>
+          @endforeach
+        </select>
+        </div>
+
+        <div class="select-area2">
         <select name="sort" class="nice-select">
           <option value="newest" @selected($filters['sort'] === 'newest')>Newest First</option>
           <option value="price_low" @selected($filters['sort'] === 'price_low')>Price: Low to High</option>
@@ -238,6 +273,14 @@
           <a href="{{ route('properties.show', $property) }}">{{ $property->title }}</a>
         </div>
         <p class="jb-card-stay-type">{{ $property->stay_type }}</p>
+        {{-- Real capacity, not the template's hardcoded "2 BR / 2 BA". --}}
+        <p class="jb-card-capacity">
+          <span>{{ $property->max_guests }} {{ Str::plural('guest', $property->max_guests) }}</span>
+          <span aria-hidden="true">&middot;</span>
+          <span>{{ $property->bedrooms }} {{ Str::plural('bedroom', $property->bedrooms) }}</span>
+          <span aria-hidden="true">&middot;</span>
+          <span>{{ $property->bathrooms }} {{ Str::plural('bathroom', $property->bathrooms) }}</span>
+        </p>
         <div class="jb-card-meta">
           <a href="{{ route('properties.show', $property) }}" class="jb-card-price">Approx Rs {{ number_format($property->approx_price) }} / night</a>
           <span class="jb-card-neighborhood">{{ $property->neighborhood }}</span>

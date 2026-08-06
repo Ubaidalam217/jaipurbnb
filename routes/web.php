@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\PropertyController as AdminPropertyController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Host\AvailabilityController;
 use App\Http\Controllers\Host\PropertyController as HostPropertyController;
 use App\Http\Controllers\PropertyController as PublicPropertyController;
@@ -60,6 +62,21 @@ Route::middleware('guest')->group(function () {
     // throttle:6,1 = 6 attempts per minute per IP+route, to blunt password
     // brute-forcing. Remove only if it interferes with client testing.
     Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:6,1');
+
+    // Password reset. Route names are Laravel's conventional ones because the
+    // framework's ResetPassword notification builds its link from
+    // route('password.reset') - renaming them silently breaks the email.
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])
+        ->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])
+        ->middleware('throttle:6,1')
+        ->name('password.email');
+
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
+        ->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'reset'])
+        ->middleware('throttle:6,1')
+        ->name('password.update');
 });
 
 Route::post('/logout', [LoginController::class, 'logout'])

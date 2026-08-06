@@ -40,6 +40,13 @@ class AdminSeeder extends Seeder
     private const REVIEW_NAME = 'Review Admin';
     private const REVIEW_FALLBACK_PASSWORD = 'ReviewTemp2026';
 
+    /**
+     * users.phone_number is nullable + UNIQUE (see the add_role_and_phone
+     * migration), so the two admins must not share a placeholder number.
+     */
+    private const PRIMARY_PHONE = '+910000000000';
+    private const REVIEW_PHONE = '+910000000001';
+
     public function run(): void
     {
         $this->runPrimaryAdmin();
@@ -62,7 +69,7 @@ class AdminSeeder extends Seeder
             return;
         }
 
-        $admin = $this->upsertAdmin($email, $password, $name);
+        $admin = $this->upsertAdmin($email, $password, $name, self::PRIMARY_PHONE);
 
         $this->command->info("Admin ready: {$email} (role={$admin->role})");
     }
@@ -78,7 +85,7 @@ class AdminSeeder extends Seeder
     {
         $password = env('REVIEW_ADMIN_PASSWORD', self::REVIEW_FALLBACK_PASSWORD);
 
-        $review = $this->upsertAdmin(self::REVIEW_EMAIL, $password, self::REVIEW_NAME);
+        $review = $this->upsertAdmin(self::REVIEW_EMAIL, $password, self::REVIEW_NAME, self::REVIEW_PHONE);
 
         if ($password === self::REVIEW_FALLBACK_PASSWORD) {
             $this->command->warn('REVIEW_ADMIN_PASSWORD is not set - '.self::REVIEW_EMAIL.' is using the default password from source.');
@@ -90,16 +97,44 @@ class AdminSeeder extends Seeder
     /**
      * Create or update one admin, keyed on email.
      */
-    private function upsertAdmin(string $email, string $password, string $name): User
+    private function upsertAdmin(string $email, string $password, string $name, string $phone): User
     {
         $admin = User::firstOrNew(['email' => $email]);
 
         $admin->name         = $name;
         $admin->password     = $password; // hashed by the model cast
-        $admin->phone_number = $admin->phone_number ?? '+910000000000';
+        $admin->phone_number = $admin->phone_number ?? $this->freePhone($phone, $email);
         $admin->role         = User::ROLE_ADMIN;
         $admin->save();
 
         return $admin;
+    }
+
+    /**
+     * A placeholder phone number nobody else is using.
+     *
+     * phone_number is UNIQUE, so a hardcoded placeholder blows up the whole
+     * seeder the moment any other row already holds it - and because the
+     * deploy start command chains seeding with && before starting the web
+     * server, that failure would take the site down rather than just skip
+     * an account. Walk forward until we find a free one.
+     */
+    private function freePhone(string $preferred, string $email): ?string
+    {
+        $candidate = $preferred;
+
+        for ($i = 1; $i <= 50; $i++) {
+            $owner = User::where('phone_number', $candidate)->first();
+
+            if (! $owner || $owner->email === $email) {
+                return $candidate;
+            }
+
+            $candidate = substr($preferred, 0, -1).$i;
+        }
+
+        // Nothing sensible left. NULL is allowed and, unlike '', repeated
+        // NULLs do not collide under a UNIQUE index - so seeding still wins.
+        return null;
     }
 }

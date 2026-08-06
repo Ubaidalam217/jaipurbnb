@@ -88,6 +88,9 @@ class Property extends Model
         'neighborhood',
         'stay_type',
         'approx_price',
+        'max_guests',
+        'bedrooms',
+        'bathrooms',
         'is_verified',
         'is_visible',
         'listing_status',
@@ -105,6 +108,9 @@ class Property extends Model
             'is_visible'          => 'boolean',
             'subscription_expiry' => 'date',
             'approx_price'        => 'integer',
+            'max_guests'          => 'integer',
+            'bedrooms'            => 'integer',
+            'bathrooms'           => 'integer',
         ];
     }
 

@@ -95,6 +95,31 @@
                      min="100" max="1000000" step="1" inputmode="numeric" required>
               @error('approx_price')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
             </div>
+
+            <div class="jb-auth__field">
+              <label class="jb-auth__label" for="max_guests">Maximum guests <span class="jb-auth__req">*</span></label>
+              <input class="jb-auth__input @error('max_guests') is-invalid @enderror" type="number"
+                     id="max_guests" name="max_guests" value="{{ old('max_guests', $property->max_guests) }}"
+                     min="1" max="20" step="1" inputmode="numeric" required>
+              <span class="jb-auth__hint">Guests filter listings by this on the browse page.</span>
+              @error('max_guests')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
+            </div>
+
+            <div class="jb-auth__field">
+              <label class="jb-auth__label" for="bedrooms">Bedrooms <span class="jb-auth__req">*</span></label>
+              <input class="jb-auth__input @error('bedrooms') is-invalid @enderror" type="number"
+                     id="bedrooms" name="bedrooms" value="{{ old('bedrooms', $property->bedrooms) }}"
+                     min="1" max="10" step="1" inputmode="numeric" required>
+              @error('bedrooms')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
+            </div>
+
+            <div class="jb-auth__field">
+              <label class="jb-auth__label" for="bathrooms">Bathrooms <span class="jb-auth__req">*</span></label>
+              <input class="jb-auth__input @error('bathrooms') is-invalid @enderror" type="number"
+                     id="bathrooms" name="bathrooms" value="{{ old('bathrooms', $property->bathrooms) }}"
+                     min="1" max="10" step="1" inputmode="numeric" required>
+              @error('bathrooms')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
+            </div>
           </div>
         </section>
 

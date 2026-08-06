@@ -52,6 +52,9 @@ class PropertyUpdateRequest extends FormRequest
             'neighborhood'  => ['required', 'string', Rule::in(Property::NEIGHBORHOODS)],
             'stay_type'     => ['required', 'string', Rule::in(Property::STAY_TYPES)],
             'approx_price'  => ['required', 'integer', 'min:100', 'max:1000000'],
+            'max_guests'    => ['required', 'integer', 'min:1', 'max:20'],
+            'bedrooms'      => ['required', 'integer', 'min:1', 'max:10'],
+            'bathrooms'     => ['required', 'integer', 'min:1', 'max:10'],
             'ical_feed_url' => ['nullable', 'url', 'max:255'],
 
             'photos'        => ['nullable', 'array', 'max:'.self::MAX_PHOTOS],

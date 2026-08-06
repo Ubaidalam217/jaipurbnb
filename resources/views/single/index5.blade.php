@@ -205,6 +205,18 @@
                           <span><img src="/img/icons/check1.svg" alt="" /> Hosted by {{ $property->host->name }}</span>
                         </li>
                       </ul>
+                      {{-- Capacity from the listing itself. --}}
+                      <ul>
+                        <li>
+                          <span><img src="/img/icons/bed-icon1.svg" alt="" /> Sleeps {{ $property->max_guests }}</span>
+                        </li>
+                        <li>
+                          <span><img src="/img/icons/squre-icon1.svg" alt="" /> {{ $property->bedrooms }} {{ Str::plural('bedroom', $property->bedrooms) }}</span>
+                        </li>
+                        <li>
+                          <span><img src="/img/icons/bat-icon1.svg" alt="" /> {{ $property->bathrooms }} {{ Str::plural('bathroom', $property->bathrooms) }}</span>
+                        </li>
+                      </ul>
                     </div>
                     <div class="space40"></div>
                     <div class="btn-area1" data-aos="fade-up" data-aos-duration="1200">
