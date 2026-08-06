@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Host\AvailabilityController;
+use App\Http\Controllers\Host\PaymentController;
 use App\Http\Controllers\Host\PropertyController as HostPropertyController;
 use App\Http\Controllers\PropertyController as PublicPropertyController;
 use App\Models\LeadAnalytic;
@@ -135,6 +136,18 @@ Route::middleware(['auth', 'host'])->prefix('host')->name('host.')->group(functi
         ->name('properties.availability');
     Route::post('/properties/{property}/availability/toggle', [AvailabilityController::class, 'toggle'])
         ->name('properties.availability.toggle');
+
+    // Razorpay subscription payments. Registered after the resource routes
+    // for the same reason as availability: the extra path segment keeps
+    // them clear of properties.show.
+    Route::get('/properties/{property}/plans', [PaymentController::class, 'plans'])
+        ->name('properties.plans');
+    Route::post('/properties/{property}/order', [PaymentController::class, 'createOrder'])
+        ->name('properties.order');
+    Route::post('/properties/{property}/verify', [PaymentController::class, 'verify'])
+        ->name('properties.verify');
+    Route::get('/properties/{property}/failed', [PaymentController::class, 'failed'])
+        ->name('properties.failed');
 });
 
 /*

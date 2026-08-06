@@ -175,4 +175,36 @@ class Property extends Model
 
         return $phone ? 'tel:+91'.$phone : null;
     }
+
+    /* ---------------------------------------------------------------- */
+    /* Subscription state                                               */
+    /*                                                                  */
+    /* Three distinct cases the host dashboard has to tell apart:       */
+    /*   never paid      - subscription_expiry is null                  */
+    /*   paid, current   - expiry today or later                        */
+    /*   paid, lapsed    - expiry in the past (the daily cron has       */
+    /*                     already flipped is_visible off)              */
+    /* ---------------------------------------------------------------- */
+
+    public function hasActiveSubscription(): bool
+    {
+        return $this->subscription_expiry !== null
+            && ! $this->subscription_expiry->isPast();
+    }
+
+    public function subscriptionHasExpired(): bool
+    {
+        return $this->subscription_expiry !== null
+            && $this->subscription_expiry->isPast();
+    }
+
+    /**
+     * Approved by an admin but not yet paid for, so the host can publish it
+     * by subscribing. A pending or rejected listing must not be billable.
+     */
+    public function awaitingSubscription(): bool
+    {
+        return $this->listing_status === self::STATUS_APPROVED
+            && ! $this->hasActiveSubscription();
+    }
 }
