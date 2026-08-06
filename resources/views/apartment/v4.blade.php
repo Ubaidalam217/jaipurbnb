@@ -223,7 +223,7 @@
       <div class="apartment-boxarea">
         <div class="img1">
         @if ($property->coverImage)
-        <img src="{{ Storage::url($property->coverImage->image_url) }}" alt="{{ $property->title }}" />
+        <img src="{{ $property->coverImage->display_url }}" alt="{{ $property->title }}" />
         @else
         <img src="/img/all-images/apartment/apartment-img1.png" alt="{{ $property->title }}" />
         @endif

@@ -36,7 +36,7 @@
               <div class="jb-gallery">
                 @foreach ($property->images as $image)
                   <div style="position:relative;">
-                    <img src="{{ Storage::url($image->image_url) }}" alt="">
+                    <img src="{{ $image->display_url }}" alt="">
                     @if ($image->is_cover)<span class="jb-photo__flag">Cover</span>@endif
                   </div>
                 @endforeach

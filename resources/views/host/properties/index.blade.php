@@ -35,7 +35,7 @@
             <div class="jb-row">
               <div class="jb-row__thumb">
                 @if ($property->coverImage)
-                  <img src="{{ Storage::url($property->coverImage->image_url) }}" alt="{{ $property->title }}">
+                  <img src="{{ $property->coverImage->display_url }}" alt="{{ $property->title }}">
                 @endif
               </div>
 

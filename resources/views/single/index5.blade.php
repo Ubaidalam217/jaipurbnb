@@ -11,7 +11,7 @@
   // have removed them all after approval), so every img falls back to a
   // template asset rather than rendering a broken tile.
   $jbCover = $property->images->firstWhere('is_cover', true) ?? $property->images->first();
-  $jbCoverUrl = $jbCover ? Storage::url($jbCover->image_url) : '/img/all-images/apartment/apartment-img1.png';
+  $jbCoverUrl = $jbCover ? $jbCover->display_url : '/img/all-images/apartment/apartment-img1.png';
   $jbGallery = $property->images->where('id', '!=', $jbCover?->id)->values();
   $jbPrice = 'Approx Rs ' . number_format($property->approx_price) . ' / night';
 
@@ -124,7 +124,7 @@
       </div>
       @if ($jbGallery->isNotEmpty())
       <div class="img2">
-        <img src="{{ Storage::url($jbGallery->first()->image_url) }}" alt="{{ $property->title }}" data-aos="zoom-in-up" data-aos-duration="1200" />
+        <img src="{{ $jbGallery->first()->display_url }}" alt="{{ $property->title }}" data-aos="zoom-in-up" data-aos-duration="1200" />
       </div>
       @endif
       <div class="container">
@@ -181,7 +181,7 @@
                 <div class="col-lg-2"></div>
                 <div class="col-lg-5">
                   <div class="img1 image-anime reveal">
-                    <img src="{{ $jbGallery->isNotEmpty() ? Storage::url($jbGallery->first()->image_url) : $jbCoverUrl }}" alt="{{ $property->title }}" />
+                    <img src="{{ $jbGallery->isNotEmpty() ? $jbGallery->first()->display_url : $jbCoverUrl }}" alt="{{ $property->title }}" />
                   </div>
                 </div>
                 <div class="col-lg-5">
@@ -265,7 +265,7 @@
               @foreach ($related as $other)
               <div class="apartment-boxarea">
                 <div class="img1 image-anime">
-                  <img src="{{ $other->coverImage ? Storage::url($other->coverImage->image_url) : '/img/all-images/apartment/apartment-img6.png' }}" alt="{{ $other->title }}" />
+                  <img src="{{ $other->coverImage ? $other->coverImage->display_url : '/img/all-images/apartment/apartment-img6.png' }}" alt="{{ $other->title }}" />
                 </div>
                 <div class="content">
                   <a href="{{ route('properties.show', $other) }}">{{ $other->title }}</a>
@@ -313,7 +313,7 @@
               @foreach ($jbGallery as $image)
               <div class="content-area">
                 <div class="img1">
-                  <img src="{{ Storage::url($image->image_url) }}" alt="{{ $property->title }}" />
+                  <img src="{{ $image->display_url }}" alt="{{ $property->title }}" />
                 </div>
               </div>
               @endforeach

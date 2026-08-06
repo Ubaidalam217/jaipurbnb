@@ -111,7 +111,7 @@
             <div class="jb-photos">
               @foreach ($property->images as $image)
                 <div class="jb-photo {{ $image->is_cover ? 'is-cover' : '' }}">
-                  <img class="jb-photo__img" src="{{ Storage::url($image->image_url) }}" alt="">
+                  <img class="jb-photo__img" src="{{ $image->display_url }}" alt="">
                   @if ($image->is_cover)<span class="jb-photo__flag">Cover</span>@endif
                   <div class="jb-photo__foot">
                     <label class="jb-photo__pick">
