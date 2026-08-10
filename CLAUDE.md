@@ -220,7 +220,7 @@ password manager, not recorded here:
 Razorpay test keys configured. Live keys needed for production.
 
 ## Open Items to Confirm with Client
-1. Price mapping conflict resolved: Rs 799/1999/6999 confirmed as 
+1. Price mapping conflict resolved: Rs 799/1999/5999 confirmed as 
    final (not Rs 699/1199/5000)
 2. iCal sync frequency confirmed: 30 minutes
 3. Refund handling: manual via Razorpay dashboard (not automated) 
