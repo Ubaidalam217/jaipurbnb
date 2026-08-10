@@ -39,6 +39,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone_number',
+        'founding_host_expires_at',
     ];
 
     /**
@@ -61,7 +62,18 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'founding_host_expires_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Founding Host promo: registered during the promo window and the
+     * 60-day free period has not yet run out.
+     */
+    public function isFoundingHostActive(): bool
+    {
+        return $this->founding_host_expires_at
+            && $this->founding_host_expires_at->isFuture();
     }
 
     public function isHost(): bool

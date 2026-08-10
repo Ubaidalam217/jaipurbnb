@@ -51,7 +51,7 @@ class Transaction extends Model
 
     public const PRICE_30  = 799;
     public const PRICE_90  = 1999;
-    public const PRICE_365 = 6999;
+    public const PRICE_365 = 5999;
 
     public const DURATION_PRICES = [
         self::DURATION_30  => self::PRICE_30,

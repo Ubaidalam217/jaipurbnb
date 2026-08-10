@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Schema;
  * payment_status (string, not ENUM):
  *   pending | success | failed | refunded
  *
- * pack_duration_days: 30 (Rs 799) | 90 (Rs 1,999) | 365 (Rs 6,999)
+ * pack_duration_days: 30 (Rs 799) | 90 (Rs 1,999) | 365 (Rs 5,999)
  *
  * property_id is nullable because a host may pay before the listing
  * row exists; it is nullOnDelete so removing a property does not

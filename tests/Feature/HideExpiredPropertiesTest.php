@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Property;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
@@ -10,8 +11,13 @@ use Tests\TestCase;
 /**
  * Covers the daily expiry sweep (php artisan properties:hide-expired).
  *
- * The contract under test: the command may only ever flip is_visible
- * from true to false, for approved-and-expired listings. It must not
+ * The contract under test: for approved listings, the command flips
+ * is_visible to false once BOTH the paid subscription and the host's
+ * Founding Host promo (60 free days from registration, see
+ * User::isFoundingHostActive()) have lapsed or never existed - a
+ * listing stays visible as long as EITHER cover is active. It also
+ * flips is_visible to true for an approved-but-unpublished listing
+ * whose host is still inside their Founding Host window. It must not
  * touch listing_status and must not delete rows.
  */
 class HideExpiredPropertiesTest extends TestCase
@@ -61,9 +67,49 @@ class HideExpiredPropertiesTest extends TestCase
         $this->assertTrue($property->refresh()->is_visible);
     }
 
-    public function test_it_ignores_listings_with_no_subscription_expiry(): void
+    public function test_it_hides_a_listing_with_no_subscription_and_no_founding_host(): void
     {
+        // host_id comes from a plain User::factory(), which leaves
+        // founding_host_expires_at null - no promo cover either.
         $property = Property::factory()->live()->create(['subscription_expiry' => null]);
+
+        $this->artisan('properties:hide-expired');
+
+        $this->assertFalse($property->refresh()->is_visible);
+    }
+
+    public function test_it_leaves_a_listing_alive_via_an_active_founding_host_with_no_subscription(): void
+    {
+        $host = User::factory()->create(['founding_host_expires_at' => now()->addDays(10)]);
+        $property = Property::factory()->live()->create([
+            'host_id'             => $host->id,
+            'subscription_expiry' => null,
+        ]);
+
+        $this->artisan('properties:hide-expired');
+
+        $this->assertTrue($property->refresh()->is_visible);
+    }
+
+    public function test_it_hides_a_listing_once_both_subscription_and_founding_host_have_lapsed(): void
+    {
+        $host = User::factory()->create(['founding_host_expires_at' => now()->subDay()]);
+        $property = Property::factory()->expired()->create(['host_id' => $host->id]);
+
+        $this->artisan('properties:hide-expired');
+
+        $this->assertFalse($property->refresh()->is_visible);
+    }
+
+    public function test_it_auto_publishes_an_approved_listing_still_inside_the_founding_host_window(): void
+    {
+        $host = User::factory()->create(['founding_host_expires_at' => now()->addDays(30)]);
+        $property = Property::factory()->create([
+            'host_id'             => $host->id,
+            'listing_status'      => Property::STATUS_APPROVED,
+            'is_visible'          => false,
+            'subscription_expiry' => null,
+        ]);
 
         $this->artisan('properties:hide-expired');
 
@@ -81,7 +127,7 @@ class HideExpiredPropertiesTest extends TestCase
             ->withArgs(fn (string $message, array $context) => $context['hidden_count'] === 3);
 
         $this->artisan('properties:hide-expired')
-            ->expectsOutputToContain('Hid 3 expired listings.')
+            ->expectsOutputToContain('hid 3 expired listings.')
             ->assertSuccessful();
     }
 
@@ -90,7 +136,7 @@ class HideExpiredPropertiesTest extends TestCase
         Property::factory()->live()->create();
 
         $this->artisan('properties:hide-expired')
-            ->expectsOutputToContain('Hid 0 expired listings.')
+            ->expectsOutputToContain('hid 0 expired listings.')
             ->assertSuccessful();
     }
 

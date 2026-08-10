@@ -13,7 +13,7 @@ subscription to list; guests browse free and contact hosts directly
 via WhatsApp or phone. No guest payments on the platform.
 
 ## Business Model
-- Host pays: Rs 799 (30 days), Rs 1,999 (90 days), Rs 6,999 (365 days)
+- Host pays: Rs 799 (30 days), Rs 1,999 (90 days), Rs 5,999 (365 days)
 - Payment gateway: Razorpay
 - Guest contact: WhatsApp + Call only
 - Booking flow: Off-platform (direct between guest and host)

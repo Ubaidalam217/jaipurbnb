@@ -59,6 +59,26 @@
           border-radius: 50%;
           background: #1C8A4A;
         }
+        .jb-founding-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 5px 12px;
+          border-radius: 999px;
+          background: rgba(15, 138, 122, .12);
+          color: #0F8A7A;
+          font-family: 'Poppins', sans-serif;
+          font-size: 13px;
+          font-weight: 600;
+          white-space: nowrap;
+        }
+        .jb-founding-badge::before {
+          content: "";
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #0F8A7A;
+        }
       </style>
 
       <div class="jb-prop__bar">
@@ -101,7 +121,9 @@
                 </p>
                 <div class="jb-row__badges">
                   @include('layouts.partials.jb-status-badge', ['property' => $property])
-                  @if ($property->is_visible)
+                  @if ($property->isFoundingHostActive())
+                    <span class="jb-founding-badge">Founding Host &mdash; Free until {{ $property->host->founding_host_expires_at->format('d M Y') }}</span>
+                  @elseif ($property->is_visible)
                     <span class="jb-live-badge">Live</span>
                   @endif
                 </div>
@@ -115,13 +137,16 @@
 
               <div class="jb-row__actions">
                 {{-- Only an approved listing is billable: pending and rejected
-                     ones have nothing to publish yet. An expired subscription
-                     and a never-paid one land on the same plans page, but the
-                     wording differs so the host knows which they are in. --}}
-                @if ($property->awaitingSubscription())
+                     ones have nothing to publish yet. A listing still inside
+                     its host's Founding Host window is free either way, so
+                     no subscribe/renew action is shown. An expired
+                     subscription and a never-paid one land on the same plans
+                     page, but the wording differs so the host knows which
+                     they are in. --}}
+                @if ($property->awaitingSubscription() && ! $property->isFoundingHostActive())
                   @if ($property->subscriptionHasExpired())
                     <a class="jb-sub-cta jb-sub-cta--renew" href="{{ route('host.properties.plans', $property) }}">
-                      Subscription Expired &mdash; Renew
+                      Renew Subscription
                     </a>
                   @else
                     <a class="jb-sub-cta" href="{{ route('host.properties.plans', $property) }}">

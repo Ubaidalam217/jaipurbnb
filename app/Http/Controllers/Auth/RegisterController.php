@@ -30,6 +30,11 @@ class RegisterController extends Controller
             'password'     => $validated['password'], // hashed by the model cast
         ]);
 
+        // Founding Host promo: every new host gets 60 days of free listing
+        // visibility, independent of the paid subscription.
+        $user->founding_host_expires_at = now()->addDays(60);
+        $user->save();
+
         Auth::login($user);
 
         // Guard against session fixation - issue a fresh session id now

@@ -29,7 +29,7 @@ class PropertyController extends Controller
     public function index(): View
     {
         $properties = auth()->user()->properties()
-            ->with('coverImage')
+            ->with(['coverImage', 'host'])
             ->latest()
             ->get();
 

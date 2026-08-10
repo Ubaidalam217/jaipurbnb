@@ -157,6 +157,18 @@
       text-align: center;
     }
 
+    .jb-plans__founding {
+      max-width: 640px;
+      margin: 0 auto 28px;
+      padding: 14px 18px;
+      border: 1px solid rgba(15, 138, 122, .3);
+      border-radius: 10px;
+      background: rgba(15, 138, 122, .1);
+      color: #0F6B60;
+      font-size: 14.5px;
+      text-align: center;
+    }
+
     @media (max-width: 991.98px) {
       .jb-plans__grid { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; }
       .jb-plans__title { font-size: 27px; }
@@ -165,6 +177,13 @@
   </style>
 
   <div class="jb-plans">
+    @if ($property->isFoundingHostActive())
+      <div class="jb-plans__founding" role="status">
+        You are a Founding Host! Your listing is free until {{ $property->host->founding_host_expires_at->format('d M Y') }}.
+        You only need to subscribe after this date to keep it live.
+      </div>
+    @endif
+
     <div class="jb-plans__head">
       <span class="jb-plans__eyebrow">Publish your listing</span>
       <h1 class="jb-plans__title">

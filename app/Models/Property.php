@@ -207,4 +207,17 @@ class Property extends Model
         return $this->listing_status === self::STATUS_APPROVED
             && ! $this->hasActiveSubscription();
     }
+
+    /**
+     * Whether this listing is currently covered by its host's Founding
+     * Host promo (60 free days from registration), independent of any
+     * paid subscription. See User::isFoundingHostActive().
+     */
+    public function isFoundingHostActive(): bool
+    {
+        return $this->relationLoaded('host')
+            ? $this->host->isFoundingHostActive()
+            : $this->host()->exists()
+              && $this->host->isFoundingHostActive();
+    }
 }
