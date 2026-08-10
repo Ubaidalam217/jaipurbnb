@@ -198,19 +198,26 @@ are NOT needed for JaipurBnB and should be cleaned up.
 - Rule: Claude Code never runs git push. User handles all pushes.
 
 ## Current Progress
-Phase 1 partial:
-- Colors applied (#E07A5F, #2F3E46)
-- Poppins font applied
-- Template building successfully with Vite
-- Pushed to GitHub
 
-Pending Phase 1:
-- Homepage cleanup and Jaipur branding
-- Property grid with Jaipur filters
-- 3 sample property cards
-- Single property page with WhatsApp + Call
-- Placeholder availability calendar UI
-- Remove unused template pages
+Milestones 1, 2, and 3 COMPLETE. Deployed on Railway staging:
+https://web-production-b8517.up.railway.app
+
+Milestone 4 pending - waiting for client to provide:
+- Hostinger hPanel login
+- Razorpay Live API Keys
+- SMTP credentials
+- Milestone 1+2 approval (Rs 9,000 pending)
+
+Admin accounts (Railway) - passwords in Railway variables / password
+manager, not recorded here:
+- admin@jaipurbnb.com
+- reviewadmin@jaipurbnb.com
+
+Demo host account (Railway) - password in Railway variables /
+password manager, not recorded here:
+- demohost@jaipurbnb.com
+
+Razorpay test keys configured. Live keys needed for production.
 
 ## Open Items to Confirm with Client
 1. Price mapping conflict resolved: Rs 799/1999/6999 confirmed as 
