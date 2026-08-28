@@ -121,7 +121,16 @@
                 <img src="/img/elements/elements3.png" alt="" />
               </div>
               <div class="header-heading2">
-                <h5><i class="fa-solid fa-location-dot"></i>17 Neighborhoods Covered</h5>
+                @php
+                    // Live count of distinct neighborhoods that have a visible
+                    // listing. Was a hardcoded "17" that contradicted the browse
+                    // page's hardcoded "22". While nothing is live, fall back to
+                    // a claim-free line rather than boasting "0 Neighborhoods".
+                    $jbCoverage = $neighborhoodCount > 0
+                        ? $neighborhoodCount.' '.Str::plural('Neighborhood', $neighborhoodCount).' Covered'
+                        : 'Neighborhoods Across Jaipur';
+                @endphp
+                <h5><i class="fa-solid fa-location-dot"></i>{{ $jbCoverage }}</h5>
                 <div class="space20"></div>
                 <h2>From Walled City to Amer, Find Your Perfect Stay</h2>
                 <div class="space20"></div>
@@ -331,10 +340,9 @@
                 <h2><span class="counter">{{ $listingCount }}</span></h2>
                 <div class="space12"></div>
                 <p>{{ $listingCount === 1 ? 'Live Listing' : 'Live Listings' }}</p>
-                <div class="space20"></div>
-                <img src="/img/all-images/about/about-img6.png" alt="" />
-                <div class="space18"></div>
-                <p>Our Happy Guests</p>
+                {{-- Removed with the testimonials: the "Our Happy Guests" avatar
+                     strip was stock template faces standing in for guests we
+                     have never had. --}}
               </div>
               <div class="space30 d-md-none d-block"></div>
             </div>
@@ -426,287 +434,10 @@
   <div class="space50 d-lg-none d-block"></div>
   <!-- ===== GALLERY AREA ENDS ======= -->
 
-  <!-- ===== TESTIMONIAL AREA STARTS ======= -->
-  <div class="testimonial3-section-area sp6">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-5">
-          <div class="testimonia-header heading3">
-            <h5 data-aos="fade-left" data-aos-duration="800">guest feedback</h5>
-            <div class="space20"></div>
-            <h2 class="text-anime-style-3">Hear What Our Guests Say About Jaipur</h2>
-            <div class="space16"></div>
-            {{-- These reviews are placeholder content from the template, not real
-                 guests. Badge stays until the client supplies genuine reviews. --}}
-            <span style="display:inline-block;padding:6px 14px;border-radius:999px;background:rgba(224,122,95,.14);color:#B34D33;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;">
-              Demo content — sample reviews
-            </span>
-            <div class="space16"></div>
-            <p data-aos="fade-left" data-aos-duration="1000">
-              The reviews below are samples for demonstration only. <br class="d-lg-block d-none" /> Real guest feedback will replace them at launch.
-            </p>
-            <div class="space32"></div>
-            <div class="btn-area1" data-aos="fade-left" data-aos-duration="1200">
-              <a href="{{ url('/apartment/v4') }}" class="header-btn4">Browse Properties</a>
-            </div>
-          </div>
-          <div class="space86"></div>
-          <div class="testimonial-video-area" data-aos="zoom-in-up" data-aos-duration="1000">
-            <div class="img1">
-              <img src="/img/all-images/testimonial/testimonial-img3.png" alt="" />
-            </div>
-            <div class="icons">
-              <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube"><i class="fa-solid fa-play"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-1"></div>
-        <div class="col-lg-6">
-          <div class="testimonial-arrow-area" data-aos="zoom-in-up" data-aos-duration="1000">
-            <div class="testimonial3-vertical-slider">
-              <div class="testimonial-vertical">
-                <div class="verical-boxarea">
-                  <div class="images-area">
-                    <div class="img1">
-                      <img src="/img/all-images/testimonial/testimonial-img4.png" alt="" />
-                    </div>
-                    <div class="text">
-                      <a href="#">Priya Sharma</a>
-                      <p>Happy Guest</p>
-                    </div>
-                  </div>
-                  <div class="quito">
-                    <img src="/img/icons/quoto-icon2.svg" alt="" />
-                  </div>
-                </div>
-                <div class="space24"></div>
-                <span>Highly recommend this Walled City haveli!</span>
-                <div class="space16"></div>
-                <p>“Booking was simple — I messaged the host on WhatsApp and had everything confirmed the same day. The haveli was exactly as listed.”</p>
-                <div class="space24"></div>
-                <ul>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                </ul>
-              </div>
-              <div class="testimonial-vertical">
-                <div class="verical-boxarea">
-                  <div class="images-area">
-                    <div class="img1">
-                      <img src="/img/all-images/testimonial/testimonial-img5.png" alt="" />
-                    </div>
-                    <div class="text">
-                      <a href="#">Rajesh Kumar</a>
-                      <p>Happy Guest</p>
-                    </div>
-                  </div>
-                  <div class="quito">
-                    <img src="/img/icons/quoto-icon2.svg" alt="" />
-                  </div>
-                </div>
-                <div class="space24"></div>
-                <span>An unforgettable stay in the Pink City!</span>
-                <div class="space16"></div>
-                <p>"Celebrated our anniversary at a Bani Park boutique stay, and it was beyond magical. The host arranged everything herself.”</p>
-                <div class="space24"></div>
-                <ul>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                </ul>
-              </div>
-              <div class="testimonial-vertical">
-                <div class="verical-boxarea">
-                  <div class="images-area">
-                    <div class="img1">
-                      <img src="/img/all-images/testimonial/testimonial-img4.png" alt="" />
-                    </div>
-                    <div class="text">
-                      <a href="#">Priya Sharma</a>
-                      <p>Happy Guest</p>
-                    </div>
-                  </div>
-                  <div class="quito">
-                    <img src="/img/icons/quoto-icon2.svg" alt="" />
-                  </div>
-                </div>
-                <div class="space24"></div>
-                <span>Highly recommend this Walled City haveli!</span>
-                <div class="space16"></div>
-                <p>“Booking was simple — I messaged the host on WhatsApp and had everything confirmed the same day. The haveli was exactly as listed.”</p>
-                <div class="space24"></div>
-                <ul>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                </ul>
-              </div>
-              <div class="testimonial-vertical">
-                <div class="verical-boxarea">
-                  <div class="images-area">
-                    <div class="img1">
-                      <img src="/img/all-images/testimonial/testimonial-img5.png" alt="" />
-                    </div>
-                    <div class="text">
-                      <a href="#">Rajesh Kumar</a>
-                      <p>Happy Guest</p>
-                    </div>
-                  </div>
-                  <div class="quito">
-                    <img src="/img/icons/quoto-icon2.svg" alt="" />
-                  </div>
-                </div>
-                <div class="space24"></div>
-                <span>An unforgettable stay in the Pink City!</span>
-                <div class="space16"></div>
-                <p>"Celebrated our anniversary at a Bani Park boutique stay, and it was beyond magical. The host arranged everything herself.”</p>
-                <div class="space24"></div>
-                <ul>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                </ul>
-              </div>
-              <div class="testimonial-vertical">
-                <div class="verical-boxarea">
-                  <div class="images-area">
-                    <div class="img1">
-                      <img src="/img/all-images/testimonial/testimonial-img4.png" alt="" />
-                    </div>
-                    <div class="text">
-                      <a href="#">Priya Sharma</a>
-                      <p>Happy Guest</p>
-                    </div>
-                  </div>
-                  <div class="quito">
-                    <img src="/img/icons/quoto-icon2.svg" alt="" />
-                  </div>
-                </div>
-                <div class="space24"></div>
-                <span>Highly recommend this Walled City haveli!</span>
-                <div class="space16"></div>
-                <p>“Booking was simple — I messaged the host on WhatsApp and had everything confirmed the same day. The haveli was exactly as listed.”</p>
-                <div class="space24"></div>
-                <ul>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                </ul>
-              </div>
-              <div class="testimonial-vertical">
-                <div class="verical-boxarea">
-                  <div class="images-area">
-                    <div class="img1">
-                      <img src="/img/all-images/testimonial/testimonial-img5.png" alt="" />
-                    </div>
-                    <div class="text">
-                      <a href="#">Rajesh Kumar</a>
-                      <p>Happy Guest</p>
-                    </div>
-                  </div>
-                  <div class="quito">
-                    <img src="/img/icons/quoto-icon2.svg" alt="" />
-                  </div>
-                </div>
-                <div class="space24"></div>
-                <span>An unforgettable stay in the Pink City!</span>
-                <div class="space16"></div>
-                <p>"Celebrated our anniversary at a Bani Park boutique stay, and it was beyond magical. The host arranged everything herself.”</p>
-                <div class="space24"></div>
-                <ul>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-star"></i>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="testimonial-arrows">
-              <div class="testimonial-prev-arrow">
-                <button><i class="fa-solid fa-angle-up"></i></button>
-              </div>
-              <div class="testimonial-next-arrow">
-                <button><i class="fa-solid fa-angle-down"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- ===== TESTIMONIAL AREA ENDS ======= -->
+  {{-- Guest reviews / testimonials removed: the whole block was demo copy
+       shipped with the template (invented names, photos and 5-star ratings).
+       JaipurBnB has no reviews feature and no real guest feedback yet, so
+       nothing replaces it. Rebuild here once genuine reviews exist. --}}
 
   <!-- ===== OTHERS AREA STARTS ======= -->
   <div class="others3-section-area sp5">

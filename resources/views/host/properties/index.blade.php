@@ -19,7 +19,28 @@
       @endif
 
       <style>
-        /* Subscription call-to-action on each listing row. */
+        /*
+          Subscription call-to-action on each listing row.
+
+          It lives in its own full-width strip (.jb-row__sub) BELOW the
+          listing body, never in the flex line that carries the title.
+          Previously it sat in .jb-row__actions, which - because .jb-row is
+          a wrapping flex row - rendered "Renew Subscription" hard up
+          against the end of .jb-row__title at intermediate widths, so the
+          listing read as if it were named "<Property Name> Renew
+          Subscription". Subscription state is not part of the title and
+          must never share its line.
+        */
+        .jb-row__sub {
+          flex: 1 0 100%;
+          display: flex;
+          justify-content: flex-end;
+          gap: 8px;
+          margin: 0;
+        }
+        @media (max-width: 640px) {
+          .jb-row__sub { justify-content: flex-start; }
+        }
         .jb-sub-cta {
           display: inline-flex;
           align-items: center;
@@ -107,6 +128,8 @@
               </div>
 
               <div class="jb-row__main">
+                {{-- Title only. No badge, status, price or subscription CTA
+                     may be rendered inside this element - see .jb-row__sub. --}}
                 <h2 class="jb-row__title">{{ $property->title }}</h2>
                 <p class="jb-row__meta">
                   {{ $property->neighborhood }} &middot; {{ $property->stay_type }} &middot;
@@ -136,25 +159,6 @@
               </div>
 
               <div class="jb-row__actions">
-                {{-- Only an approved listing is billable: pending and rejected
-                     ones have nothing to publish yet. A listing still inside
-                     its host's Founding Host window is free either way, so
-                     no subscribe/renew action is shown. An expired
-                     subscription and a never-paid one land on the same plans
-                     page, but the wording differs so the host knows which
-                     they are in. --}}
-                @if ($property->awaitingSubscription() && ! $property->isFoundingHostActive())
-                  @if ($property->subscriptionHasExpired())
-                    <a class="jb-sub-cta jb-sub-cta--renew" href="{{ route('host.properties.plans', $property) }}">
-                      Renew Subscription
-                    </a>
-                  @else
-                    <a class="jb-sub-cta" href="{{ route('host.properties.plans', $property) }}">
-                      Subscribe to Publish
-                    </a>
-                  @endif
-                @endif
-
                 <a class="jb-btn-sm" href="{{ route('host.properties.show', $property) }}">View</a>
                 <a class="jb-btn-sm" href="{{ route('host.properties.edit', $property) }}">Edit</a>
                 <a class="jb-btn-sm" href="{{ route('host.properties.availability', $property) }}">Manage Calendar</a>
@@ -165,6 +169,29 @@
                   <button class="jb-btn-sm jb-btn-sm--danger" type="submit">Delete</button>
                 </form>
               </div>
+
+              {{-- Subscription CTA, on its own full-width strip so it can never
+                   wrap onto the title's line.
+
+                   Only an approved listing is billable: pending and rejected
+                   ones have nothing to publish yet. A listing still inside its
+                   host's Founding Host window is free either way, so no
+                   subscribe/renew action is shown. An expired subscription and
+                   a never-paid one land on the same plans page, but the wording
+                   differs so the host knows which they are in. --}}
+              @if ($property->awaitingSubscription() && ! $property->isFoundingHostActive())
+                <div class="jb-row__sub">
+                  @if ($property->subscriptionHasExpired())
+                    <a class="jb-sub-cta jb-sub-cta--renew" href="{{ route('host.properties.plans', $property) }}">
+                      Renew Subscription
+                    </a>
+                  @else
+                    <a class="jb-sub-cta" href="{{ route('host.properties.plans', $property) }}">
+                      Subscribe to Publish
+                    </a>
+                  @endif
+                </div>
+              @endif
             </div>
           @endforeach
         </div>

@@ -66,7 +66,9 @@
             <dl class="jb-defs" style="grid-template-columns:1fr;">
               <div>
                 <dt>Verified</dt>
-                <dd>{{ $property->is_verified ? 'Yes' : 'Not yet' }}</dd>
+                {{-- Same rule as the public badge: approved by an admin, or
+                     nothing. See Property::isVerified(). --}}
+                <dd>{{ $property->isVerified() ? 'Yes' : 'Not yet' }}</dd>
               </div>
               <div>
                 <dt>Subscription</dt>
@@ -77,7 +79,7 @@
                 <dd>{{ $property->created_at->format('d M Y') }}</dd>
               </div>
               <div>
-                <dt>Calendar sync</dt>
+                <dt>External Calendar / iCal URL</dt>
                 <dd style="word-break:break-all;">{{ $property->ical_feed_url ?: 'Not connected' }}</dd>
               </div>
             </dl>

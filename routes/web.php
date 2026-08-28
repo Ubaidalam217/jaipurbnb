@@ -24,13 +24,15 @@ Route::get('/', function () {
     // legacy template URL that redirects to /browse - so it never opened a
     // property detail page. Feed it a real listing instead. The same query
     // supplies the listing count, replacing a hardcoded "500+" claim.
-    $visible = Property::query()
-        ->where('listing_status', Property::STATUS_APPROVED)
-        ->where('is_visible', true);
+    $visible = Property::publiclyVisible();
 
     return view('index', [
         'featured'     => (clone $visible)->with('coverImage')->latest()->first(),
         'listingCount' => (clone $visible)->count(),
+        // Replaces a hardcoded "17 Neighborhoods Covered" that disagreed
+        // with the browse page's hardcoded "22". See
+        // Property::liveNeighborhoodCount().
+        'neighborhoodCount' => Property::liveNeighborhoodCount(),
     ]);
 });
 

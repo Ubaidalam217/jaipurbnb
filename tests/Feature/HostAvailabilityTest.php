@@ -49,7 +49,9 @@ class HostAvailabilityTest extends TestCase
         $response->assertSee($this->property->title);
         $response->assertSee('jb-cal--interactive', false);
         $response->assertSee('data-toggle-url', false);
-        $response->assertSee('Airbnb-synced (locked)');
+        // Legend is source-neutral: the feed may be Airbnb, Booking.com,
+        // Google Calendar or anything else that exports .ics.
+        $response->assertSee('External calendar / iCal synced (locked)');
     }
 
     public function test_the_calendar_404s_for_someone_elses_listing(): void

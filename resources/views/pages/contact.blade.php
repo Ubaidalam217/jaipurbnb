@@ -55,8 +55,8 @@
               Monday to Saturday, 10am – 7pm IST.
             </p>
             <div class="space12"></div>
-            {{-- Placeholder until the client supplies a real number. --}}
-            <a href="tel:+919876543210" style="color:#B34D33;font-family:'Poppins',sans-serif;font-weight:600;">+91 98765 43210 (demo)</a>
+            {{-- CONTACT_PHONE in .env (config/contact.php). --}}
+            <a href="tel:{{ config('contact.phone_tel') }}" style="color:#B34D33;font-family:'Poppins',sans-serif;font-weight:600;">{{ config('contact.phone') }}</a>
           </div>
           <div class="space30 d-lg-none d-block"></div>
         </div>

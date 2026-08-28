@@ -145,6 +145,52 @@ class Property extends Model
     }
 
     /**
+     * Base query for anything a guest is allowed to see: approved by an
+     * admin AND still flagged visible. Mirrors
+     * PropertyController::visible() - kept here as well so the marketing
+     * counters below apply exactly the same gate as the listing grid.
+     */
+    public static function publiclyVisible(): \Illuminate\Database\Eloquent\Builder
+    {
+        return static::query()
+            ->where('listing_status', self::STATUS_APPROVED)
+            ->where('is_visible', true);
+    }
+
+    /**
+     * How many distinct Jaipur neighborhoods currently have at least one
+     * live listing.
+     *
+     * The homepage ("N Neighborhoods Covered") and the browse header
+     * ("Across N Jaipur neighborhoods") both read this. They used to carry
+     * separate hardcoded numbers - 17 and 22 - which contradicted each
+     * other and neither matched the data. Counting NEIGHBORHOODS is not
+     * the same as counting the 22 entries in self::NEIGHBORHOODS: that
+     * constant is the filter menu (everywhere a host MAY list), this is
+     * coverage (everywhere a guest can actually book today).
+     */
+    public static function liveNeighborhoodCount(): int
+    {
+        return static::publiclyVisible()->distinct()->count('neighborhood');
+    }
+
+    /**
+     * Admin-approved, and nothing else.
+     *
+     * This is the sole condition behind every "Verified" badge on the
+     * site. The is_verified column is kept in sync by the approve/reject
+     * actions, but it is a plain boolean that seeders, imports or a manual
+     * DB edit can set independently - so reading it directly let listings
+     * show as verified without an admin ever having looked at them, and
+     * let genuinely approved listings show as unverified. Deriving the
+     * badge from listing_status makes that drift impossible.
+     */
+    public function isVerified(): bool
+    {
+        return $this->listing_status === self::STATUS_APPROVED;
+    }
+
+    /**
      * Pre-filled wa.me link, or null if the host has no usable phone
      * number. Uses urlencode() (not rawurlencode()) deliberately: wa.me
      * expects the classic application/x-www-form-urlencoded style,

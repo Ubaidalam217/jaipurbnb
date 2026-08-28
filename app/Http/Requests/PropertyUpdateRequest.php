@@ -98,7 +98,7 @@ class PropertyUpdateRequest extends FormRequest
     {
         return [
             'approx_price'  => 'approximate price',
-            'ical_feed_url' => 'calendar URL',
+            'ical_feed_url' => 'external calendar / iCal URL',
         ];
     }
 

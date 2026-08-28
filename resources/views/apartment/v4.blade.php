@@ -158,7 +158,9 @@
         <div class="text">
           <h3>{{ $properties->total() }} {{ Str::plural('stay', $properties->total()) }} available</h3>
           <div class="space10"></div>
-          <p>Across {{ count($neighborhoods) }} Jaipur neighborhoods</p>
+          {{-- Distinct neighborhoods with a live listing, not count() of the
+               22-entry filter menu. Same source as the homepage counter. --}}
+          <p>Across {{ $neighborhoodCount }} {{ Str::plural('Jaipur neighborhood', $neighborhoodCount) }}</p>
         </div>
         </div>
       </div>

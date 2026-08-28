@@ -39,8 +39,8 @@
 
         @if ($property->ical_feed_url)
           <p class="jb-cal__note">
-            Dates pulled from your Airbnb calendar are locked here — clear them in Airbnb and they
-            will disappear on the next sync.
+            Dates pulled from your external calendar / iCal URL are locked here — clear them in that
+            calendar and they will disappear on the next sync.
           </p>
         @endif
       </div>

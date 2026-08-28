@@ -3,7 +3,7 @@
 
   Required: $calendar  (from App\Support\AvailabilityCalendar::build())
   Optional: $interactive (bool, default false) - renders clickable
-            <button> cells and the Airbnb lock legend. The host page
+            <button> cells and the external-calendar lock legend. The host page
             supplies the fetch() wiring; this partial stays markup-only.
             $toggleUrl (string) - required when $interactive is true.
 
@@ -43,13 +43,13 @@
                             } elseif ($day['is_locked']) {
                                 $jbClasses[] = 'jb-cal__day--locked';
                                 // Only the host is told WHY a date is locked. A guest
-                                // seeing "blocked by Airbnb sync" would learn the host
+                                // seeing "blocked by calendar sync" would learn the host
                                 // also lists on a competing marketplace - that is the
                                 // host's business, not a browsing guest's.
                                 $jbState = ! $jbInteractive
                                     ? 'unavailable'
                                     : ($day['source'] === \App\Models\PropertyAvailability::SOURCE_AIRBNB
-                                        ? 'blocked by Airbnb sync'
+                                        ? 'blocked by external calendar sync'
                                         : 'booked');
                             } elseif ($day['is_available']) {
                                 $jbClasses[] = 'jb-cal__day--available';
@@ -89,7 +89,7 @@
         </span>
         @if ($jbInteractive)
             <span class="jb-cal__legend-item">
-                <span class="jb-cal__swatch jb-cal__swatch--locked" aria-hidden="true"></span> Airbnb-synced (locked)
+                <span class="jb-cal__swatch jb-cal__swatch--locked" aria-hidden="true"></span> External calendar / iCal synced (locked)
             </span>
         @endif
     </div>

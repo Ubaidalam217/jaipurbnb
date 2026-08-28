@@ -64,7 +64,12 @@ class PropertyController extends Controller
         return view('apartment.v4', [
             'properties'    => $properties,
             'filters'       => $filters,
+            // The filter dropdown lists every neighborhood a host MAY pick.
+            // The header counter is coverage - neighborhoods that actually
+            // have a live listing - so it is a query, not count() of the
+            // constant. Both this and the homepage read the same method.
             'neighborhoods' => Property::NEIGHBORHOODS,
+            'neighborhoodCount' => Property::liveNeighborhoodCount(),
             'stayTypes'     => Property::STAY_TYPES,
             'guestOptions'  => self::GUEST_OPTIONS,
             'bedroomOptions' => self::BEDROOM_OPTIONS,

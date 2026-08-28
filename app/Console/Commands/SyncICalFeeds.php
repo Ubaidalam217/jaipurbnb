@@ -23,7 +23,7 @@ class SyncICalFeeds extends Command
     protected $signature = 'ical:sync
                             {--property= : Sync a single property by id instead of all}';
 
-    protected $description = 'Pull Airbnb iCal feeds and block booked dates (one-way)';
+    protected $description = 'Pull external calendar / iCal feeds and block booked dates (one-way)';
 
     public function handle(ICalSyncService $sync): int
     {

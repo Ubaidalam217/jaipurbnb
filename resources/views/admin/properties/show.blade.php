@@ -101,7 +101,7 @@
                 <dd>{{ $property->created_at->format('d M Y, H:i') }}</dd>
               </div>
               <div>
-                <dt>Calendar feed</dt>
+                <dt>External Calendar / iCal URL</dt>
                 <dd style="word-break:break-all;">{{ $property->ical_feed_url ?: 'Not connected' }}</dd>
               </div>
             </dl>

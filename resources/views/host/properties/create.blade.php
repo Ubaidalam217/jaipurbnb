@@ -134,17 +134,17 @@
         {{-- 4. External calendar --}}
         <section class="jb-form__section">
           <h2 class="jb-form__legend">4. External calendar <span style="font-weight:500;color:var(--jb-muted);">(optional)</span></h2>
-          <p class="jb-form__hint">Paste your Airbnb calendar export URL here. Dates booked on Airbnb will automatically be blocked on JaipurBnB.</p>
+          <p class="jb-form__hint">Paste the .ics export URL from whichever calendar you already use. Dates booked there will automatically be blocked on JaipurBnB.</p>
 
           <div class="jb-auth__field" style="margin-bottom:0;">
-            <label class="jb-auth__label" for="ical_feed_url">Airbnb Calendar URL (optional)</label>
+            <label class="jb-auth__label" for="ical_feed_url">External Calendar / iCal URL (optional)</label>
             <input class="jb-auth__input @error('ical_feed_url') is-invalid @enderror" type="url"
                    id="ical_feed_url" name="ical_feed_url" value="{{ old('ical_feed_url') }}"
-                   maxlength="255" placeholder="https://www.airbnb.com/calendar/ical/...">
+                   maxlength="255" placeholder="https://example.com/calendar/ical/....ics">
             <span class="jb-auth__hint">
-              Find it in Airbnb under Calendar &rarr; Availability &rarr; Connect to another website
-              &rarr; Export calendar. We check it every 30 minutes. Sync is one-way &mdash; we never
-              change anything on Airbnb.
+              Any standard .ics feed works &mdash; on Airbnb it is under Calendar &rarr; Availability
+              &rarr; Connect to another website &rarr; Export calendar. We check it every 30 minutes.
+              Sync is one-way &mdash; we never change anything on the other calendar.
             </span>
             @error('ical_feed_url')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
           </div>

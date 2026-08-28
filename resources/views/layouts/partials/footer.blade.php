@@ -123,9 +123,10 @@
                                 <ul>
                                     <li><span> <span><i class="fa-solid fa-location-dot"></i></span> <span>Jaipur, Rajasthan <br> India </span></span></li>
                                     <li class="space24"></li>
-                                    {{-- Placeholder number, clearly labelled. Replace with the
-                                         client's real number before launch. --}}
-                                    <li><a href="tel:+919876543210"><span><i class="fa-solid fa-phone"></i></span> <span>+91 98765 43210 (demo)</span></a></li>
+                                    {{-- Number comes from CONTACT_PHONE in .env (config/contact.php).
+                                         Defaults to a +91 00000 00000 placeholder until the client
+                                         supplies the real line. --}}
+                                    <li><a href="tel:{{ config('contact.phone_tel') }}"><span><i class="fa-solid fa-phone"></i></span> <span>{{ config('contact.phone') }}</span></a></li>
                                     <li class="space24"></li>
                                     <li><a href="mailto:hello@jaipurbnb.com" style="text-transform: none"><span><i class="fa-solid fa-envelope"></i></span> <span>hello@jaipurbnb.com</span></a></li>
                                 </ul>

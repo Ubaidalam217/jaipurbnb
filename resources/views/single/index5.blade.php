@@ -53,7 +53,11 @@
                   <span>{{ $property->stay_type }}</span>
                 </li>
               </ul>
-              @if ($property->is_verified)
+              {{-- Admin approval is the ONLY thing that earns this badge.
+                   Reads Property::isVerified() (listing_status = approved),
+                   not the is_verified column, which a seeder or manual DB
+                   edit can flip without any admin having reviewed it. --}}
+              @if ($property->isVerified())
                 <span class="heart" title="Verified by the JaipurBnB team"><i class="fa-solid fa-circle-check"></i></span>
               @endif
             </div>
@@ -106,7 +110,7 @@
                 <img src="/img/icons/others-icon8.svg" alt="" />
               </div>
               <div class="content">
-                <span>{{ $property->is_verified ? 'Verified Listing' : 'Hosted by ' . $property->host->name }}</span>
+                <span>{{ $property->isVerified() ? 'Verified Listing' : 'Hosted by ' . $property->host->name }}</span>
               </div>
             </div>
           </div>
@@ -412,7 +416,9 @@
                     </li>
                     <li class="space24"></li>
                     <li>
-                      <a href="tel:+919876543210"><span><i class="fa-solid fa-phone"></i></span> <span>+91 98765 43210 (demo)</span></a>
+                      {{-- Platform support line from CONTACT_PHONE in .env, not the
+                           host's number - the host is reached via the buttons above. --}}
+                      <a href="tel:{{ config('contact.phone_tel') }}"><span><i class="fa-solid fa-phone"></i></span> <span>{{ config('contact.phone') }}</span></a>
                     </li>
                     <li class="space24"></li>
                     <li>
