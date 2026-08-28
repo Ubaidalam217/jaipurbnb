@@ -29,10 +29,6 @@
                 <div class="space32"></div>
                 <div class="btn-area1">
                   <a href="{{ url('/apartment/v4') }}" class="header-btn3">Browse Properties</a>
-                  <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube">
-                    <span class="play-btn"><i class="fa-solid fa-play"></i></span>
-                    <span class="text">Video</span>
-                  </a>
                 </div>
               </div>
             </div>
@@ -79,10 +75,6 @@
                 <div class="space32"></div>
                 <div class="btn-area1">
                   <a href="{{ url('/apartment/v4') }}" class="header-btn3">Browse Properties</a>
-                  <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube">
-                    <span class="play-btn"><i class="fa-solid fa-play"></i></span>
-                    <span class="text">Video</span>
-                  </a>
                 </div>
               </div>
             </div>
@@ -138,10 +130,6 @@
                 <div class="space32"></div>
                 <div class="btn-area1">
                   <a href="{{ url('/apartment/v4') }}" class="header-btn3">Browse Properties</a>
-                  <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube">
-                    <span class="play-btn"><i class="fa-solid fa-play"></i></span>
-                    <span class="text">Video</span>
-                  </a>
                 </div>
               </div>
             </div>
