@@ -43,6 +43,13 @@ return [
             'url' => env('MAIL_URL'),
             'host' => env('MAIL_HOST', '127.0.0.1'),
             'port' => env('MAIL_PORT', 2525),
+            // Laravel 12 ships this block without an 'encryption' key - it
+            // expects MAIL_SCHEME instead. MailManager still honours
+            // 'encryption' when 'scheme' is null, so adding it back makes
+            // MAIL_ENCRYPTION=tls in .env do what it says rather than being
+            // silently ignored. With port 587 this resolves to scheme
+            // "smtp" and Symfony upgrades the connection via STARTTLS.
+            'encryption' => env('MAIL_ENCRYPTION'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
