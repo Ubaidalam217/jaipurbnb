@@ -22,6 +22,14 @@
         <div class="jb-row__actions">
           <a class="jb-btn-sm" href="{{ route('host.properties.index') }}">Back</a>
           <a class="jb-btn-sm" href="{{ route('host.properties.availability', $property) }}">Manage Availability</a>
+          {{-- The only route into the plans / payment page now that the
+               Subscribe and Renew buttons are gone from the listing grid.
+               Only an approved listing is billable - a pending or rejected
+               one has nothing to publish yet - and a listing inside its
+               host's Founding Host window is free, so neither offers it. --}}
+          @if ($property->listing_status === \App\Models\Property::STATUS_APPROVED && ! $property->isFoundingHostActive())
+            <a class="jb-btn-sm" href="{{ route('host.properties.plans', $property) }}">Manage Subscription</a>
+          @endif
           <a class="jb-btn-sm jb-btn-sm--primary" href="{{ route('host.properties.edit', $property) }}">Edit</a>
         </div>
       </div>

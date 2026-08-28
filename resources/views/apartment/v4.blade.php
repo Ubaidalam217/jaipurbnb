@@ -149,7 +149,18 @@
       </div>
       <div class="col-lg-2"></div>
       <div class="col-lg-4">
-      @if ($properties->total() > 0)
+      {{--
+        Gated on $neighborhoodCount, NOT on $properties->total().
+
+        The box used to be wrapped in @if ($properties->total() > 0), which
+        hid the neighborhood count along with everything else the moment a
+        filter returned nothing - so the count vanished on exactly the
+        pages where "we do cover 5 neighborhoods, widen your filter" is the
+        most useful thing to say. The two numbers answer different
+        questions: the headline counts the CURRENT result set (and may
+        legitimately be 0), the line under it is site-wide coverage.
+      --}}
+      @if ($neighborhoodCount > 0)
       <div class="auhtor-box">
         <div class="others-box">
         <div class="img3">

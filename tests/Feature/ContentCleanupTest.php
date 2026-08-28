@@ -61,28 +61,57 @@ class ContentCleanupTest extends TestCase
 
     /* ---------------- subscription state vs listing title ---------------- */
 
-    public function test_the_listing_title_never_carries_subscription_wording(): void
+    public function test_the_listing_grid_carries_no_subscription_call_to_action(): void
     {
         $host = User::factory()->create(['role' => User::ROLE_HOST]);
-        // Approved, paid once, lapsed - the state that renders the
-        // "Renew Subscription" call to action.
+        // A lapsed listing and a never-paid one - the two states that used
+        // to render "Renew Subscription" and "Subscribe to Publish".
         Property::factory()->expired()->create([
             'host_id' => $host->id,
             'title'   => 'Nahargarh Heritage Retreat',
         ]);
+        Property::factory()->live()->create([
+            'host_id'             => $host->id,
+            'title'               => 'Bani Park Boutique Getaway',
+            'subscription_expiry' => null,
+        ]);
 
-        $html = $this->actingAs($host)->get('/host/properties')->assertOk()->getContent();
+        $response = $this->actingAs($host)->get('/host/properties')->assertOk();
 
-        // The CTA is still offered - it just lives outside the title.
-        $this->assertStringContainsString('Renew Subscription', $html);
+        $response->assertDontSee('Renew Subscription');
+        $response->assertDontSee('Subscribe to Publish');
+        $response->assertDontSee('jb-row__sub', false);
+        $response->assertDontSee('jb-sub-cta', false);
 
-        preg_match_all('/<h2 class="jb-row__title">(.*?)<\/h2>/s', $html, $titles);
+        // ...and the titles are still just titles.
+        preg_match_all('/<h2 class="jb-row__title">(.*?)<\/h2>/s', $response->getContent(), $titles);
 
-        $this->assertNotEmpty($titles[1], 'No listing title rendered.');
+        $this->assertCount(2, $titles[1], 'Expected both listing titles to render.');
 
         foreach ($titles[1] as $title) {
-            $this->assertSame('Nahargarh Heritage Retreat', trim($title));
+            $this->assertContains(trim($title), [
+                'Nahargarh Heritage Retreat',
+                'Bani Park Boutique Getaway',
+            ]);
         }
+    }
+
+    public function test_the_plans_page_is_still_reachable_from_the_listing_detail_page(): void
+    {
+        $host = User::factory()->create(['role' => User::ROLE_HOST]);
+        $lapsed = Property::factory()->expired()->create(['host_id' => $host->id]);
+        $pending = Property::factory()->create(['host_id' => $host->id]);
+
+        // Removing the grid CTAs must not orphan the payment flow.
+        $this->actingAs($host)->get('/host/properties/'.$lapsed->id)
+            ->assertOk()
+            ->assertSee('Manage Subscription')
+            ->assertSee(route('host.properties.plans', $lapsed), false);
+
+        // Nothing to bill for on a listing no admin has approved.
+        $this->actingAs($host)->get('/host/properties/'.$pending->id)
+            ->assertOk()
+            ->assertDontSee('Manage Subscription');
     }
 
     /* ---------------- neighborhood count ---------------- */
@@ -106,6 +135,26 @@ class ContentCleanupTest extends TestCase
         $this->get('/browse')->assertOk()
             ->assertSee('Across 3 Jaipur neighborhoods')
             ->assertDontSee('Across 22 Jaipur');
+    }
+
+    public function test_the_browse_count_survives_a_filter_that_matches_nothing(): void
+    {
+        Property::factory()->live()->create(['neighborhood' => 'Amer']);
+        Property::factory()->live()->create(['neighborhood' => 'C-Scheme']);
+
+        // No listing in Chomu - the grid is empty, but site-wide coverage
+        // is still 2 and is exactly what this guest needs to be told.
+        $this->get('/browse?neighborhood=Chomu')->assertOk()
+            ->assertSee('No properties found matching your filters. Try adjusting your search.')
+            ->assertSee('Across 2 Jaipur neighborhoods')
+            ->assertSee('0 stays available');
+    }
+
+    public function test_the_browse_count_is_hidden_when_nothing_is_live(): void
+    {
+        Property::factory()->create(['neighborhood' => 'Amer']); // pending
+
+        $this->get('/browse')->assertOk()->assertDontSee('Jaipur neighborhood');
     }
 
     public function test_the_homepage_makes_no_coverage_claim_with_nothing_live(): void
