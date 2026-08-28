@@ -29,3 +29,11 @@ yarn-error.log
 /screenshots
 /.playwright-mcp
 *.map
+
+# Database dumps taken from Railway/Hostinger. These carry production PII -
+# user emails, phone numbers and bcrypt password hashes - and must never
+# reach the remote. Keep them local, or store them in a password manager.
+/railway-prod-backup-*.json
+/*-db-backup*.json
+/*.sql
+/*.sql.gz
