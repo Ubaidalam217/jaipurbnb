@@ -98,7 +98,11 @@
                     <div class="footer-bottom-area">
                         <div class="footer-menu-area">
                             <div class="footer-logo">
-                                <a href="{{ url('/') }}" style="color:#E07A5F;font-family:'Poppins',sans-serif;font-size:24px;font-weight:700;letter-spacing:-.02em;text-decoration:none;">JaipurBnB</a>
+                                {{-- Logo ink is dark (navy/brown) and the footer is dark charcoal,
+                                     so the transparent SVG sits on a light chip to stay legible. --}}
+                                <a href="{{ url('/') }}" style="display:inline-block;background:#FFFDF7;padding:8px 12px;border-radius:8px;line-height:0;text-decoration:none;">
+                                    <img src="{{ asset('img/jaipurbnb-logo.svg') }}" alt="JaipurBnB" style="height:48px;width:auto;display:block;">
+                                </a>
                             </div>
                             <div class="footer-menu">
                                 <ul>

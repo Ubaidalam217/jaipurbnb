@@ -19,7 +19,7 @@
       .cream{fill:#FFFDF7}
     </style>
   </defs>
-  <rect width="1200" height="800" fill="#FFFDF7"/>
+  <rect width="1200" height="800" fill="none"/>
   <path d="M360 435 L360 282 C360 225 388 192 430 174 C431 124 457 102 499 87 C548 69 580 42 600 15 C620 42 652 69 701 87 C743 102 769 124 770 174 C812 192 840 225 840 282 L840 435" fill="none" stroke="url(#archGrad)" stroke-width="20" stroke-linecap="round"/>
   <circle cx="505" cy="168" r="18" fill="#EA8B2A"/>
   <path d="M455 205 q12 -10 24 0 q12 -10 24 0" fill="none" stroke="#5A4036" stroke-width="4" stroke-linecap="round"/>
