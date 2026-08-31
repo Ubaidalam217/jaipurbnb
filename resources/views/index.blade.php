@@ -337,10 +337,7 @@
             <div class="col-lg-6 col-md-6">
               <div class="about-video-area">
                 <div class="img1 image-anime reveal">
-                  <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube"><img src="/img/all-images/about/about-img5.png" alt="" /></a>
-                </div>
-                <div class="play-btn">
-                  <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube"><i class="fa-solid fa-play"></i></a>
+                  <img src="/img/all-images/about/about-img5.png" alt="" />
                 </div>
               </div>
             </div>
@@ -455,10 +452,6 @@
             <div class="space24"></div>
             <div class="btn-area1" data-aos="fade-left" data-aos-duration="1200">
               <a href="{{ url('/apartment/v4') }}" class="header-btn3">Browse Properties</a>
-              <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube">
-                <span class="play-btn"><i class="fa-solid fa-play"></i></span>
-                <span class="text">Video</span>
-              </a>
             </div>
           </div>
         </div>

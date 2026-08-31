@@ -90,6 +90,19 @@
         text-decoration: none;
     }
 
+    /* Client SVG logo replaces the wordmark; shrink it on small screens. */
+    .navbar-logo {
+        display: block;
+    }
+
+    @media (max-width: 768px) {
+        .navbar-logo {
+            /* !important is required: the <img> carries an inline height:45px,
+               which would otherwise outrank this class selector. */
+            height: 35px !important;
+        }
+    }
+
     /* ---------- desktop menu ---------- */
     .jb-nav__desktop {
         display: flex;
@@ -376,7 +389,7 @@
 
 <nav class="jb-nav" aria-label="Primary">
     <div class="jb-nav__inner">
-        <a class="jb-nav__brand" href="{{ url('/') }}">JaipurBnB</a>
+        <a class="jb-nav__brand" href="{{ url('/') }}"><img src="{{ asset('img/jaipurbnb-logo.svg') }}" alt="JaipurBnB" style="height: 45px; width: auto;" class="navbar-logo"></a>
 
         <div class="jb-nav__desktop">
             <ul class="jb-nav__menu">
@@ -423,7 +436,7 @@
          id="jbMobileNav"
          aria-labelledby="jbMobileNavLabel">
         <div class="jb-offcanvas__header">
-            <a class="jb-offcanvas__brand" id="jbMobileNavLabel" href="{{ url('/') }}">JaipurBnB</a>
+            <a class="jb-offcanvas__brand" id="jbMobileNavLabel" href="{{ url('/') }}"><img src="{{ asset('img/jaipurbnb-logo.svg') }}" alt="JaipurBnB" style="height: 45px; width: auto;" class="navbar-logo"></a>
             <button class="jb-offcanvas__close"
                     type="button"
                     data-bs-dismiss="offcanvas"
