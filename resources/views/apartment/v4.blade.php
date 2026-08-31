@@ -127,6 +127,44 @@
         padding: 16px 15px 24px;
       }
     }
+
+    /* ------------------------------------------------------------------ *
+     * Equal-height cards.
+     *
+     * Two things made the grid ragged: (1) .img1 had no fixed height, so
+     * each cover cropped to its own aspect ratio; (2) the card did not
+     * stretch to the column, so a 2-line title or wrapped capacity row
+     * made neighbouring cards different heights. Fix: give every column a
+     * fixed image band, then let the card fill the Bootstrap column (which
+     * already stretches to the tallest in its row) and let .content-area
+     * absorb the slack so the contact row + View arrow sit flush at the
+     * bottom of every card.
+     * ------------------------------------------------------------------ */
+    .apartment-inner2-section-area .jb-card-col {
+      display: flex;
+      margin-bottom: 24px;
+    }
+
+    .apartment-inner2-section-area .jb-card-col .apartment-boxarea {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Uniform cover band. .img1 img is already object-fit:cover + 100%,
+       so a fixed container height crops every photo identically. */
+    .apartment-inner2-section-area .jb-card-col .apartment-boxarea .img1 {
+      height: 240px;
+      flex-shrink: 0;
+    }
+
+    /* Grow the body so everything below it (contact row, View arrow) is
+       pushed to the card's bottom edge, aligning across the row. */
+    .apartment-inner2-section-area .jb-card-col .apartment-boxarea .content-area {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
   </style>
   <!-- ===== HERO AREA STARTS ======= -->
   <div class="inner-main-hero-area">
@@ -267,7 +305,7 @@
 
     <div class="row">
       @forelse ($properties as $property)
-      <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="800">
+      <div class="col-lg-4 col-md-6 jb-card-col" data-aos="zoom-in-up" data-aos-duration="800">
       <div class="apartment-boxarea">
         {{-- The photo is the biggest click target on the card, so it has to
              open the listing. It was previously a bare <img> with no anchor:
