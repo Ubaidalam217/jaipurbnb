@@ -55,10 +55,11 @@
     }
 
     /* Eyebrow above the headline ("N Neighborhoods Covered", "Verified Local
-       Hosts"). Was inheriting a template colour; pin it to brand terracotta,
-       with the accent gold as a short rule after it - the one place the third
-       brand colour now appears on the site, echoing the gold rules that flank
-       the tagline in the logo. */
+       Hosts"). Was inheriting a template colour; pin it to brand terracotta.
+
+       NOTE: this deliberately carries no ::before / ::after rule. A short gold
+       accent bar used to sit after the text; the client read it as a stray
+       dash, so it is gone. Icon and text only - do not reintroduce one. */
     .header-carousel-area3 .main-hero-area .header-heading2 h5 {
       display: inline-flex;
       align-items: center;
@@ -73,13 +74,64 @@
       color: #E07A5F;
     }
 
+    /* Belt and braces: kill any decorative rule the template attaches to the
+       hero eyebrow, so nothing dash-like can come back through the cascade. */
+    .header-carousel-area3 .main-hero-area .header-heading2 h5::before,
     .header-carousel-area3 .main-hero-area .header-heading2 h5::after {
-      content: "";
-      width: 44px;
-      height: 2px;
-      background: #D99B34;
-      border-radius: 2px;
-      flex: 0 0 auto;
+      content: none;
+      display: none;
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Mobile image alignment.
+     *
+     * .reveal (utils/_typography.scss) is display:-webkit-inline-box, so
+     * these wrappers shrink-wrap to their content instead of filling the
+     * column. On a 390px screen that left them 312px and 197px wide, hugging
+     * the left edge with dead space to the right, which is what reads as
+     * "not centered". .about-video-area .img1 is the worse of the two: it
+     * has no width rule at all, only one on its inner <img>.
+     *
+     * !important is needed because the reveal animation writes an inline
+     * width while it runs. Forcing the width also means the images simply
+     * appear at full size on mobile rather than animating - the right
+     * trade-off on a phone.
+     * ------------------------------------------------------------------ */
+    @media (max-width: 767.98px) {
+      .property3-section-area .property-images-area .img1,
+      .property3-section-area .property-images-area .img2,
+      .about-video-area .img1,
+      .about-widget-images .img1 {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      .property3-section-area .property-images-area .img1 img,
+      .property3-section-area .property-images-area .img2 img,
+      .about-video-area .img1 img,
+      .about-widget-images .img1 img {
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      /* Catches any inline-level leftovers inside these blocks. */
+      .property3-section-area .property-images-area,
+      .about-video-area,
+      .about-widget-images {
+        text-align: center;
+      }
+
+      /* The stats card and the image beside it are separate Bootstrap columns;
+         give them the same rhythm so the pair reads as one centred stack. */
+      .experience-box {
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+      }
     }
   </style>
 
