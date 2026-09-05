@@ -123,6 +123,24 @@
                                     <li><a href="{{ route('contact') }}">Contact</a></li>
                                 </ul>
                             </div>
+                            {{-- Legal column. Labelled because "Terms", "Privacy" etc. are
+                                 not self-evidently a group the way the nav columns are, and
+                                 payment gateways expect these links to be findable. Styled
+                                 inline rather than in SCSS: Hostinger has no Node and
+                                 public/build is gitignored, so a SCSS change would mean a
+                                 local rebuild plus a manual bundle upload. --}}
+                            <div class="footer-menu">
+                                <span style="display:block;margin-bottom:16px;color:rgba(255,255,255,.55);font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;">Legal</span>
+                                <ul>
+                                    <li><a href="{{ route('legal.terms') }}">Terms &amp; Conditions</a></li>
+                                    <li class="space24"></li>
+                                    <li><a href="{{ route('legal.privacy') }}">Privacy Policy</a></li>
+                                    <li class="space24"></li>
+                                    <li><a href="{{ route('legal.refund') }}">Refund Policy</a></li>
+                                    <li class="space24"></li>
+                                    <li><a href="{{ route('legal.host-terms') }}">Host Terms</a></li>
+                                </ul>
+                            </div>
                             <div class="footer-menu2">
                                 <ul>
                                     <li><span> <span><i class="fa-solid fa-location-dot"></i></span> <span>Jaipur, Rajasthan <br> India </span></span></li>

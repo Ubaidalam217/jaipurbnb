@@ -44,6 +44,15 @@ Route::post('/webhooks/razorpay', [PaymentController::class, 'webhook'])
 
 Route::get('/contact', fn () => view('pages.contact'))->name('contact');
 
+// Legal pages. Static views, no controller - they take no input and query
+// nothing. Linked from the footer and from the signup/checkout notices.
+// NOTE: these are closure routes, so route:cache must stay off on this
+// deployment - see the homepage note in DEPLOYMENT.md.
+Route::get('/terms', fn () => view('pages.legal.terms'))->name('legal.terms');
+Route::get('/privacy', fn () => view('pages.legal.privacy'))->name('legal.privacy');
+Route::get('/refund', fn () => view('pages.legal.refund'))->name('legal.refund');
+Route::get('/host-terms', fn () => view('pages.legal.host-terms'))->name('legal.host-terms');
+
 Route::get('/browse', [PublicPropertyController::class, 'index'])->name('properties.browse');
 Route::get('/property/{id}', [PublicPropertyController::class, 'show'])
     ->whereNumber('id')

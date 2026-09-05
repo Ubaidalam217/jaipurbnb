@@ -85,6 +85,16 @@
                  required autocomplete="new-password" minlength="8">
         </div>
 
+        {{-- Consent notice rather than a tick-box: account creation is the
+             affirmative act, and a required checkbox here would add a
+             validation branch to RegisterController for no legal gain. --}}
+        <p style="margin:0 0 18px;color:#6B7A82;font-family:'Poppins',sans-serif;font-size:13.5px;line-height:1.6;">
+          By continuing, you agree to our
+          <a class="jb-auth__link" href="{{ route('legal.terms') }}" target="_blank" rel="noopener">Terms</a>,
+          <a class="jb-auth__link" href="{{ route('legal.host-terms') }}" target="_blank" rel="noopener">Host Terms</a>
+          and <a class="jb-auth__link" href="{{ route('legal.privacy') }}" target="_blank" rel="noopener">Privacy Policy</a>.
+        </p>
+
         <button class="jb-auth__btn" type="submit">Create host account</button>
       </form>
 

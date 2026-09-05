@@ -145,6 +145,22 @@
       font-size: 14px;
     }
 
+    .jb-plans__legal {
+      max-width: 640px;
+      margin: 14px auto 0;
+      text-align: center;
+      color: var(--jb-muted);
+      font-size: 13.5px;
+      line-height: 1.7;
+    }
+
+    .jb-plans__legal a {
+      color: var(--jb-cta);
+      font-weight: 500;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
     .jb-plans__alert {
       max-width: 640px;
       margin: 0 auto 28px;
@@ -239,6 +255,16 @@
     <p class="jb-plans__note">
       Secure payment via Razorpay. Cards, UPI, net banking and wallets accepted.<br>
       We never see or store your card details.
+    </p>
+
+    {{-- Consent + refund terms at the point of payment. Razorpay's merchant
+         review expects the refund policy to be reachable from checkout. --}}
+    <p class="jb-plans__legal">
+      By continuing, you agree to our
+      <a href="{{ route('legal.terms') }}" target="_blank" rel="noopener">Terms</a>,
+      <a href="{{ route('legal.host-terms') }}" target="_blank" rel="noopener">Host Terms</a>,
+      <a href="{{ route('legal.refund') }}" target="_blank" rel="noopener">Refund Policy</a>
+      and <a href="{{ route('legal.privacy') }}" target="_blank" rel="noopener">Privacy Policy</a>.
     </p>
   </div>
 
