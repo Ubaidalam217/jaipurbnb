@@ -4,6 +4,85 @@
 
 @section('content')
   @include('layouts.partials.navbar')
+
+  {{--
+    Hero polish, scoped to this page.
+
+    Kept in a <style> block rather than _hero.scss on purpose: Hostinger has
+    no Node and public/build is gitignored, so every SCSS edit costs a local
+    `npm run build` plus a manual bundle upload. Colour-token changes have to
+    go through SCSS (they compile into variables), but page-level overrides
+    like these deploy as a plain file copy. Same pattern as contact.blade.php
+    and the legal pages.
+  --}}
+  <style>
+    /* The hero image occupies the right 50% and previously butted straight
+       up against the flat charcoal panel - a hard vertical seam down the
+       middle of the fold. The template's own ::after overlay is opacity:0 on
+       desktop, so it was doing nothing. Give it a real gradient: opaque
+       charcoal at the seam, clearing by ~45% across the image. This softens
+       the join AND darkens the region nearest the headline, which is what
+       lifts contrast for the white text. */
+    .header-carousel-area3 .main-hero-area .img1::after {
+      background: linear-gradient(
+        to right,
+        #2F3E46 0%,
+        rgba(47, 62, 70, .82) 18%,
+        rgba(47, 62, 70, .34) 45%,
+        rgba(47, 62, 70, .10) 72%,
+        rgba(47, 62, 70, .22) 100%
+      );
+      opacity: 1;
+    }
+
+    /* Bottom vignette across the whole hero - stops the image bleeding into
+       the section below and reads as more deliberate/premium. */
+    .header-carousel-area3 .main-hero-area .img1 {
+      box-shadow: inset 0 -90px 90px -60px rgba(47, 62, 70, .85);
+    }
+
+    @media (max-width: 767.98px) {
+      /* On mobile the image is full-width behind the copy, so it needs a flat
+         scrim rather than a directional one. */
+      .header-carousel-area3 .main-hero-area .img1::after {
+        background: linear-gradient(
+          to bottom,
+          rgba(47, 62, 70, .74) 0%,
+          rgba(47, 62, 70, .82) 100%
+        );
+        opacity: 1;
+      }
+    }
+
+    /* Eyebrow above the headline ("N Neighborhoods Covered", "Verified Local
+       Hosts"). Was inheriting a template colour; pin it to brand terracotta,
+       with the accent gold as a short rule after it - the one place the third
+       brand colour now appears on the site, echoing the gold rules that flank
+       the tagline in the logo. */
+    .header-carousel-area3 .main-hero-area .header-heading2 h5 {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #E07A5F;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      letter-spacing: .04em;
+    }
+
+    .header-carousel-area3 .main-hero-area .header-heading2 h5 i {
+      color: #E07A5F;
+    }
+
+    .header-carousel-area3 .main-hero-area .header-heading2 h5::after {
+      content: "";
+      width: 44px;
+      height: 2px;
+      background: #D99B34;
+      border-radius: 2px;
+      flex: 0 0 auto;
+    }
+  </style>
+
   <!-- ===== HERO AREA STARTS ======= -->
   <div class="header-carousel-area3 owl-carousel">
     <div class="main-hero-area">

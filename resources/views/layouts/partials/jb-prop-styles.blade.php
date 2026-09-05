@@ -133,7 +133,8 @@
         align-items: center;
         padding: 0 14px;
         border: 1px solid var(--jb-border);
-        border-radius: 9px;
+        /* 8px is the house button radius; this was a stray 9px. */
+        border-radius: 8px;
         background: transparent;
         color: var(--jb-ink);
         font-family: inherit;

@@ -1,15 +1,21 @@
 <!--
-  viewBox is cropped to the artwork's measured bounds (x 240..911.3,
-  y 5..697 on the original 1200x800 canvas), plus a small even margin.
-  The logo is always rendered at a fixed CSS height with width:auto, so
-  only the VERTICAL crop scales the artwork up: 800 -> 709 makes it 12.8%
-  larger at the same height. The horizontal crop just removes dead space
-  either side. For the navbar and footer use jaipurbnb-logo-compact.svg,
-  which drops the tagline and is 29% larger again.
+  Compact lockup for the navbar and footer, where the logo is rendered at a
+  fixed 48-65px height.
+
+  Identical artwork to jaipurbnb-logo.svg with the tagline and its two gold
+  rules removed. At 65px tall the tagline renders about 2.5px high - it is
+  not legible at any size we use in the chrome, so it only steals height
+  from the mark. Dropping it lets the viewBox close to 620 units instead of
+  709, which scales the arch, palace and wordmark 29% larger than the
+  original 800-unit canvas at the same CSS height.
+
+  Artwork bounds here: x 240..897.9, y 5..611. Keep jaipurbnb-logo.svg as
+  the master (full lockup with tagline) for print, social and any large
+  placement where the tagline is actually readable.
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="228 0 695 709" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="232 0 676 620" role="img" aria-labelledby="title desc">
   <title id="title">Jaipurbnb Logo</title>
-  <desc id="desc">Jaipur hospitality logo with Rajasthani arch, palace silhouette, house roof, and tagline Stay Local. Stay Jaipur.</desc>
+  <desc id="desc">Jaipur hospitality logo with Rajasthani arch, palace silhouette and house roof above the Jaipurbnb wordmark.</desc>
   <defs>
     <linearGradient id="archGrad" x1="0" x2="1">
       <stop offset="0%" stop-color="#E96A79"/>
@@ -23,9 +29,7 @@
     <style>
       .navy{fill:#162655}
       .rose{fill:#D83F63}
-      .gold{fill:#D99B34}
       .brown{fill:#5A4036}
-      .cream{fill:#FFFDF7}
     </style>
   </defs>
   <path d="M360 435 L360 282 C360 225 388 192 430 174 C431 124 457 102 499 87 C548 69 580 42 600 15 C620 42 652 69 701 87 C743 102 769 124 770 174 C812 192 840 225 840 282 L840 435" fill="none" stroke="url(#archGrad)" stroke-width="20" stroke-linecap="round"/>
@@ -69,7 +73,4 @@
   <rect x="585" y="404" width="30" height="2" fill="#FFFDF7"/>
   <text x="240" y="585" font-size="118" font-family="Georgia, 'Times New Roman', serif" class="navy" letter-spacing="-3">Jaipur</text>
   <text x="705" y="585" font-size="118" font-family="Georgia, 'Times New Roman', serif" class="rose" letter-spacing="-3">bnb</text>
-  <line x1="355" y1="630" x2="515" y2="630" stroke="#D99B34" stroke-width="3"/>
-  <line x1="685" y1="630" x2="845" y2="630" stroke="#D99B34" stroke-width="3"/>
-  <text x="600" y="690" text-anchor="middle" font-size="31" font-family="Arial, Helvetica, sans-serif" letter-spacing="9" class="brown">STAY LOCAL. STAY JAIPUR.</text>
 </svg>

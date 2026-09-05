@@ -53,13 +53,17 @@
         justify-content: center;
         gap: 8px;
         box-sizing: border-box;
-        min-height: 48px;
-        padding: 12px 22px;
+        min-height: 52px;
+        padding: 14px 26px;
         border: 0;
+        /* Pill, deliberately - kept as the exception to the 8px button rule
+           because these are the primary conversion control on every card and
+           the rounded shape is what distinguishes them from template buttons. */
         border-radius: 999px;
         font-family: 'Poppins', sans-serif;
         font-size: 16px;
         font-weight: 600;
+        transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
         /* line-height:1 makes the text box exactly the glyph height, so
            align-items:center has a predictable box to centre. The
            template's inherited line-height (24px) against a 48px min-height
@@ -77,23 +81,54 @@
         line-height: 1;
     }
 
+    /* WhatsApp's own brand green. Deliberately NOT replaced with a JaipurBnB
+       colour: the green is the affordance - people recognise the button
+       before they read it. Label is near-black green rather than white
+       because white on #25D366 is only 2.1:1. */
     .jb-contact-row .jb-contact-btn--whatsapp,
-    .jb-contact-row .jb-contact-btn--whatsapp:hover,
     .jb-contact-row .jb-contact-btn--whatsapp:focus {
         background: #25D366;
         color: #0F3D2E;
+        box-shadow: 0 4px 14px rgba(37, 211, 102, .34);
+    }
+
+    .jb-contact-row .jb-contact-btn--whatsapp:hover {
+        background: #1FBE5A;
+        color: #0F3D2E;
+        box-shadow: 0 8px 22px rgba(37, 211, 102, .46);
     }
 
     .jb-contact-row .jb-contact-btn--call,
-    .jb-contact-row .jb-contact-btn--call:hover,
     .jb-contact-row .jb-contact-btn--call:focus {
         background: #B34D33;
         color: #fff;
+        box-shadow: 0 4px 14px rgba(179, 77, 51, .30);
     }
 
+    .jb-contact-row .jb-contact-btn--call:hover {
+        background: #8F3D28;
+        color: #fff;
+        box-shadow: 0 8px 22px rgba(179, 77, 51, .42);
+    }
+
+    /* Lift instead of the old opacity fade - fading a button on hover reads
+       as "disabling" it, which is the wrong signal on a CTA. */
     .jb-contact-row .jb-contact-btn:hover {
         text-decoration: none;
-        opacity: .92;
+        transform: translateY(-2px);
+    }
+
+    .jb-contact-row .jb-contact-btn:active {
+        transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .jb-contact-row .jb-contact-btn {
+            transition: none;
+        }
+        .jb-contact-row .jb-contact-btn:hover {
+            transform: none;
+        }
     }
 
     .jb-contact-row .jb-contact-btn--disabled {
@@ -103,13 +138,20 @@
         font-weight: 500;
     }
 
-    /* Compact variant, used on the browse cards. */
+    /* Compact variant, used on the browse cards. Bumped alongside the full
+       size so the WhatsApp CTA stays prominent in the grid. */
     .jb-contact-row--sm .jb-contact-btn,
     .jb-contact-row--sm .jb-contact-btn--disabled {
-        min-height: 40px;
-        padding: 10px 16px;
-        font-size: 13px;
-        gap: 6px;
+        min-height: 44px;
+        padding: 11px 18px;
+        font-size: 13.5px;
+        gap: 7px;
+    }
+
+    /* The icon carries the recognition at card size, so let it run slightly
+       ahead of the label rather than matching it 1:1. */
+    .jb-contact-row--sm .jb-contact-btn i {
+        font-size: 1.15em;
     }
 
     /* Two buttons split 50/50 across the full width of their container.

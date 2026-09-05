@@ -1,3 +1,16 @@
+// JaipurBnB brand palette
+//   Primary   Terracotta  #E07A5F
+//   Secondary Charcoal    #2F3E46
+//   Accent    Gold        #D99B34
+//   CTA       Deep terra  #B34D33  (accessible text/button shade of #E07A5F;
+//                                   #E07A5F itself is only 2.6:1 on white)
+//
+// The slots below came from the Hosue template and were partially rebranded
+// in Milestone 1. The leftover template accents #FB8500 / #FF7B00 (orange)
+// were still reaching live pages through the navbar, hero, browse cards and
+// footer hover states, so they now point at the brand terracotta. The blue /
+// purple / green slots (text-20/22/24/27, bg-6/15/18/20/22) belong to demo
+// variants that JaipurBnB does not ship - left as-is rather than guessed at.
 $colors: (
     'text': (
         'text-1': #fff,
@@ -11,13 +24,13 @@ $colors: (
         'text-9': #4E5352,
         'text-10':#2F3E46,
         'text-11':#E07A5F,
-        'text-12':#FB8500,
+        'text-12':#E07A5F,   // was #FB8500 template orange - nav/footer hover
         'text-13':#413A36,
         'text-14':#565656,
         'text-15':#B34D33,
         'text-16':#0D0F18,
         'text-17':#100F22,
-        'text-18':#FF7B00,
+        'text-18':#E07A5F,   // was #FF7B00 template orange
         'text-19':#040908,
         'text-20':#007F5F,
         'text-21':#060D14,
@@ -29,6 +42,11 @@ $colors: (
         'text-27':#5C7AFF,
         'text-primary': #E07A5F,
         'text-dark': #2F3E46,
+        // Brand accent gold. Previously defined nowhere and used nowhere on
+        // the site despite being one of the three stated brand colours; it
+        // only appeared inside the logo SVG. Registered here so it is part
+        // of the system - currently used for the hero eyebrow rule.
+        'text-accent': #D99B34,
     ),
     'bg': (
         'bg-1': #fff,
@@ -40,10 +58,10 @@ $colors: (
         'bg-7': #081511,
         'bg-8': #2F3E46,
         'bg-9': #E07A5F,
-        'bg-10':#FB8500,
+        'bg-10':#E07A5F,     // was #FB8500 template orange - social/hover fills
         'bg-11':#B34D33,
         'bg-12':#0D0F18,
-        'bg-13':#FF7B00,
+        'bg-13':#E07A5F,     // was #FF7B00 template orange
         'bg-14':#100F22,
         'bg-15':#007F5F,
         'bg-16':#040908,
