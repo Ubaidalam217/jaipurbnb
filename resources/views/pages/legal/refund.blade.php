@@ -50,15 +50,14 @@
 
   <h2>3. Verification and the 48-hour window</h2>
   <p>
-    Every listing is <strong>manually reviewed by a member of our team</strong> — we do not
-    auto-approve. Review begins once payment is received and is completed
+    Every listing is <strong>manually reviewed by a member of our team</strong>, not auto-approved. Review begins once payment is received and is completed
     <strong>within 48 hours</strong>. Where a submission is received on a Sunday or a public
     holiday, review is completed on the next working day.
   </p>
   <p>The outcome will be one of the following:</p>
   <ul>
-    <li><strong>Approved</strong> — your listing goes live immediately and your subscription period begins.</li>
-    <li><strong>Rejected</strong> — your listing does not go live and a <strong>100% refund</strong> of the subscription fee is initiated, as set out in section 1.</li>
+    <li><strong>Approved</strong>, your listing goes live immediately and your subscription period begins.</li>
+    <li><strong>Rejected</strong>, your listing does not go live and a <strong>100% refund</strong> of the subscription fee is initiated, as set out in section 1.</li>
   </ul>
   <p>
     You will be notified of the outcome by email at the address registered on your host
@@ -71,7 +70,7 @@
     <li>your listing is <strong>rejected at verification</strong> for failing to meet our verification or quality standards;</li>
     <li>a <strong>duplicate payment</strong> was taken for the same listing and the same period, due to a technical error;</li>
     <li>you were <strong>charged but no listing was created</strong> because of a fault on our side; or</li>
-    <li>a payment was <strong>debited but the transaction failed</strong> and did not activate a subscription. Such amounts are usually reversed automatically by the payment gateway or your bank within 5–7 working days.</li>
+    <li>a payment was <strong>debited but the transaction failed</strong> and did not activate a subscription. Such amounts are usually reversed automatically by the payment gateway or your bank within 5-7 working days.</li>
   </ul>
 
   <h2>5. When a refund is not available</h2>
@@ -82,7 +81,7 @@
   </p>
   <ul>
     <li>you choose to remove, hide, pause or delete a live listing before its period ends;</li>
-    <li>you are dissatisfied with the number of enquiries, views or bookings received — JaipurBnB sells directory placement, not a guaranteed volume of business;</li>
+    <li>you are dissatisfied with the number of enquiries, views or bookings received, JaipurBnB sells directory placement, not a guaranteed volume of business;</li>
     <li>your property becomes unavailable, is sold, or you stop hosting;</li>
     <li>the listing or the host account is <strong>suspended or terminated for breach</strong> of our <a href="{{ route('legal.terms') }}">Terms &amp; Conditions</a> or <a href="{{ route('legal.host-terms') }}">Host Listing Terms</a>, including for fraudulent, misleading or unlawful content;</li>
     <li>the subscription simply <strong>expires</strong> at the end of its term; or</li>
@@ -98,13 +97,13 @@
   <p>
     You may stop using the service at any time by simply not renewing. If you wish to take a
     live listing down before its period ends, you may do so from the host dashboard or by
-    writing to us — but as set out in section 5, the fee for the current period is not
+    writing to us, but as set out in section 5 the fee for the current period is not
     refundable.
   </p>
 
   <h2>7. How refunds are processed</h2>
   <ul>
-    <li>Refunds are made <strong>only to the original payment source</strong> used for the transaction — the same card, UPI handle, wallet or bank account. We cannot redirect a refund to a different instrument or to a third party.</li>
+    <li>Refunds are made <strong>only to the original payment source</strong> used for the transaction, the same card, UPI handle, wallet or bank account. We cannot redirect a refund to a different instrument or to a third party.</li>
     <li>Refunds are processed through <strong>Razorpay</strong>, our payment gateway.</li>
     <li>JaipurBnB initiates the refund promptly after a rejection decision. The amount is credited <strong>within 5-7 working days</strong>.</li>
     <li>The final leg of the credit is controlled by your bank, card issuer or UPI provider and their processing time may extend the total slightly. Any such delay is outside our control.</li>
@@ -113,8 +112,8 @@
 
   <h2>8. How to request a refund</h2>
   <p>
-    Where a listing is rejected at verification, <strong>you do not need to do anything</strong>
-    — the refund is initiated by us automatically.
+    Where a listing is rejected at verification, <strong>you do not need to do anything</strong>.
+    The refund is initiated by us automatically.
   </p>
   <p>In any other case covered by section 4, write to us with:</p>
   <ol>
@@ -142,7 +141,7 @@
   <h2>10. Disputes</h2>
   <p>
     Any dispute concerning a refund is governed by the dispute resolution and governing law
-    provisions of our <a href="{{ route('legal.terms') }}">Terms &amp; Conditions</a> —
+    provisions of our <a href="{{ route('legal.terms') }}">Terms &amp; Conditions</a> -
     arbitration seated at Jaipur, Rajasthan, under the laws of India. Complaints may be
     raised with our Grievance Officer at
     <a href="mailto:hello@jaipurbnb.com" style="text-transform:none;">hello@jaipurbnb.com</a>.

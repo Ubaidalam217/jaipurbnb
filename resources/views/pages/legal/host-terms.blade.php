@@ -8,7 +8,7 @@
 --}}
 @extends('layouts.legal', [
   'pageTitle' => 'Host & Property Listing Terms',
-  'pageIntro' => 'The additional terms that apply when you list a property on JaipurBnB — your responsibilities, how verification works, and how subscriptions run.',
+  'pageIntro' => 'The additional terms that apply when you list a property on JaipurBnB, your responsibilities, how verification works, and how subscriptions run.',
 ])
 
 @section('legal_body')
@@ -66,7 +66,7 @@
     <li><strong>Photographs</strong> must be of the actual property being listed, taken within a reasonable recent period, and must not be stock images, renders, images of a different property, or images edited so as to misrepresent the space.</li>
     <li><strong>Descriptions and amenities</strong> must accurately reflect what a guest will actually receive. Do not list amenities that are unavailable, out of order or chargeable extra without saying so.</li>
     <li><strong>Location and neighbourhood</strong> must be stated accurately. Do not select a more desirable neighbourhood than the one the property is actually in.</li>
-    <li><strong>Tariffs</strong> shown must be the genuine rates you intend to honour. Any mandatory additional charge — cleaning fee, deposit, extra-guest charge — must be disclosed in the listing.</li>
+    <li><strong>Tariffs</strong> shown must be the genuine rates you intend to honour. Any mandatory additional charge (cleaning fee, deposit, extra-guest charge) must be disclosed in the listing.</li>
     <li><strong>Contact number</strong> must be a working number that you control and that can receive WhatsApp messages and calls. It will be displayed publicly to guests.</li>
     <li><strong>Availability</strong> shown on your calendar must be kept up to date.</li>
   </ul>
@@ -95,9 +95,9 @@
     listing moves through three states:
   </p>
   <ul>
-    <li><strong>Pending approval</strong> — submitted and paid for, awaiting our review. Not visible to guests.</li>
-    <li><strong>Approved and live</strong> — published in the directory and visible to guests for the duration of your subscription.</li>
-    <li><strong>Rejected</strong> — not published, and a full refund is initiated under the <a href="{{ route('legal.refund') }}">Refund &amp; Cancellation Policy</a>.</li>
+    <li><strong>Pending approval</strong>, submitted and paid for, awaiting our review. Not visible to guests.</li>
+    <li><strong>Approved and live</strong>, published in the directory and visible to guests for the duration of your subscription.</li>
+    <li><strong>Rejected</strong>, not published, and a full refund is initiated under the <a href="{{ route('legal.refund') }}">Refund &amp; Cancellation Policy</a>.</li>
   </ul>
   <p>Review is completed <strong>within 48 hours</strong> of payment. We may reject a listing where, in our reasonable judgement:</p>
   <ul>
@@ -176,7 +176,7 @@
     <li>honouring the tariff and terms you agreed with the guest;</li>
     <li>providing the property in the condition described, clean, safe and habitable;</li>
     <li>handling check-in, check-out, deposits, cancellations and refunds on the terms you agreed with the guest;</li>
-    <li>maintaining adequate <strong>property and public liability insurance</strong> — JaipurBnB provides no insurance, guarantee or host protection cover of any kind; and</li>
+    <li>maintaining adequate <strong>property and public liability insurance</strong>, JaipurBnB provides no insurance, guarantee or host protection cover of any kind; and</li>
     <li>resolving any dispute with the guest directly.</li>
   </ul>
   <p>
@@ -228,7 +228,7 @@
   <p>
     These Host Terms are governed by the <strong>laws of India</strong> and are subject to the
     dispute resolution and jurisdiction provisions in sections 13 and 14 of the
-    <a href="{{ route('legal.terms') }}">Terms &amp; Conditions</a> — arbitration seated at
+    <a href="{{ route('legal.terms') }}">Terms &amp; Conditions</a>, arbitration seated at
     <strong>Jaipur, Rajasthan</strong>, with the courts at Jaipur having exclusive
     jurisdiction.
   </p>

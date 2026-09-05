@@ -1,5 +1,5 @@
 {{--
-  JaipurBnB — primary site navigation.
+  JaipurBnB primary site navigation.
 
   Self-contained by design: every rule below is scoped to .jb-nav / .jb-offcanvas
   and has ZERO dependency on the template SCSS. The only external requirement is
@@ -8,7 +8,7 @@
   Contrast (against #FFFFFF):
     #2F3E46 nav links ......... 11.06:1  (AA + AAA)
     #B34D33 CTA bg / white text  5.21:1  (AA)
-    #E07A5F wordmark .......... 2.95:1  — permitted: WCAG 2.1 SC 1.4.3 exempts
+    #E07A5F wordmark .......... 2.95:1, permitted: WCAG 2.1 SC 1.4.3 exempts
                                           text that is part of a logo/brand name.
                                           Not used for any functional text.
 --}}
@@ -50,7 +50,10 @@
 
     /* ---------- bar ---------- */
     .jb-nav {
-        --jb-h: 72px;
+        /* Bar height has to clear the logo: 85px logo + 2x10px breathing room.
+           .jb-nav__inner sets height (not min-height), so a logo taller than
+           this would spill out of the bar rather than grow it. */
+        --jb-h: 104px;
         position: sticky;
         top: 0;
         z-index: 1030;
@@ -96,11 +99,14 @@
         background: transparent !important;
     }
 
-    @media (max-width: 768px) {
+    /* Breakpoint matches the --jb-h switch at 991.98px below. It used to be
+       768px, which left 768-992px rendering the full-size logo inside the
+       already-shortened bar. */
+    @media (max-width: 991.98px) {
         .navbar-logo {
-            /* !important is required: the <img> carries an inline height:65px,
+            /* !important is required: the <img> carries an inline height:85px,
                which would otherwise outrank this class selector. */
-            height: 50px !important;
+            height: 65px !important;
         }
     }
 
@@ -358,7 +364,8 @@
     /* ---------- breakpoint ---------- */
     @media (max-width: 991.98px) {
         .jb-nav {
-            --jb-h: 60px;
+            /* 65px logo + 2x9px. Was 60px, which the 65px logo overflowed. */
+            --jb-h: 83px;
         }
 
         .jb-nav__inner {
@@ -390,7 +397,7 @@
 
 <nav class="jb-nav" aria-label="Primary">
     <div class="jb-nav__inner">
-        <a class="jb-nav__brand" href="{{ url('/') }}"><img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" style="height: 65px; width: auto; background: transparent;" class="navbar-logo"></a>
+        <a class="jb-nav__brand" href="{{ url('/') }}"><img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" style="height: 85px; width: auto; background: transparent;" class="navbar-logo"></a>
 
         <div class="jb-nav__desktop">
             <ul class="jb-nav__menu">
@@ -437,7 +444,7 @@
          id="jbMobileNav"
          aria-labelledby="jbMobileNavLabel">
         <div class="jb-offcanvas__header">
-            <a class="jb-offcanvas__brand" id="jbMobileNavLabel" href="{{ url('/') }}"><img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" style="height: 65px; width: auto; background: transparent;" class="navbar-logo"></a>
+            <a class="jb-offcanvas__brand" id="jbMobileNavLabel" href="{{ url('/') }}"><img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" style="height: 85px; width: auto; background: transparent;" class="navbar-logo"></a>
             <button class="jb-offcanvas__close"
                     type="button"
                     data-bs-dismiss="offcanvas"

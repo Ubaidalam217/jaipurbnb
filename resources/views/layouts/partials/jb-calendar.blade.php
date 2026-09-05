@@ -64,15 +64,18 @@
                         @endphp
 
                         @if ($jbClickable)
+                            {{-- data-day-label carries the human date so the toggle script can
+                                 rebuild this aria-label without parsing it back apart. --}}
                             <button type="button"
                                     class="{{ implode(' ', $jbClasses) }}"
                                     data-date="{{ $day['date'] }}"
+                                    data-day-label="{{ $day['label'] }}"
                                     aria-pressed="{{ $day['is_available'] ? 'false' : 'true' }}"
-                                    aria-label="{{ $day['label'] }} — {{ $jbState }}. Select to {{ $day['is_available'] ? 'block' : 'unblock' }}.">{{ $day['day'] }}</button>
+                                    aria-label="{{ $day['label'] }}, {{ $jbState }}. Select to {{ $day['is_available'] ? 'block' : 'unblock' }}.">{{ $day['day'] }}</button>
                         @else
                             <span class="{{ implode(' ', $jbClasses) }}"
-                                  aria-label="{{ $day['label'] }} — {{ $jbState }}"
-                                  @if ($day['is_locked'] && ! $day['is_past']) title="{{ ucfirst($jbState) }} — not editable here" @endif>{{ $day['day'] }}@if ($jbInteractive && $day['is_locked'] && ! $day['is_past'])<i class="fa-solid fa-lock jb-cal__lock" aria-hidden="true"></i>@endif</span>
+                                  aria-label="{{ $day['label'] }}, {{ $jbState }}"
+                                  @if ($day['is_locked'] && ! $day['is_past']) title="{{ ucfirst($jbState) }}, not editable here" @endif>{{ $day['day'] }}@if ($jbInteractive && $day['is_locked'] && ! $day['is_past'])<i class="fa-solid fa-lock jb-cal__lock" aria-hidden="true"></i>@endif</span>
                         @endif
                     @endforeach
                 </div>

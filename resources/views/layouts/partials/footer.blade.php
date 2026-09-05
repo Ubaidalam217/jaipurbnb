@@ -101,10 +101,12 @@
                                 {{-- Logo ink is dark (navy/brown) and the footer is dark charcoal,
                                      so the transparent SVG sits on a light chip to stay legible. --}}
                                 <a href="{{ url('/') }}" style="display:inline-block;background:#FFFDF7;padding:8px 12px;border-radius:8px;line-height:0;text-decoration:none;">
-                                    {{-- Compact variant (no tagline): at 48px the tagline in the
-                                         master lockup renders under 2px tall. See the header
-                                         comment in jaipurbnb-logo-compact.svg. --}}
-                                    <img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" style="height:48px;width:auto;display:block;">
+                                    {{-- Compact variant (no tagline): even at 70px the tagline in
+                                         the master lockup would render under 3px tall. See the
+                                         header comment in jaipurbnb-logo-compact.svg.
+                                         The inline height also has to beat _footer-1.scss, which
+                                         pins .footer-logo img to 150x48 with object-fit:contain. --}}
+                                    <img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" style="height:70px;width:auto;display:block;">
                                 </a>
                             </div>
                             <div class="footer-menu">

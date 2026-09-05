@@ -32,18 +32,18 @@
 
   <h3>2.1 Data you give us directly</h3>
   <ul>
-    <li><strong>Host account details</strong> — full name, email address, mobile number and a password (stored only as a one-way cryptographic hash, never in readable form).</li>
-    <li><strong>Property listing details</strong> — property title, description, neighbourhood, address, stay type, tariff, amenities, house rules and up to fifteen photographs per listing.</li>
-    <li><strong>Contact number for guest enquiries</strong> — the mobile number you nominate is displayed to guests on your listing so they can reach you by WhatsApp or call.</li>
-    <li><strong>Calendar feed URL</strong> — if you choose to connect an external availability calendar (for example an Airbnb iCal link), we store that URL in order to read availability from it.</li>
-    <li><strong>Correspondence</strong> — anything you send us by email or telephone.</li>
+    <li><strong>Host account details</strong>, full name, email address, mobile number and a password (stored only as a one-way cryptographic hash, never in readable form).</li>
+    <li><strong>Property listing details</strong>, property title, description, neighbourhood, address, stay type, tariff, amenities, house rules and up to fifteen photographs per listing.</li>
+    <li><strong>Contact number for guest enquiries</strong>, the mobile number you nominate is displayed to guests on your listing so they can reach you by WhatsApp or call.</li>
+    <li><strong>Calendar feed URL</strong>, if you choose to connect an external availability calendar (for example an Airbnb iCal link), we store that URL in order to read availability from it.</li>
+    <li><strong>Correspondence</strong>, anything you send us by email or telephone.</li>
   </ul>
 
   <h3>2.2 Data we collect automatically</h3>
   <ul>
-    <li><strong>Listing engagement data</strong> — when a visitor views a listing page or taps its WhatsApp or Call button, we record the event type and time so hosts can see how their listing is performing. These records are used for aggregate counts shown in the host dashboard.</li>
-    <li><strong>Technical data</strong> — IP address, browser type and version, device type, operating system, referring page and pages visited, collected through standard server logs.</li>
-    <li><strong>Session data</strong> — a session identifier used to keep you logged in.</li>
+    <li><strong>Listing engagement data</strong>, when a visitor views a listing page or taps its WhatsApp or Call button, we record the event type and time so hosts can see how their listing is performing. These records are used for aggregate counts shown in the host dashboard.</li>
+    <li><strong>Technical data</strong>, IP address, browser type and version, device type, operating system, referring page and pages visited, collected through standard server logs.</li>
+    <li><strong>Session data</strong>, a session identifier used to keep you logged in.</li>
   </ul>
 
   <h3>2.3 Data we do not collect</h3>
@@ -68,13 +68,13 @@
     permitted under section 7 of the DPDP Act, 2023:
   </p>
   <ul>
-    <li><strong>To provide the service</strong> — create and authenticate your account, publish your listing, and display your contact details to prospective guests.</li>
-    <li><strong>To verify listings</strong> — our team manually reviews each submitted listing before it goes live, as described in the <a href="{{ route('legal.host-terms') }}">Host Listing Terms</a>.</li>
-    <li><strong>To process subscription payments</strong> — take payment for listing plans and maintain a record of transactions.</li>
-    <li><strong>To provide analytics to hosts</strong> — show you how many people viewed your listing and tapped through to contact you.</li>
-    <li><strong>To communicate with you</strong> — send transactional emails such as listing approval or rejection notices, payment confirmations, expiry reminders and password reset links.</li>
-    <li><strong>To keep the platform secure</strong> — detect and prevent fraud, abuse, spam and unauthorised access.</li>
-    <li><strong>To comply with law</strong> — meet our obligations under Indian tax, accounting and information technology law, and respond to lawful requests from authorities.</li>
+    <li><strong>To provide the service</strong>, create and authenticate your account, publish your listing, and display your contact details to prospective guests.</li>
+    <li><strong>To verify listings</strong>, our team manually reviews each submitted listing before it goes live, as described in the <a href="{{ route('legal.host-terms') }}">Host Listing Terms</a>.</li>
+    <li><strong>To process subscription payments</strong>, take payment for listing plans and maintain a record of transactions.</li>
+    <li><strong>To provide analytics to hosts</strong>, show you how many people viewed your listing and tapped through to contact you.</li>
+    <li><strong>To communicate with you</strong>, send transactional emails such as listing approval or rejection notices, payment confirmations, expiry reminders and password reset links.</li>
+    <li><strong>To keep the platform secure</strong>, detect and prevent fraud, abuse, spam and unauthorised access.</li>
+    <li><strong>To comply with law</strong>, meet our obligations under Indian tax, accounting and information technology law, and respond to lawful requests from authorities.</li>
   </ul>
   <p>
     We do not sell your personal data, and we do not use it to serve third-party
@@ -84,9 +84,9 @@
   <h2>4. Cookies and similar technologies</h2>
   <p>We use a small number of browser cookies. We do not use advertising or cross-site tracking cookies.</p>
   <ul>
-    <li><strong>Strictly necessary cookies</strong> — a session cookie that keeps you signed in, and a CSRF token cookie that protects forms against cross-site request forgery. The platform cannot function without these.</li>
-    <li><strong>Preference cookies</strong> — remember choices such as filters you have applied while browsing.</li>
-    <li><strong>Payment gateway cookies</strong> — set by Razorpay when a payment window is opened, to secure and complete that transaction.</li>
+    <li><strong>Strictly necessary cookies</strong>, a session cookie that keeps you signed in, and a CSRF token cookie that protects forms against cross-site request forgery. The platform cannot function without these.</li>
+    <li><strong>Preference cookies</strong>, remember choices such as filters you have applied while browsing.</li>
+    <li><strong>Payment gateway cookies</strong>, set by Razorpay when a payment window is opened, to secure and complete that transaction.</li>
   </ul>
   <p>
     Most browsers let you refuse or delete cookies through their settings. Blocking
@@ -132,8 +132,8 @@
 
   <h3>5.5 Other hosts and guests</h3>
   <p>
-    Information you choose to publish in a listing — including your nominated contact
-    number, property photographs and the property's neighbourhood — is
+    Information you choose to publish in a listing (including your nominated contact
+    number, property photographs and the property's neighbourhood) is
     <strong>publicly visible</strong> to anyone browsing the platform. Please do not include
     anything in a listing that you would not want to be public.
   </p>
@@ -147,10 +147,10 @@
 
   <h2>6. How long we keep your data</h2>
   <ul>
-    <li><strong>Host account and listing data</strong> — for as long as your account is open. If a subscription expires, the listing is hidden from public view but its data is retained so that you can renew and restore it.</li>
-    <li><strong>Transaction records</strong> — retained for a minimum of eight (8) years, to meet Indian tax and accounting record-keeping requirements.</li>
-    <li><strong>Listing engagement records</strong> — retained while the listing exists so that historical performance remains visible to the host.</li>
-    <li><strong>Server logs</strong> — typically retained for a short period for security and diagnostic purposes.</li>
+    <li><strong>Host account and listing data</strong>, for as long as your account is open. If a subscription expires, the listing is hidden from public view but its data is retained so that you can renew and restore it.</li>
+    <li><strong>Transaction records</strong>, retained for a minimum of eight (8) years, to meet Indian tax and accounting record-keeping requirements.</li>
+    <li><strong>Listing engagement records</strong>, retained while the listing exists so that historical performance remains visible to the host.</li>
+    <li><strong>Server logs</strong>, typically retained for a short period for security and diagnostic purposes.</li>
   </ul>
   <p>
     When you ask us to erase your account, we delete or irreversibly anonymise your personal
@@ -161,12 +161,12 @@
   <h2>7. Your rights</h2>
   <p>As a Data Principal under the DPDP Act, 2023, you have the right to:</p>
   <ul>
-    <li><strong>Access</strong> — obtain a summary of the personal data we hold about you and how it is processed.</li>
-    <li><strong>Correction</strong> — have inaccurate or incomplete data corrected, completed or updated. Hosts can edit most of their data directly from the host dashboard.</li>
-    <li><strong>Erasure</strong> — ask us to delete personal data that is no longer needed for the purpose it was collected, subject to our legal retention obligations.</li>
-    <li><strong>Withdraw consent</strong> — withdraw consent you have given, at any time. Withdrawing consent does not affect processing carried out before the withdrawal, and may mean we can no longer keep your listing live.</li>
-    <li><strong>Grievance redressal</strong> — raise a complaint with us about how we handle your data (see section 10).</li>
-    <li><strong>Nominate</strong> — nominate another individual to exercise your rights in the event of your death or incapacity.</li>
+    <li><strong>Access</strong>, obtain a summary of the personal data we hold about you and how it is processed.</li>
+    <li><strong>Correction</strong>, have inaccurate or incomplete data corrected, completed or updated. Hosts can edit most of their data directly from the host dashboard.</li>
+    <li><strong>Erasure</strong>, ask us to delete personal data that is no longer needed for the purpose it was collected, subject to our legal retention obligations.</li>
+    <li><strong>Withdraw consent</strong>, withdraw consent you have given, at any time. Withdrawing consent does not affect processing carried out before the withdrawal, and may mean we can no longer keep your listing live.</li>
+    <li><strong>Grievance redressal</strong>, raise a complaint with us about how we handle your data (see section 10).</li>
+    <li><strong>Nominate</strong>, nominate another individual to exercise your rights in the event of your death or incapacity.</li>
   </ul>
   <p>
     To exercise any of these rights, email
@@ -209,7 +209,7 @@
     <p>
       <strong>Grievance Officer, JaipurBnB</strong><br>
       Email: <a href="mailto:hello@jaipurbnb.com" style="text-transform:none;">hello@jaipurbnb.com</a><br>
-      Phone: <a href="tel:{{ config('contact.phone_tel') }}">{{ config('contact.phone') }}</a> (Monday to Saturday, 10am – 7pm IST)<br>
+      Phone: <a href="tel:{{ config('contact.phone_tel') }}">{{ config('contact.phone') }}</a> (Monday to Saturday, 10am to 7pm IST)<br>
       Address: Jaipur, Rajasthan, India
     </p>
     <p>

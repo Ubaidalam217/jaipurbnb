@@ -19,7 +19,7 @@
           <h1 style="color:#fff;font-family:'Poppins',sans-serif;font-size:40px;font-weight:700;line-height:1.2;">Contact JaipurBnB</h1>
           <div class="space16"></div>
           <p style="color:rgba(255,255,255,.82);font-family:'Poppins',sans-serif;font-size:16px;line-height:1.7;">
-            Booking a stay? Contact the host directly from any listing — that is
+            Booking a stay? Contact the host directly from any listing. That is
             how JaipurBnB works, and it gets you an answer fastest.
           </p>
           <div class="space24"></div>
@@ -52,7 +52,7 @@
             <h3 style="color:#2F3E46;font-family:'Poppins',sans-serif;font-size:20px;font-weight:700;">Call us</h3>
             <div class="space12"></div>
             <p style="font-family:'Poppins',sans-serif;font-size:16px;line-height:1.7;">
-              Monday to Saturday, 10am – 7pm IST.
+              Monday to Saturday, 10am to 7pm IST.
             </p>
             <div class="space12"></div>
             {{-- CONTACT_PHONE in .env (config/contact.php). --}}

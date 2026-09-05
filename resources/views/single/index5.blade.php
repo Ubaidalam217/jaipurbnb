@@ -248,7 +248,7 @@
               <div class="space16"></div>
               <p data-aos="fade-left" data-aos-duration="900">
                 Dates the host has already blocked are greyed out. Message them on WhatsApp to
-                confirm before you plan around it — bookings are agreed directly with the host.
+                confirm before you plan around it, because bookings are agreed directly with the host.
               </p>
             </div>
           </div>
@@ -351,7 +351,7 @@
               <div class="space20"></div>
               <h2 class="text-anime-style-3">Contact the Host Directly</h2>
               <div class="space16"></div>
-              <p data-aos="fade-left" data-aos-duration="1000">Message {{ $property->host->name }} on WhatsApp or call directly to check dates and agree a price. JaipurBnB takes no booking fee and no commission — you deal with the host, not us.</p>
+              <p data-aos="fade-left" data-aos-duration="1000">Message {{ $property->host->name }} on WhatsApp or call directly to check dates and agree a price. JaipurBnB takes no booking fee and no commission, so you deal with the host, not us.</p>
               <div class="space32"></div>
               <div class="btn-area1" data-aos="fade-left" data-aos-duration="1200">
                 @include('layouts.partials.contact-buttons', ['property' => $property])

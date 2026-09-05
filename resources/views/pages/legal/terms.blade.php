@@ -19,7 +19,7 @@
     <ol>
       <li>Who we are</li>
       <li>Acceptance of these terms</li>
-      <li>What JaipurBnB is — and what it is not</li>
+      <li>What JaipurBnB is, and what it is not</li>
       <li>Eligibility</li>
       <li>Your account</li>
       <li>Acceptable use of the platform</li>
@@ -62,7 +62,7 @@
   </p>
   <p>If you do not agree with any part of these Terms, please do not use the platform.</p>
 
-  <h2>3. What JaipurBnB is — and what it is not</h2>
+  <h2>3. What JaipurBnB is, and what it is not</h2>
   <p>
     JaipurBnB is a <strong>discovery and listing directory</strong>. Hosts pay a
     subscription fee to display their property. Guests browse the directory free of charge
@@ -156,8 +156,8 @@
 
   <h3>7.3 Accuracy of listings</h3>
   <p>
-    Listing information — including descriptions, photographs, tariffs, amenities and
-    availability — is supplied by hosts. Availability data may additionally be imported
+    Listing information (including descriptions, photographs, tariffs, amenities and
+    availability) is supplied by hosts. Availability data may additionally be imported
     from a host's external calendar feed (for example, an Airbnb iCal link) and is
     synchronised periodically. Such data may therefore be out of date at the moment you
     view it. <strong>We do not verify the ongoing accuracy of listing information and make
@@ -266,7 +266,7 @@
     <p>
       <strong>Grievance Officer, JaipurBnB</strong><br>
       Email: <a href="mailto:hello@jaipurbnb.com" style="text-transform:none;">hello@jaipurbnb.com</a><br>
-      Phone: <a href="tel:{{ config('contact.phone_tel') }}">{{ config('contact.phone') }}</a> (Monday to Saturday, 10am – 7pm IST)<br>
+      Phone: <a href="tel:{{ config('contact.phone_tel') }}">{{ config('contact.phone') }}</a> (Monday to Saturday, 10am to 7pm IST)<br>
       Address: Jaipur, Rajasthan, India
     </p>
     <p>

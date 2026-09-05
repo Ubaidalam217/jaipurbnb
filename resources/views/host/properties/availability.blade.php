@@ -39,7 +39,7 @@
 
         @if ($property->ical_feed_url)
           <p class="jb-cal__note">
-            Dates pulled from your external calendar / iCal URL are locked here — clear them in that
+            Dates pulled from your external calendar / iCal URL are locked here. Clear them in that
             calendar and they will disappear on the next sync.
           </p>
         @endif
@@ -87,10 +87,13 @@
       cell.classList.toggle('jb-cal__day--available', !blocked);
       cell.setAttribute('aria-pressed', blocked ? 'true' : 'false');
 
-      var label = cell.getAttribute('aria-label').split(' — ')[0];
+      // Read the date off data-day-label rather than splitting the existing
+      // aria-label on a separator - that coupled this script to the exact
+      // punctuation used in jb-calendar.blade.php.
+      var label = cell.dataset.dayLabel || '';
       cell.setAttribute(
         'aria-label',
-        label + ' — ' + (blocked ? 'blocked' : 'available') +
+        label + ', ' + (blocked ? 'blocked' : 'available') +
         '. Select to ' + (blocked ? 'unblock' : 'block') + '.'
       );
     }
@@ -128,7 +131,7 @@
           announce(result.payload.blocked ? 'Date blocked.' : 'Date opened up.');
         })
         .catch(function () {
-          announce('Network error — the date was not saved.', true);
+          announce('Network error, the date was not saved.', true);
         })
         .finally(function () {
           cell.disabled = false;

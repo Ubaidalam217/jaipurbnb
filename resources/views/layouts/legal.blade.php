@@ -235,7 +235,7 @@
             Write to us at
             <a href="mailto:hello@jaipurbnb.com" style="text-transform:none;">hello@jaipurbnb.com</a>
             or call <a href="tel:{{ config('contact.phone_tel') }}">{{ config('contact.phone') }}</a>
-            (Monday to Saturday, 10am – 7pm IST). JaipurBnB operates from Jaipur, Rajasthan, India.
+            (Monday to Saturday, 10am to 7pm IST). JaipurBnB operates from Jaipur, Rajasthan, India.
           </p>
         </div>
       </article>
