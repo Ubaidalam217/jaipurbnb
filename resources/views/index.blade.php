@@ -101,7 +101,9 @@
       .property3-section-area .property-images-area .img1,
       .property3-section-area .property-images-area .img2,
       .about-video-area .img1,
-      .about-widget-images .img1 {
+      .about-widget-images .img1,
+      .others3-section-area .images-area .img1,
+      .others3-section-area .images-area .img2 {
         display: block !important;
         width: 100% !important;
         max-width: 100% !important;
@@ -118,10 +120,29 @@
         object-position: center;
       }
 
+      /* "Ready to Explore" needs !important on the <img> as well as the
+         wrapper. _others.scss pins these to width:250px and height:100% and
+         only relaxes them inside its own $xs block, which the inline-box
+         wrapper's shrink-to-fit sizing defeats - the image stayed 280px in a
+         351px column, flush to the screen edge. height:auto lets the photo
+         keep its aspect ratio once it spans the full width.
+
+         These are NOT overlapping on mobile: _others.scss already zeroes the
+         desktop offsets (margin-left:140px / margin-top:-370px / top:-70px)
+         at $xs, so the pair stacks. Only the width was wrong. */
+      .others3-section-area .images-area .img1 img,
+      .others3-section-area .images-area .img2 img {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: cover;
+        object-position: center;
+      }
+
       /* Catches any inline-level leftovers inside these blocks. */
       .property3-section-area .property-images-area,
       .about-video-area,
-      .about-widget-images {
+      .about-widget-images,
+      .others3-section-area .images-area {
         text-align: center;
       }
 
