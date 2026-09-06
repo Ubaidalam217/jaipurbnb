@@ -20,6 +20,11 @@ $phone = env('CONTACT_PHONE', '+91 00000 00000');
 
 return [
 
+    // Where the /contact enquiry form delivers. Set CONTACT_EMAIL in .env.
+    // Read through config() and never env() directly from a controller -
+    // env() returns null once config:cache has run on the server.
+    'email' => env('CONTACT_EMAIL', 'hello@jaipurbnb.com'),
+
     // Display form, exactly as typed in .env (spaces and all).
     'phone' => $phone,
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Host\AvailabilityController;
 use App\Http\Controllers\Host\PaymentController;
 use App\Http\Controllers\Host\PropertyController as HostPropertyController;
@@ -43,6 +44,13 @@ Route::post('/webhooks/razorpay', [PaymentController::class, 'webhook'])
     ->name('webhooks.razorpay');
 
 Route::get('/contact', fn () => view('pages.contact'))->name('contact');
+
+// Contact enquiry form. throttle:5,1 matches the treatment every other public
+// POST endpoint gets here (login, register, password reset) - an unthrottled
+// public form that sends mail is a spam relay waiting to happen.
+Route::post('/contact', [ContactController::class, 'send'])
+    ->middleware('throttle:5,1')
+    ->name('contact.send');
 
 // Legal pages. Static views, no controller - they take no input and query
 // nothing. Linked from the footer and from the signup/checkout notices.

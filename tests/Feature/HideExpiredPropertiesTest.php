@@ -140,12 +140,36 @@ class HideExpiredPropertiesTest extends TestCase
             ->assertSuccessful();
     }
 
+    /**
+     * Matches on the event description, not on $event->command.
+     *
+     * routes/console.php registers this through Schedule::call() rather than
+     * Schedule::command(), because Hostinger disables proc_open and
+     * Schedule::command() always forks a subprocess. A callback event has a
+     * null ->command, so the ->name('properties:hide-expired') given at
+     * registration - which lands in ->description - is what identifies it.
+     */
     public function test_the_daily_midnight_schedule_is_registered(): void
     {
         $events = collect(app(\Illuminate\Console\Scheduling\Schedule::class)->events())
-            ->filter(fn ($event) => str_contains($event->command ?? '', 'properties:hide-expired'));
+            ->filter(fn ($event) => str_contains($event->description ?? '', 'properties:hide-expired'));
 
         $this->assertCount(1, $events, 'properties:hide-expired is not scheduled.');
         $this->assertSame('0 0 * * *', $events->first()->expression);
+    }
+
+    /**
+     * The scheduler must not shell out on this deployment - see above.
+     */
+    public function test_no_scheduled_task_forks_a_subprocess(): void
+    {
+        $forking = collect(app(\Illuminate\Console\Scheduling\Schedule::class)->events())
+            ->reject(fn ($event) => $event instanceof \Illuminate\Console\Scheduling\CallbackEvent);
+
+        $this->assertCount(
+            0,
+            $forking,
+            'Schedule::command() needs proc_open, which is disabled on Hostinger. Use Schedule::call(fn () => Artisan::call(...)) instead.'
+        );
     }
 }
