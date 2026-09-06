@@ -6,35 +6,86 @@
                 <div class="footer-instagram-area">
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="footer-contact-box" data-aos="zoom-in-up" data-aos-duration="1000">
+                            {{--
+                                Posts to ContactController@send, the same endpoint as the
+                                form on /contact. Both render on /contact at once, so the
+                                hidden source=footer tells the controller which one to
+                                flash back to; $fromFooter below gates every message and
+                                every old() call so the two never show each other's state.
+
+                                Alerts and errors are styled inline rather than in SCSS,
+                                for the reason given on the Legal column below: Hostinger
+                                has no Node and public/build is gitignored, so a SCSS
+                                change would mean a local rebuild plus a manual bundle
+                                upload. The colours are picked for the dark footer, where
+                                the light-background .jb-auth__alert styles are unreadable
+                                (and not loaded on most pages anyway).
+                            --}}
+                            @php($fromFooter = session('contact_source') === 'footer')
+
+                            <div class="footer-contact-box" id="footer-contact" data-aos="zoom-in-up" data-aos-duration="1000">
                                 <h3>Send Us A Message</h3>
                                 <div class="space16"></div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="space16"></div>
-                                        <div class="input-area">
-                                            <input type="text" placeholder="Your Name*">
+
+                                @if ($fromFooter && session('contact_success'))
+                                    <div role="status" data-contact-alert="footer" style="margin-bottom:16px;padding:12px 14px;border-radius:10px;border-left:3px solid #4ADE80;background:rgba(74,222,128,.12);color:#BBF7D0;font-family:'Poppins',sans-serif;font-size:14.5px;line-height:1.5;">
+                                        {{ session('contact_success') }}
+                                    </div>
+                                @endif
+
+                                @if ($fromFooter && session('contact_error'))
+                                    <div role="alert" data-contact-alert="footer" style="margin-bottom:16px;padding:12px 14px;border-radius:10px;border-left:3px solid #F87171;background:rgba(248,113,113,.12);color:#FECACA;font-family:'Poppins',sans-serif;font-size:14.5px;line-height:1.5;">
+                                        {{ session('contact_error') }}
+                                    </div>
+                                @endif
+
+                                @if ($fromFooter && $errors->any())
+                                    <div role="alert" data-contact-alert="footer" style="margin-bottom:16px;padding:12px 14px;border-radius:10px;border-left:3px solid #F87171;background:rgba(248,113,113,.12);color:#FECACA;font-family:'Poppins',sans-serif;font-size:14.5px;line-height:1.5;">
+                                        {{ $errors->first() }}
+                                    </div>
+                                @endif
+
+                                <form method="POST" action="{{ route('contact.send') }}" novalidate>
+                                    @csrf
+                                    <input type="hidden" name="source" value="footer">
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="space16"></div>
+                                            <div class="input-area">
+                                                <input type="text" name="name" id="footer-contact-name"
+                                                       placeholder="Your Name*" aria-label="Your name"
+                                                       maxlength="100" required
+                                                       value="{{ $fromFooter ? old('name') : '' }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="space16"></div>
+                                            <div class="input-area">
+                                                {{-- type="tel", not the template's type="number": a number
+                                                     spinner mangles leading zeros, +91 prefixes and spaces. --}}
+                                                <input type="tel" name="phone" id="footer-contact-phone"
+                                                       placeholder="Mobile Number*" aria-label="Mobile number"
+                                                       maxlength="20" required
+                                                       value="{{ $fromFooter ? old('phone') : '' }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="space16"></div>
+                                            <div class="input-area">
+                                                <textarea name="message" id="footer-contact-message"
+                                                          placeholder="Your Message*" aria-label="Your message"
+                                                          maxlength="2000" required>{{ $fromFooter ? old('message') : '' }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="space32"></div>
+                                            <div class="input-area text-end">
+                                                <button type="submit" class="header-btn4">Send Message</button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div class="space16"></div>
-                                        <div class="input-area">
-                                            <input type="number" placeholder="Mobile Number*">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="space16"></div>
-                                        <div class="input-area">
-                                            <textarea name="#" id="#" placeholder="Your Message*"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="space32"></div>
-                                        <div class="input-area text-end">
-                                            <button type="submit" class="header-btn4">Send Message</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                         <div class="col-lg-6">

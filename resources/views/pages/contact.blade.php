@@ -6,16 +6,16 @@
   @include('layouts.partials.navbar')
 
   {{--
-    The form below is the ONE form on the site that reaches JaipurBnB itself
-    (ContactController::send emails it to config('contact.email')). Guest to
-    host contact stays off-platform on the WhatsApp/Call buttons of each
-    listing - that is the product - so the hero still pushes people to /browse
-    first, and this form is for platform enquiries: billing, subscriptions,
-    "how do I list".
+    The form below reaches JaipurBnB itself (ContactController::send emails it
+    to config('contact.email')). Guest to host contact stays off-platform on
+    the WhatsApp/Call buttons of each listing - that is the product - so the
+    hero still pushes people to /browse first, and this form is for platform
+    enquiries: billing, subscriptions, "how do I list".
 
-    NOTE: the footer partial still carries the template's decorative
-    "Send Us A Message" block, which posts nowhere. It is unrelated to this
-    form and should either be wired to contact.send or removed.
+    The footer partial's "Send Us A Message" card posts to the SAME endpoint,
+    and the footer renders on this page too, so both forms are live here at
+    once. They are told apart by a hidden source input; see $fromPage below
+    and the comment in layouts/partials/footer.blade.php.
   --}}
   @include('layouts.partials.jb-auth-styles')
 
@@ -144,7 +144,14 @@
   </div>
 
   {{-- id="contact-form" is the fragment ContactController redirects back to,
-       so the flash message lands in view instead of at the top of the page. --}}
+       so the flash message lands in view instead of at the top of the page.
+
+       $fromPage gates every message and every old() call. The footer card
+       posts to the same endpoint and also renders on this page, so without
+       the gate a footer submission would light this form up too and
+       repopulate it with the footer's input. --}}
+  @php($fromPage = session('contact_source') === 'page')
+
   <div id="contact-form" style="padding:0 0 90px;">
     <div class="container">
       <div class="row">
@@ -158,56 +165,64 @@
               host directly from their listing instead - it is faster.
             </p>
 
-            @if (session('contact_success'))
-              <div class="jb-auth__alert jb-auth__alert--ok" role="status">{{ session('contact_success') }}</div>
+            @if ($fromPage && session('contact_success'))
+              <div class="jb-auth__alert jb-auth__alert--ok" role="status" data-contact-alert="page">{{ session('contact_success') }}</div>
             @endif
 
-            @if (session('contact_error'))
-              <div class="jb-auth__alert" role="alert">{{ session('contact_error') }}</div>
+            @if ($fromPage && session('contact_error'))
+              <div class="jb-auth__alert" role="alert" data-contact-alert="page">{{ session('contact_error') }}</div>
             @endif
 
-            @if ($errors->any())
-              <div class="jb-auth__alert" role="alert">{{ $errors->first() }}</div>
+            @if ($fromPage && $errors->any())
+              <div class="jb-auth__alert" role="alert" data-contact-alert="page">{{ $errors->first() }}</div>
             @endif
 
             <form method="POST" action="{{ route('contact.send') }}" novalidate>
               @csrf
+              <input type="hidden" name="source" value="page">
+
+              {{-- @error() cannot be used here: it reads the shared error bag
+                   and would fire on this form for a footer submission too.
+                   Resolve each message through $fromPage instead. --}}
+              @php($nameError = $fromPage ? $errors->first('name') : '')
+              @php($phoneError = $fromPage ? $errors->first('phone') : '')
+              @php($messageError = $fromPage ? $errors->first('message') : '')
 
               <div class="jb-auth__field">
                 <label class="jb-auth__label" for="contact-name">Your name <span class="jb-auth__req">*</span></label>
-                <input class="jb-auth__input @error('name') is-invalid @enderror"
+                <input class="jb-auth__input @if ($nameError) is-invalid @endif"
                        type="text" id="contact-name" name="name"
-                       value="{{ old('name') }}" maxlength="100" required
+                       value="{{ $fromPage ? old('name') : '' }}" maxlength="100" required
                        autocomplete="name"
-                       @error('name') aria-invalid="true" aria-describedby="contact-name-error" @enderror>
-                @error('name')
-                  <span class="jb-auth__error" id="contact-name-error" role="alert">{{ $message }}</span>
-                @enderror
+                       @if ($nameError) aria-invalid="true" aria-describedby="contact-name-error" @endif>
+                @if ($nameError)
+                  <span class="jb-auth__error" id="contact-name-error" role="alert">{{ $nameError }}</span>
+                @endif
               </div>
 
               <div class="jb-auth__field">
                 <label class="jb-auth__label" for="contact-phone">Phone number <span class="jb-auth__req">*</span></label>
                 {{-- type="tel", not type="number": a number spinner mangles
                      leading zeros, +91 prefixes and spaces. --}}
-                <input class="jb-auth__input @error('phone') is-invalid @enderror"
+                <input class="jb-auth__input @if ($phoneError) is-invalid @endif"
                        type="tel" id="contact-phone" name="phone"
-                       value="{{ old('phone') }}" maxlength="20" required
+                       value="{{ $fromPage ? old('phone') : '' }}" maxlength="20" required
                        autocomplete="tel"
-                       @error('phone') aria-invalid="true" aria-describedby="contact-phone-error" @enderror>
-                @error('phone')
-                  <span class="jb-auth__error" id="contact-phone-error" role="alert">{{ $message }}</span>
-                @enderror
+                       @if ($phoneError) aria-invalid="true" aria-describedby="contact-phone-error" @endif>
+                @if ($phoneError)
+                  <span class="jb-auth__error" id="contact-phone-error" role="alert">{{ $phoneError }}</span>
+                @endif
               </div>
 
               <div class="jb-auth__field">
                 <label class="jb-auth__label" for="contact-message">Your message <span class="jb-auth__req">*</span></label>
-                <textarea class="jb-auth__input @error('message') is-invalid @enderror"
+                <textarea class="jb-auth__input @if ($messageError) is-invalid @endif"
                           id="contact-message" name="message"
                           maxlength="2000" required
-                          @error('message') aria-invalid="true" aria-describedby="contact-message-error" @enderror>{{ old('message') }}</textarea>
-                @error('message')
-                  <span class="jb-auth__error" id="contact-message-error" role="alert">{{ $message }}</span>
-                @enderror
+                          @if ($messageError) aria-invalid="true" aria-describedby="contact-message-error" @endif>{{ $fromPage ? old('message') : '' }}</textarea>
+                @if ($messageError)
+                  <span class="jb-auth__error" id="contact-message-error" role="alert">{{ $messageError }}</span>
+                @endif
               </div>
 
               <button type="submit" class="jb-auth__btn">Send message</button>

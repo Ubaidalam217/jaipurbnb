@@ -54,8 +54,121 @@ class ContactFormTest extends TestCase
             ->assertSee('name="name"', false)
             ->assertSee('name="phone"', false)
             ->assertSee('name="message"', false)
+            ->assertSee('value="page"', false)
             // Laravel's @csrf directive renders a _token hidden input.
             ->assertSee('name="_token"', false);
+    }
+
+    /**
+     * The footer card posts to the same endpoint from every page that renders
+     * the footer partial. /terms is used here rather than the homepage only
+     * because the homepage queries properties and this class has no database.
+     */
+    public function test_the_footer_form_renders_site_wide(): void
+    {
+        $this->get('/terms')
+            ->assertStatus(200)
+            ->assertSee(route('contact.send'))
+            ->assertSee('id="footer-contact"', false)
+            ->assertSee('name="source" value="footer"', false)
+            ->assertSee('id="footer-contact-name"', false)
+            ->assertSee('id="footer-contact-phone"', false)
+            ->assertSee('id="footer-contact-message"', false)
+            ->assertSee('name="_token"', false)
+            // The template shipped type="number", which mangles +91 prefixes.
+            ->assertDontSee('placeholder="Mobile Number*" type="number"', false);
+    }
+
+    public function test_a_footer_submission_is_emailed_and_returns_to_the_footer_anchor(): void
+    {
+        $this->from('/terms')
+            ->post('/contact', self::VALID + ['source' => 'footer'])
+            ->assertRedirect('/terms#footer-contact')
+            ->assertSessionHas('contact_success')
+            ->assertSessionHas('contact_source', 'footer');
+
+        $this->assertCount(1, $this->sentMessages());
+    }
+
+    public function test_the_mail_records_which_page_the_enquiry_came_from(): void
+    {
+        $this->from('https://jaipurbnb.com/app/property/42')
+            ->post('/contact', self::VALID + ['source' => 'footer']);
+
+        $this->assertStringContainsString(
+            'https://jaipurbnb.com/app/property/42',
+            $this->sentMessages()->first()->getOriginalMessage()->getTextBody()
+        );
+    }
+
+    /**
+     * Both forms are on /contact at once and share one error bag and one set
+     * of old input, so a footer submission must not light up the page form -
+     * and vice versa.
+     *
+     * The assertion counts data-contact-alert hooks rather than CSS classes:
+     * the page's <style> block literally contains the string
+     * ".jb-auth__alert--ok", so matching on class names gives false hits.
+     *
+     * @return array<string, array{string, string, string}>
+     */
+    public static function formSources(): array
+    {
+        //          source      renders alerts   stays silent
+        return [
+            'footer' => ['footer', 'footer', 'page'],
+            'page'   => ['page', 'page', 'footer'],
+        ];
+    }
+
+    /**
+     * @dataProvider formSources
+     */
+    public function test_an_error_shows_only_on_the_form_that_was_submitted(string $source, string $shows, string $silent): void
+    {
+        $this->from('/contact')
+            ->post('/contact', ['source' => $source, 'name' => '', 'phone' => '9', 'message' => 'x'])
+            ->assertRedirect('/contact#'.($source === 'footer' ? 'footer-contact' : 'contact-form'))
+            ->assertSessionHasErrors('name');
+
+        $html = $this->get('/contact')->assertStatus(200)->getContent();
+
+        $this->assertSame(1, substr_count($html, 'data-contact-alert="'.$shows.'"'));
+        $this->assertSame(0, substr_count($html, 'data-contact-alert="'.$silent.'"'));
+
+        // The page form's per-field error span only ever belongs to the page form.
+        $source === 'page'
+            ? $this->assertStringContainsString('id="contact-name-error"', $html)
+            : $this->assertStringNotContainsString('id="contact-name-error"', $html);
+    }
+
+    /**
+     * @dataProvider formSources
+     */
+    public function test_a_success_message_shows_only_on_the_form_that_was_submitted(string $source, string $shows, string $silent): void
+    {
+        $this->from('/contact')->post('/contact', self::VALID + ['source' => $source]);
+
+        $html = $this->get('/contact')->assertStatus(200)->getContent();
+
+        $this->assertSame(1, substr_count($html, 'data-contact-alert="'.$shows.'"'));
+        $this->assertSame(0, substr_count($html, 'data-contact-alert="'.$silent.'"'));
+        $this->assertStringContainsString('Thanks! Your message has been sent.', $html);
+    }
+
+    /**
+     * Old input must not cross over either - a footer submission that fails
+     * validation must leave the page form's inputs empty.
+     */
+    public function test_old_input_does_not_cross_between_the_two_forms(): void
+    {
+        $this->from('/contact')
+            ->post('/contact', ['source' => 'footer', 'name' => 'Footer Person', 'phone' => '', 'message' => 'x']);
+
+        $html = $this->get('/contact')->assertStatus(200)->getContent();
+
+        // Once, in the footer input - not also in the page form's input.
+        $this->assertSame(1, substr_count($html, 'Footer Person'));
     }
 
     public function test_a_valid_submission_is_emailed_to_the_platform_inbox(): void
@@ -105,7 +218,8 @@ class ContactFormTest extends TestCase
     {
         $this->from('/contact')
             ->post('/contact', array_merge(self::VALID, $override))
-            ->assertRedirect('/contact')
+            // No source posted, so it is treated as the page form.
+            ->assertRedirect('/contact#contact-form')
             ->assertSessionHasErrors($field);
 
         $this->assertCount(0, $this->sentMessages());
