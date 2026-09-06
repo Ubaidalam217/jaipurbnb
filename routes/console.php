@@ -22,19 +22,35 @@ Artisan::command('inspire', function () {
 | self-contained and safe to run on its own.
 */
 
+/*
+| IMPORTANT - why these use Schedule::call() and not Schedule::command()
+|
+| Hostinger shared hosting disables proc_open() (see `disable_functions` in
+| the alt-php83 ini). Schedule::command() ALWAYS spawns the artisan command
+| as a child process via Symfony's Process class, which needs proc_open -
+| so every scheduled run died with:
+|
+|   The Process class relies on proc_open, which is not available on your
+|   PHP installation.
+|
+| ->runInBackground() made it worse but was not the cause; dropping it alone
+| does not help. Schedule::call() invokes the command in-process through
+| Artisan::call(), so no subprocess is forked and the scheduler works.
+|
+| ->name(...) is required before ->withoutOverlapping() on a callback event,
+| since the mutex key is derived from the name rather than the command line.
+*/
+
 // Take expired listings off the public site at midnight server time.
-// withoutOverlapping() guards against a slow run colliding with the next.
-Schedule::command('properties:hide-expired')
+Schedule::call(fn () => Artisan::call('properties:hide-expired'))
+    ->name('properties:hide-expired')
     ->dailyAt('00:00')
     ->withoutOverlapping();
 
 // Pull Airbnb .ics feeds and block booked dates (one-way, never pushes back).
-// Every 30 minutes per the agreed scope.
-//   withoutOverlapping() - feeds are external and can be slow; a run that
-//     overruns must not have the next one start on top of it.
-//   runInBackground()    - keeps this off the critical path of the
-//     per-minute schedule:run tick, so a slow feed cannot delay other tasks.
-Schedule::command('ical:sync')
+// Every 30 minutes per the agreed scope. withoutOverlapping() guards against
+// a slow external feed letting the next tick start on top of this one.
+Schedule::call(fn () => Artisan::call('ical:sync'))
+    ->name('ical:sync')
     ->everyThirtyMinutes()
-    ->withoutOverlapping()
-    ->runInBackground();
+    ->withoutOverlapping();
