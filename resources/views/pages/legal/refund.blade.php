@@ -14,6 +14,17 @@
 
 @section('legal_body')
 
+  <div class="jb-legal__callout">
+    <p>
+      <strong>Business name:</strong> JaipurBNB<br>
+      <strong>Udyam Registration Number:</strong> UDYAM-RJ-17-0665133<br>
+      <strong>Date of incorporation:</strong> 23 July 2026<br>
+      <strong>Principal place of business:</strong> 401, Kings Avenue, Kings Road, Nirman Nagar AB, Jaipur, Rajasthan 302019, India<br>
+      <strong>Email:</strong> <a href="mailto:{{ config('contact.email') }}" style="text-transform:none;">{{ config('contact.email') }}</a><br>
+      <strong>Phone:</strong> <a href="tel:{{ config('contact.phone_tel') }}">{{ config('contact.phone') }}</a>
+    </p>
+  </div>
+
   <h2>1. Listing Fee Refund Policy</h2>
 
   <div class="jb-legal__callout">
@@ -124,7 +135,7 @@
   </ol>
   <p>
     Send this to
-    <a href="mailto:hello@jaipurbnb.com" style="text-transform:none;">hello@jaipurbnb.com</a>.
+    <a href="mailto:{{ config('contact.email') }}" style="text-transform:none;">{{ config('contact.email') }}</a>.
     We acknowledge refund requests within <strong>24 hours</strong> and confirm the outcome
     within <strong>7 working days</strong> of receiving the information above.
   </p>
@@ -143,8 +154,9 @@
     Any dispute concerning a refund is governed by the dispute resolution and governing law
     provisions of our <a href="{{ route('legal.terms') }}">Terms &amp; Conditions</a> -
     arbitration seated at Jaipur, Rajasthan, under the laws of India. Complaints may be
-    raised with our Grievance Officer at
-    <a href="mailto:hello@jaipurbnb.com" style="text-transform:none;">hello@jaipurbnb.com</a>.
+    raised with our Grievance Officer, <strong>Saurabh Kayal</strong>, at
+    <a href="mailto:saurabhkay95@gmail.com" style="text-transform:none;">saurabhkay95@gmail.com</a>,
+    401, Kings Avenue, Kings Road, Nirman Nagar AB, Jaipur, Rajasthan 302019, India.
   </p>
 
   <h2>11. Changes to this policy</h2>

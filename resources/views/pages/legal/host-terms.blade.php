@@ -14,9 +14,19 @@
 @section('legal_body')
 
   <h2>1. Scope of these terms</h2>
+  <div class="jb-legal__callout">
+    <p>
+      <strong>Business name:</strong> JaipurBNB<br>
+      <strong>Udyam Registration Number:</strong> UDYAM-RJ-17-0665133<br>
+      <strong>Date of incorporation:</strong> 23 July 2026<br>
+      <strong>Principal place of business:</strong> 401, Kings Avenue, Kings Road, Nirman Nagar AB, Jaipur, Rajasthan 302019, India<br>
+      <strong>Email:</strong> <a href="mailto:{{ config('contact.email') }}" style="text-transform:none;">{{ config('contact.email') }}</a><br>
+      <strong>Phone:</strong> <a href="tel:{{ config('contact.phone_tel') }}">{{ config('contact.phone') }}</a>
+    </p>
+  </div>
   <p>
     These Host &amp; Property Listing Terms (“Host Terms”) apply to every person or entity
-    that creates a host account or lists a property on <strong>JaipurBnB</strong>. They are
+    that creates a host account or lists a property on <strong>JaipurBNB</strong>. They are
     <strong>in addition to</strong>, and form part of, our
     <a href="{{ route('legal.terms') }}">Terms &amp; Conditions</a>. Where these Host Terms
     conflict with the general Terms on a host-specific matter, these Host Terms prevail.
@@ -212,7 +222,7 @@
   </p>
   <p>
     You may close your host account at any time by writing to
-    <a href="mailto:hello@jaipurbnb.com" style="text-transform:none;">hello@jaipurbnb.com</a>.
+    <a href="mailto:{{ config('contact.email') }}" style="text-transform:none;">{{ config('contact.email') }}</a>.
     Closing an account does not entitle you to a refund of any live subscription.
   </p>
 

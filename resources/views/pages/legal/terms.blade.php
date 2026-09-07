@@ -1,11 +1,13 @@
 {{--
   Terms & Conditions. Governing law is India / Jaipur, Rajasthan.
 
-  NOTE FOR THE CLIENT: before the domain goes fully live, the registered
-  legal entity name, its registered office address, GSTIN and (if the entity
-  is a company) CIN should be inserted into the "Who we are" section below.
-  This draft deliberately does not invent those details. Have a practising
-  advocate review these four documents before relying on them.
+  The registered business details in section 1 (Udyam number, principal place
+  of business, date of incorporation) and the Grievance Officer named in
+  section 12 were supplied by the client and are the real, operative details.
+  Do not edit them without the client's confirmation. The support email is
+  read from config('contact.email') / CONTACT_EMAIL so it stays in step with
+  the /contact form inbox. Have a practising advocate review these four
+  documents before relying on them.
 --}}
 @extends('layouts.legal', [
   'pageTitle' => 'Terms & Conditions',
@@ -37,12 +39,20 @@
 
   <h2>1. Who we are</h2>
   <p>
-    <strong>JaipurBnB</strong> (“JaipurBnB”, “we”, “us” or “our”) operates the website at
+    <strong>JaipurBNB</strong> (“JaipurBnB”, “we”, “us” or “our”) operates the website at
     <strong>jaipurbnb.com</strong>, a paid property listing directory for short-stay and
-    holiday accommodation located in Jaipur, Rajasthan, India. JaipurBnB is based in
-    Jaipur, Rajasthan, India and can be reached at
-    <a href="mailto:hello@jaipurbnb.com" style="text-transform:none;">hello@jaipurbnb.com</a>.
+    holiday accommodation located in Jaipur, Rajasthan, India.
   </p>
+  <div class="jb-legal__callout">
+    <p>
+      <strong>Business name:</strong> JaipurBNB<br>
+      <strong>Udyam Registration Number:</strong> UDYAM-RJ-17-0665133<br>
+      <strong>Date of incorporation:</strong> 23 July 2026<br>
+      <strong>Principal place of business:</strong> 401, Kings Avenue, Kings Road, Nirman Nagar AB, Jaipur, Rajasthan 302019, India<br>
+      <strong>Email:</strong> <a href="mailto:{{ config('contact.email') }}" style="text-transform:none;">{{ config('contact.email') }}</a><br>
+      <strong>Phone:</strong> <a href="tel:{{ config('contact.phone_tel') }}">{{ config('contact.phone') }}</a>
+    </p>
+  </div>
   <p>
     For the purposes of the Information Technology Act, 2000 and the rules made under it,
     JaipurBnB is an <strong>intermediary</strong>. We publish listing information supplied
@@ -105,7 +115,7 @@
   </p>
   <ul>
     <li>You are responsible for keeping your password confidential and for all activity that takes place under your account.</li>
-    <li>You must notify us promptly at <a href="mailto:hello@jaipurbnb.com" style="text-transform:none;">hello@jaipurbnb.com</a> if you suspect unauthorised access to your account.</li>
+    <li>You must notify us promptly at <a href="mailto:{{ config('contact.email') }}" style="text-transform:none;">{{ config('contact.email') }}</a> if you suspect unauthorised access to your account.</li>
     <li>You may not sell, transfer or share your account with any other person.</li>
     <li>You may not create an account using another person's identity or contact details.</li>
   </ul>
@@ -264,10 +274,10 @@
   </p>
   <div class="jb-legal__callout">
     <p>
-      <strong>Grievance Officer, JaipurBnB</strong><br>
-      Email: <a href="mailto:hello@jaipurbnb.com" style="text-transform:none;">hello@jaipurbnb.com</a><br>
+      <strong>Saurabh Kayal</strong>, Grievance Officer, JaipurBNB<br>
+      Email: <a href="mailto:saurabhkay95@gmail.com" style="text-transform:none;">saurabhkay95@gmail.com</a><br>
       Phone: <a href="tel:{{ config('contact.phone_tel') }}">{{ config('contact.phone') }}</a> (Monday to Saturday, 10am to 7pm IST)<br>
-      Address: Jaipur, Rajasthan, India
+      Address: 401, Kings Avenue, Kings Road, Nirman Nagar AB, Jaipur, Rajasthan 302019, India
     </p>
     <p>
       We will acknowledge your complaint within <strong>24 hours</strong> and endeavour to

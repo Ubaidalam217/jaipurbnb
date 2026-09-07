@@ -15,10 +15,20 @@
 
   <h2>1. Introduction</h2>
   <p>
-    This Privacy Policy explains how <strong>JaipurBnB</strong> (“we”, “us”, “our”) handles
+    This Privacy Policy explains how <strong>JaipurBNB</strong> (“we”, “us”, “our”) handles
     personal data collected through <strong>jaipurbnb.com</strong>. It should be read
     together with our <a href="{{ route('legal.terms') }}">Terms &amp; Conditions</a>.
   </p>
+  <div class="jb-legal__callout">
+    <p>
+      <strong>Business name:</strong> JaipurBNB<br>
+      <strong>Udyam Registration Number:</strong> UDYAM-RJ-17-0665133<br>
+      <strong>Date of incorporation:</strong> 23 July 2026<br>
+      <strong>Principal place of business:</strong> 401, Kings Avenue, Kings Road, Nirman Nagar AB, Jaipur, Rajasthan 302019, India<br>
+      <strong>Email:</strong> <a href="mailto:{{ config('contact.email') }}" style="text-transform:none;">{{ config('contact.email') }}</a><br>
+      <strong>Phone:</strong> <a href="tel:{{ config('contact.phone_tel') }}">{{ config('contact.phone') }}</a>
+    </p>
+  </div>
   <p>
     We process personal data in accordance with the
     <strong>Digital Personal Data Protection Act, 2023</strong>, the
@@ -170,7 +180,7 @@
   </ul>
   <p>
     To exercise any of these rights, email
-    <a href="mailto:hello@jaipurbnb.com" style="text-transform:none;">hello@jaipurbnb.com</a>
+    <a href="mailto:{{ config('contact.email') }}" style="text-transform:none;">{{ config('contact.email') }}</a>
     from the address registered on your account. We may ask you to verify your identity
     before acting on a request, and will respond within the timelines prescribed by law.
   </p>
@@ -207,10 +217,10 @@
   </p>
   <div class="jb-legal__callout">
     <p>
-      <strong>Grievance Officer, JaipurBnB</strong><br>
-      Email: <a href="mailto:hello@jaipurbnb.com" style="text-transform:none;">hello@jaipurbnb.com</a><br>
+      <strong>Saurabh Kayal</strong>, Grievance Officer, JaipurBNB<br>
+      Email: <a href="mailto:saurabhkay95@gmail.com" style="text-transform:none;">saurabhkay95@gmail.com</a><br>
       Phone: <a href="tel:{{ config('contact.phone_tel') }}">{{ config('contact.phone') }}</a> (Monday to Saturday, 10am to 7pm IST)<br>
-      Address: Jaipur, Rajasthan, India
+      Address: 401, Kings Avenue, Kings Road, Nirman Nagar AB, Jaipur, Rajasthan 302019, India
     </p>
     <p>
       We will acknowledge your complaint within <strong>24 hours</strong> and endeavour to

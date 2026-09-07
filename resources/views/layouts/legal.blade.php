@@ -204,7 +204,7 @@
         <span class="jb-legal__eyebrow">Legal</span>
         <h1 class="jb-legal__title">{{ $pageTitle }}</h1>
         <p class="jb-legal__intro">{{ $pageIntro }}</p>
-        <p class="jb-legal__updated">Last updated: 5 September 2026</p>
+        <p class="jb-legal__updated">Last updated: 7 September 2026</p>
       </div>
     </div>
 
@@ -233,9 +233,10 @@
           <h2>Questions about this policy?</h2>
           <p>
             Write to us at
-            <a href="mailto:hello@jaipurbnb.com" style="text-transform:none;">hello@jaipurbnb.com</a>
+            <a href="mailto:{{ config('contact.email') }}" style="text-transform:none;">{{ config('contact.email') }}</a>
             or call <a href="tel:{{ config('contact.phone_tel') }}">{{ config('contact.phone') }}</a>
-            (Monday to Saturday, 10am to 7pm IST). JaipurBnB operates from Jaipur, Rajasthan, India.
+            (Monday to Saturday, 10am to 7pm IST). JaipurBNB operates from
+            401, Kings Avenue, Kings Road, Nirman Nagar AB, Jaipur, Rajasthan 302019, India.
           </p>
         </div>
       </article>
