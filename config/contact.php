@@ -24,7 +24,7 @@ return [
     // the legal pages. Set CONTACT_EMAIL in .env. Read through config() and
     // never env() directly from a controller - env() returns null once
     // config:cache has run on the server.
-    'email' => env('CONTACT_EMAIL', 'saurabhkay95@gmail.com'),
+    'email' => env('CONTACT_EMAIL', 'jaipurbnb@jaipurbnb.com'),
 
     // Display form, exactly as typed in .env (spaces and all).
     'phone' => $phone,
