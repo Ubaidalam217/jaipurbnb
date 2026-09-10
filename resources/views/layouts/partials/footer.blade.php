@@ -206,7 +206,7 @@
                                          supplies the real line. --}}
                                     <li><a href="tel:{{ config('contact.phone_tel') }}"><span><i class="fa-solid fa-phone"></i></span> <span>{{ config('contact.phone') }}</span></a></li>
                                     <li class="space24"></li>
-                                    <li><a href="mailto:hello@jaipurbnb.com" style="text-transform: none"><span><i class="fa-solid fa-envelope"></i></span> <span>hello@jaipurbnb.com</span></a></li>
+                                    <li><a href="mailto:{{ config('contact.email') }}" style="text-transform: none"><span><i class="fa-solid fa-envelope"></i></span> <span>{{ config('contact.email') }}</span></a></li>
                                 </ul>
                             </div>
                             {{-- Social icons removed: all four pointed at "#" and JaipurBnB has no

@@ -155,7 +155,7 @@
     provisions of our <a href="{{ route('legal.terms') }}">Terms &amp; Conditions</a> -
     arbitration seated at Jaipur, Rajasthan, under the laws of India. Complaints may be
     raised with our Grievance Officer, <strong>Saurabh Kayal</strong>, at
-    <a href="mailto:saurabhkay95@gmail.com" style="text-transform:none;">saurabhkay95@gmail.com</a>,
+    <a href="mailto:{{ config('contact.email') }}" style="text-transform:none;">{{ config('contact.email') }}</a>,
     401, Kings Avenue, Kings Road, Nirman Nagar AB, Jaipur, Rajasthan 302019, India.
   </p>
 

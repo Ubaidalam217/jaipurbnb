@@ -93,7 +93,7 @@ class ContactController extends Controller
 
             return $this->backTo($source)
                 ->withInput()
-                ->with('contact_error', 'Sorry, we could not send your message just now. Please email hello@jaipurbnb.com or call us directly.');
+                ->with('contact_error', 'Sorry, we could not send your message just now. Please email '.config('contact.email').' or call us directly.');
         }
 
         return $this->backTo($source)

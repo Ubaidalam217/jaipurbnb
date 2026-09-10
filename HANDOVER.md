@@ -1,10 +1,13 @@
 # Handover
 
+**Last updated: 10 September 2026** — status: **build complete, live on
+Hostinger at https://jaipurbnb.com/app**
+
 How JaipurBnB transfers into the client's ownership: code, database,
 uploaded photos, hosting, credentials and domain.
 
-Railway is **staging only**. Production is a fresh deployment to the
-client's Hostinger account — nothing is "moved" from Railway except the
+Railway was **staging only**. Production is a fresh deployment on the
+client's Hostinger account — nothing was "moved" from Railway except the
 code, which lives in Git.
 
 ---
@@ -126,6 +129,20 @@ Nothing is copied from staging except structure.
 | `REVIEW_ADMIN_PASSWORD` | Client | Or delete the review admin entirely |
 | `RAZORPAY_*` | Client | Milestone 3; production keys, not test keys |
 
+**Live production logins as at 10 September 2026:**
+
+| What | Value |
+| --- | --- |
+| Admin panel login | `jaipurbnb@jaipurbnb.com` |
+| Admin password | Held in the client's password manager — shared out-of-band, deliberately **not** recorded in this repository |
+| Platform contact inbox | `jaipurbnb@jaipurbnb.com` (`CONTACT_EMAIL` in `.env`) |
+| Outbound mail | `noreply@jaipurbnb.com` via `smtp.hostinger.com:587` (TLS) |
+
+This repository is **public on GitHub**. No password, API key or SSH
+credential belongs in any tracked file — `.env` is gitignored for exactly
+this reason. Anything pasted into a commit must be treated as burned and
+rotated immediately.
+
 **Credential hygiene at handover:**
 
 - Client sets a **new** `ADMIN_PASSWORD` that the developer has never seen
@@ -155,23 +172,25 @@ quicker.
 
 ## 7. What the client needs to provide
 
-Ideally before Milestone 4 starts:
+All Milestone 4 blockers have been supplied and applied:
 
-| Item | Needed for |
-| --- | --- |
-| **Hostinger hPanel login** | Deployment, database, SSL, cron |
-| **Domain registrar access** | Pointing jaipurbnb.com |
-| **SMTP credentials** | Password reset and notification email |
-| **Razorpay keys** (test, then production) | Milestone 3 subscription payments |
-| **Real Airbnb iCal link** | Testing calendar sync |
-| **Final logo SVG** | Replacing the text wordmark |
-| **Real contact phone number** | Footer and contact page currently show a clearly-labelled `(demo)` placeholder |
-| **Sample property photos** | Replacing picsum placeholders |
-| **Business details** | Address, support hours, any legal/policy copy |
+| Item | Needed for | Status |
+| --- | --- | --- |
+| **Hostinger hPanel login** | Deployment, database, SSL, cron | Received — deployed |
+| **Domain registrar access** | Pointing jaipurbnb.com | Done — resolves over HTTPS |
+| **SMTP credentials** | Password reset and notification email | Received — live and verified |
+| **Razorpay keys** | Subscription payments | Live keys installed (`rzp_live_*`) |
+| **Final logo SVG** | Replacing the text wordmark | Received — both variants in `public/img/` |
+| **Real contact phone number** | Footer and contact page | Received — `CONTACT_PHONE` set, placeholder gone |
+| **Business details** | Address, support hours, legal/policy copy | Received — published on the legal pages |
+| **Real Airbnb iCal link** | Testing calendar sync | **Still outstanding** — see §9 |
+| **Sample property photos** | Replacing placeholders | Not needed — real hosts now upload their own |
 
 ---
 
 ## 8. Handover checklist
+
+Ticked items were verified on production on 10 September 2026.
 
 **Code**
 - [ ] Repository transferred, client has admin rights
@@ -179,33 +198,72 @@ Ideally before Milestone 4 starts:
 - [ ] Documentation reviewed: `README`, `DEPLOYMENT.md`, `SECURITY.md`, `DATABASE.md`, `THIRD_PARTY_SERVICES.md`
 
 **Hosting**
-- [ ] Deployed to Hostinger, serving over HTTPS
-- [ ] Cron installed and firing
-- [ ] `APP_DEBUG=false`, `APP_ENV=production`
+- [x] Deployed to Hostinger, serving over HTTPS
+- [x] Cron installed and firing — confirmed in hPanel (not inspectable over SSH)
+- [x] `APP_DEBUG=false`, `APP_ENV=production`
 - [ ] Railway project retired
 
 **Data**
-- [ ] Database decision made (fresh vs migrated) and executed
-- [ ] Demo content removed
-- [ ] `storage:link` working, or the `public/uploads` fallback in place
+- [x] Database decision made (fresh vs migrated) and executed — started fresh
+- [x] Demo content removed — production holds only the admins and real host signups
+- [x] `storage:link` working — symlink resolves, no `public/uploads` fallback needed
 
 **Credentials**
 - [ ] Client owns every password; developer holds none
-- [ ] Review admin deleted
+- [ ] Review admin `reviewadmin@jaipurbnb.com` deleted — **still present in production**
 - [ ] Anything shared during development rotated
 
 **Domain**
-- [ ] jaipurbnb.com resolves to Hostinger
-- [ ] SSL valid, HTTP redirects to HTTPS
+- [x] jaipurbnb.com resolves to Hostinger
+- [x] SSL valid, HTTP redirects to HTTPS (301)
 
 ---
 
-## 9. Outstanding work at time of writing
+## 9. Completed — status at 10 September 2026
 
-So the handover is not mistaken for feature-complete:
+All four milestones are built, deployed and verified on production.
 
-- **Razorpay payments** — not built (Milestone 3)
-- **iCal sync** — not built; schema is ready, no parser or scheduled command
-- **Email delivery** — `MAIL_MAILER=log`, needs real SMTP
-- **Refunds** — manual via the Razorpay dashboard, by agreement
-- **Support window** — 15 days post-delivery, bug fixes only, no new features
+**Delivered and verified on the live site:**
+
+- **Razorpay payments** — built and wired; production keys (`rzp_live_*`)
+  installed in `.env`
+- **iCal sync** — `ICalSyncService` parses Airbnb `.ics` feeds and blocks
+  booked dates one-way. Scheduled every 30 minutes via `Schedule::call()`
+  in `routes/console.php`. The September fix: Airbnb returns **429** to
+  Guzzle's default agent, so the request now sends a browser
+  `User-Agent`. Note production runs `LOG_LEVEL=error`, which previously
+  hid the failure.
+- **Email delivery** — real SMTP (`smtp.hostinger.com:587`, TLS, from
+  `noreply@jaipurbnb.com`). Confirmed sending end-to-end; the former
+  `MAIL_MAILER=log` placeholder is gone.
+- **Contact form** — both entry points work: the `/contact` page form and
+  the site-wide "Send Us A Message" footer card. Both post to
+  `ContactController`, deliver to `CONTACT_EMAIL`, and return to their own
+  anchor with the correct success or error message. Mail is sent
+  synchronously, so **no queue worker is required**.
+- **Legal pages** — `/terms`, `/privacy`, `/refund` and `/host-terms` are
+  live and carry the real registered business details. Every address on
+  them reads from `config('contact.email')`, so changing `CONTACT_EMAIL`
+  updates the whole site at once.
+- **Contact email** — `jaipurbnb@jaipurbnb.com` throughout. No personal
+  or placeholder address remains in any user-facing page.
+- **Scheduler cron** — verified active in Hostinger hPanel. Note the
+  `crontab` binary is absent on this host, so cron **cannot** be
+  inspected over SSH; check it in hPanel.
+- **Visual polish** — final logo SVGs (full and compact) in `public/img/`,
+  brand palette (`#E07A5F` / `#2F3E46`, Poppins) applied throughout.
+- **Security** — `APP_ENV=production`, `APP_DEBUG=false`, `.env`
+  gitignored and untracked, `.env` returns 403 over HTTP, no secrets in
+  tracked source, error pages leak no stack traces.
+
+**Environment-dependent items, for the client's awareness:**
+
+- **Live payments untested end-to-end.** Razorpay is on live keys but the
+  `transactions` table is empty — no real payment has completed. Worth one
+  small live transaction before hosts are invited to subscribe.
+- **iCal sync not yet exercised against a real feed.** No listing has
+  `ical_feed_url` set, so every run is currently a no-op. The client still
+  needs to supply a real Airbnb link to prove the 429 fix end-to-end.
+- **Refunds** — manual via the Razorpay dashboard, by agreement.
+- **Support window** — 15 days post-delivery, bug fixes only, no new
+  features.

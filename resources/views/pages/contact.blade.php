@@ -108,7 +108,7 @@
               subscription.
             </p>
             <div class="space12"></div>
-            <a href="mailto:hello@jaipurbnb.com" style="color:#B34D33;font-family:'Poppins',sans-serif;font-weight:600;text-transform:none;">hello@jaipurbnb.com</a>
+            <a href="mailto:{{ config('contact.email') }}" style="color:#B34D33;font-family:'Poppins',sans-serif;font-weight:600;text-transform:none;">{{ config('contact.email') }}</a>
           </div>
           <div class="space30 d-lg-none d-block"></div>
         </div>

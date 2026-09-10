@@ -275,7 +275,7 @@
   <div class="jb-legal__callout">
     <p>
       <strong>Saurabh Kayal</strong>, Grievance Officer, JaipurBNB<br>
-      Email: <a href="mailto:saurabhkay95@gmail.com" style="text-transform:none;">saurabhkay95@gmail.com</a><br>
+      Email: <a href="mailto:{{ config('contact.email') }}" style="text-transform:none;">{{ config('contact.email') }}</a><br>
       Phone: <a href="tel:{{ config('contact.phone_tel') }}">{{ config('contact.phone') }}</a> (Monday to Saturday, 10am to 7pm IST)<br>
       Address: 401, Kings Avenue, Kings Road, Nirman Nagar AB, Jaipur, Rajasthan 302019, India
     </p>
