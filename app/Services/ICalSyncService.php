@@ -51,6 +51,14 @@ class ICalSyncService
     public const MAX_BYTES = 5_242_880; // 5 MB
 
     /**
+     * Airbnb rejects Guzzle's default "GuzzleHttp/7" agent with HTTP 429 on
+     * every single request - it is not real rate limiting, the same URL fetched
+     * with a browser agent from the same IP returns 200 immediately. Without
+     * this header no Airbnb feed ever syncs in production.
+     */
+    private const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
+
+    /**
      * Sync one listing.
      *
      * @return array{synced: bool, blocked: int, removed: int, reason: ?string}
@@ -79,7 +87,9 @@ class ICalSyncService
         try {
             $body = $this->fetch($property->ical_feed_url);
         } catch (Throwable $e) {
-            Log::warning('iCal sync: could not fetch feed', [
+            // error, not warning: production runs LOG_LEVEL=error, so a warning
+            // here is discarded and a permanently broken feed looks like silence.
+            Log::error('iCal sync: could not fetch feed', [
                 'property_id' => $property->id,
                 'url'         => $property->ical_feed_url,
                 'error'       => $e->getMessage(),
@@ -91,7 +101,7 @@ class ICalSyncService
         try {
             $dates = $this->extractDates($body, $today);
         } catch (Throwable $e) {
-            Log::warning('iCal sync: could not parse feed', [
+            Log::error('iCal sync: could not parse feed', [
                 'property_id' => $property->id,
                 'error'       => $e->getMessage(),
             ]);
@@ -166,7 +176,10 @@ class ICalSyncService
         $response = Http::timeout(self::TIMEOUT_SECONDS)
             ->connectTimeout(10)
             ->retry(2, 500, throw: false)
-            ->withHeaders(['Accept' => 'text/calendar, text/plain, */*'])
+            ->withHeaders([
+                'Accept'     => 'text/calendar, text/plain, */*',
+                'User-Agent' => self::USER_AGENT,
+            ])
             ->get($url);
 
         if (! $response->successful()) {
