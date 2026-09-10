@@ -1,2 +1,32 @@
+# JaipurBnB - https://jaipurbnb.com
+#
+# This file is served from Laravel's public/ directory, so it answers at
+# whatever path that directory is mounted on. Crawlers only honour a
+# robots.txt at the DOMAIN ROOT, so the rules below are written for the root
+# domain - which is where they take effect once the document root is
+# repointed at laravel_app/public.
+
 User-agent: *
-Disallow:
+Allow: /
+
+# Private areas. No crawl value, and most sit behind auth anyway.
+Disallow: /admin
+Disallow: /host
+Disallow: /login
+Disallow: /register
+Disallow: /password
+
+# Deliberately NOT disallowing /app/.
+#
+# The app was served from the /app subfolder before the move to the root
+# domain, so Google may still hold /app/... URLs. Those should 301 to their
+# root equivalents. Blocking a URL in robots.txt stops it being crawled at
+# all, which means Google never sees the redirect and the old URL lingers in
+# the index indefinitely. Let the redirects be crawled instead.
+#
+# Disallow: /app/
+
+# Both entries are listed so the sitemap stays reachable either side of the
+# root-domain cutover. Whichever one 404s is simply ignored.
+Sitemap: https://jaipurbnb.com/sitemap.xml
+Sitemap: https://jaipurbnb.com/app/sitemap.xml

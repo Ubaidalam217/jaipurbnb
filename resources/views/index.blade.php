@@ -2,6 +2,41 @@
 
 @section('title', 'JaipurBnB - Authentic Jaipur Stays')
 
+@section('meta_description', 'Find verified homestays, heritage havelis, boutique apartments and luxury villas across Jaipur. Browse free and contact hosts directly on WhatsApp or by phone.')
+
+{{--
+  Organization schema. Built as a PHP array and json_encode()d rather than
+  hand-written JSON so the contact details, which come from config, are
+  escaped properly - an unescaped quote in a value would otherwise produce
+  invalid JSON-LD that Google silently discards.
+--}}
+@push('jsonld')
+  <script type="application/ld+json">
+    {!! json_encode([
+        '@context' => 'https://schema.org',
+        '@type' => 'Organization',
+        'name' => 'JaipurBNB',
+        'url' => url('/'),
+        'logo' => asset('img/jaipurbnb-logo.svg'),
+        'email' => config('contact.email'),
+        'telephone' => config('contact.phone_tel'),
+        'description' => 'A paid listing directory for verified Jaipur stays. Hosts subscribe to list; guests browse free and contact hosts directly.',
+        'address' => [
+            '@type' => 'PostalAddress',
+            'streetAddress' => '401, Kings Avenue, Kings Road, Nirman Nagar AB',
+            'addressLocality' => 'Jaipur',
+            'addressRegion' => 'Rajasthan',
+            'postalCode' => '302019',
+            'addressCountry' => 'IN',
+        ],
+        'areaServed' => [
+            '@type' => 'City',
+            'name' => 'Jaipur',
+        ],
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+  </script>
+@endpush
+
 @section('content')
   @include('layouts.partials.navbar')
 

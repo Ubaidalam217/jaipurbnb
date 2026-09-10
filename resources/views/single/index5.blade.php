@@ -19,6 +19,40 @@
   // fire a profile_view beacon - see resources/js/main.js.
 @endphp
 
+@section('meta_description', \Illuminate\Support\Str::limit(strip_tags($property->description), 155))
+@section('og_type', 'article')
+@section('og_image', $jbCoverUrl)
+
+{{--
+  LodgingBusiness schema for the listing.
+
+  priceRange, not "price": approx_price is the host's own estimate and
+  booking happens off-platform over WhatsApp, so quoting it as a firm
+  Offer price would be a claim JaipurBnB cannot honour. A range is the
+  honest shape and is what Google expects for a lodging entity.
+--}}
+@push('jsonld')
+  <script type="application/ld+json">
+    {!! json_encode(array_filter([
+        '@context' => 'https://schema.org',
+        '@type' => 'LodgingBusiness',
+        'name' => $property->title,
+        'url' => route('properties.show', $property->id),
+        'description' => \Illuminate\Support\Str::limit(strip_tags($property->description), 300),
+        'image' => \Illuminate\Support\Str::startsWith($jbCoverUrl, ['http://', 'https://']) ? $jbCoverUrl : url($jbCoverUrl),
+        'priceRange' => 'Approx Rs ' . number_format($property->approx_price) . ' per night',
+        'address' => [
+            '@type' => 'PostalAddress',
+            'addressLocality' => $property->neighborhood,
+            'addressRegion' => 'Rajasthan',
+            'addressCountry' => 'IN',
+        ],
+        'numberOfRooms' => $property->bedrooms,
+        'petsAllowed' => null,
+    ], fn ($v) => $v !== null && $v !== ''), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+  </script>
+@endpush
+
 @section('content')
   @include('layouts.partials.navbar')
 
@@ -31,7 +65,7 @@
           <div class="hero-header header-heading3">
             <h2 class="text-anime-style-3">{{ $property->title }}</h2>
             <div class="space20"></div>
-            <p data-aos="fade-left" data-aos-duration="800">{{ Str::limit($property->description, 220) }}</p>
+            <p data-aos="fade-left" data-aos-duration="800">{{ \Illuminate\Support\Str::limit($property->description, 220) }}</p>
             <div class="space32"></div>
             <div class="btn-area1" data-aos="fade-left" data-aos-duration="1000">
               <a href="{{ route('properties.browse', ['neighborhood' => $property->neighborhood]) }}" class="header-btn6">More stays in {{ $property->neighborhood }}</a>
@@ -190,7 +224,7 @@
                 </div>
                 <div class="col-lg-5">
                   <div class="heading5 author-header">
-                    <p data-aos="fade-up" data-aos-duration="800">{{ Str::limit($property->description, 300) }}</p>
+                    <p data-aos="fade-up" data-aos-duration="800">{{ \Illuminate\Support\Str::limit($property->description, 300) }}</p>
                     <div class="space24"></div>
                     <div class="list-area" data-aos="fade-up" data-aos-duration="1000">
                       <ul>

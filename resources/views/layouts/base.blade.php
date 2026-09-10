@@ -10,6 +10,9 @@
 
     @yield('css')
 
+    {{-- JSON-LD structured data, pushed by the pages that have any. --}}
+    @stack('jsonld')
+
 </head>
 
 <body @yield('body_attribute')>

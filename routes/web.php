@@ -66,6 +66,23 @@ Route::get('/property/{id}', [PublicPropertyController::class, 'show'])
     ->whereNumber('id')
     ->name('properties.show');
 
+// XML sitemap, generated per request rather than written to a file so a newly
+// approved listing appears immediately and an expired one drops out on its
+// own. publiclyVisible() is the same scope /browse uses, so the sitemap can
+// never advertise a listing a guest cannot open.
+//
+// Served from a route, not public/sitemap.xml: a real file in public/ is
+// returned by the web server before Laravel ever runs, which would shadow
+// this route and freeze the property list at whatever was true when the file
+// was written.
+Route::get('/sitemap.xml', function () {
+    return response()
+        ->view('sitemap', [
+            'properties' => Property::publiclyVisible()->latest('updated_at')->get(),
+        ])
+        ->header('Content-Type', 'application/xml');
+})->name('sitemap');
+
 // Legacy template URLs. Milestone 1 shipped these as static demo pages and
 // they are still linked from the homepage; keep them resolving so no old
 // link 404s. Remove once every view has been repointed.
