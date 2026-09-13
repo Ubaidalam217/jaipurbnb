@@ -202,7 +202,7 @@
       <div class="auhtor-box">
         <div class="others-box">
         <div class="img3">
-          <img src="/img/all-images/others/others-img1.png" alt="" />
+          <img src="/img/all-images/others/others-img1.jpg" alt="" />
         </div>
         <div class="text">
           <h3>{{ $properties->total() }} {{ Str::plural('stay', $properties->total()) }} available</h3>
@@ -315,7 +315,7 @@
         @if ($property->coverImage)
         <img src="{{ $property->coverImage->display_url }}" alt="{{ $property->title }}" />
         @else
-        <img src="/img/all-images/apartment/apartment-img1.png" alt="{{ $property->title }}" />
+        <img src="/img/all-images/apartment/apartment-img1.jpg" alt="{{ $property->title }}" />
         @endif
         </a>
         </div>
@@ -391,7 +391,7 @@
       <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="800">
       <div class="amenities-boxarea">
         <div class="img1">
-        <img src="/img/all-images/service/service-img4.png" alt="" />
+        <img src="/img/all-images/service/service-img4.jpg" alt="" />
         </div>
         <div class="space32"></div>
         <div class="content-area">
@@ -409,7 +409,7 @@
       <div class="space40 d-lg-block d-none"></div>
       <div class="amenities-boxarea">
         <div class="img1">
-        <img src="/img/all-images/service/service-img5.png" alt="" />
+        <img src="/img/all-images/service/service-img5.jpg" alt="" />
         </div>
         <div class="space32"></div>
         <div class="content-area">
@@ -426,7 +426,7 @@
       <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="1100">
       <div class="amenities-boxarea">
         <div class="img1">
-        <img src="/img/all-images/service/service-img7.png" alt="" />
+        <img src="/img/all-images/service/service-img7.jpg" alt="" />
         </div>
         <div class="space32"></div>
         <div class="content-area">
@@ -444,7 +444,7 @@
       <div class="space40 d-lg-block d-none"></div>
       <div class="amenities-boxarea">
         <div class="img1">
-        <img src="/img/all-images/service/service-img8.png" alt="" />
+        <img src="/img/all-images/service/service-img8.jpg" alt="" />
         </div>
         <div class="space32"></div>
         <div class="content-area">

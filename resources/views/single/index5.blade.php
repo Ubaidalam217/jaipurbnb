@@ -11,7 +11,7 @@
   // have removed them all after approval), so every img falls back to a
   // template asset rather than rendering a broken tile.
   $jbCover = $property->images->firstWhere('is_cover', true) ?? $property->images->first();
-  $jbCoverUrl = $jbCover ? $jbCover->display_url : '/img/all-images/apartment/apartment-img1.png';
+  $jbCoverUrl = $jbCover ? $jbCover->display_url : '/img/all-images/apartment/apartment-img1.jpg';
   $jbGallery = $property->images->where('id', '!=', $jbCover?->id)->values();
   $jbPrice = 'Approx Rs ' . number_format($property->approx_price) . ' / night';
 

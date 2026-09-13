@@ -225,7 +225,7 @@
             <div class="auhtor-box">
               <div class="others-box">
                 <div class="img3">
-                  <img src="/img/all-images/others/others-img1.png" alt="" />
+                  <img src="/img/all-images/others/others-img1.jpg" alt="" />
                 </div>
                 <div class="text">
                   <h3>The Royal Walled City Haveli</h3>
@@ -271,7 +271,7 @@
             <div class="auhtor-box">
               <div class="others-box">
                 <div class="img3">
-                  <img src="/img/all-images/others/others-img1.png" alt="" />
+                  <img src="/img/all-images/others/others-img1.jpg" alt="" />
                 </div>
                 <div class="text">
                   <h3>The Royal Walled City Haveli</h3>
@@ -326,7 +326,7 @@
             <div class="auhtor-box">
               <div class="others-box">
                 <div class="img3">
-                  <img src="/img/all-images/others/others-img1.png" alt="" />
+                  <img src="/img/all-images/others/others-img1.jpg" alt="" />
                 </div>
                 <div class="text">
                   <h3>The Royal Walled City Haveli</h3>
@@ -349,10 +349,10 @@
         <div class="col-lg-6">
           <div class="property-images-area">
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/property/property-img4.png" alt="" />
+              <img src="/img/all-images/property/property-img4.jpg" alt="" />
             </div>
             <div class="img2 reveal image-anime">
-              <img src="/img/all-images/property/property-img5.png" alt="" />
+              <img src="/img/all-images/property/property-img5.jpg" alt="" />
             </div>
             <div class="elements reveal image-anime">
               <img src="/img/elements/elements9.png" alt="" />
@@ -397,7 +397,7 @@
         <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="800">
           <div class="amenities-boxarea">
             <div class="img1">
-              <img src="/img/all-images/service/service-img4.png" alt="" />
+              <img src="/img/all-images/service/service-img4.jpg" alt="" />
             </div>
             <div class="space32"></div>
             <div class="content-area">
@@ -413,7 +413,7 @@
           <div class="space40 d-lg-block d-none"></div>
           <div class="amenities-boxarea">
             <div class="img1">
-              <img src="/img/all-images/service/service-img5.png" alt="" />
+              <img src="/img/all-images/service/service-img5.jpg" alt="" />
             </div>
             <div class="space32"></div>
             <div class="content-area">
@@ -430,7 +430,7 @@
         <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="1100">
           <div class="amenities-boxarea">
             <div class="img1">
-              <img src="/img/all-images/service/service-img7.png" alt="" />
+              <img src="/img/all-images/service/service-img7.jpg" alt="" />
             </div>
             <div class="space32"></div>
             <div class="content-area">
@@ -448,7 +448,7 @@
           <div class="space40 d-lg-block d-none"></div>
           <div class="amenities-boxarea">
             <div class="img1">
-              <img src="/img/all-images/service/service-img8.png" alt="" />
+              <img src="/img/all-images/service/service-img8.jpg" alt="" />
             </div>
             <div class="space32"></div>
             <div class="content-area">
@@ -482,29 +482,29 @@
         <div class="col-lg-6">
           <div class="about-slider-area owl-carousel">
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.png" alt="" />
+              <img src="/img/all-images/about/about-img3.jpg" alt="" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.png" alt="" />
+              <img src="/img/all-images/about/about-img3.jpg" alt="" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.png" alt="" />
+              <img src="/img/all-images/about/about-img3.jpg" alt="" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.png" alt="" />
+              <img src="/img/all-images/about/about-img3.jpg" alt="" />
             </div>
 
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.png" alt="" />
+              <img src="/img/all-images/about/about-img3.jpg" alt="" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.png" alt="" />
+              <img src="/img/all-images/about/about-img3.jpg" alt="" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.png" alt="" />
+              <img src="/img/all-images/about/about-img3.jpg" alt="" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.png" alt="" />
+              <img src="/img/all-images/about/about-img3.jpg" alt="" />
             </div>
           </div>
           <div class="space30"></div>
@@ -524,7 +524,7 @@
             <div class="col-lg-6 col-md-6">
               <div class="about-video-area">
                 <div class="img1 image-anime reveal">
-                  <img src="/img/all-images/about/about-img5.png" alt="" />
+                  <img src="/img/all-images/about/about-img5.jpg" alt="" />
                 </div>
               </div>
             </div>
@@ -595,7 +595,7 @@
       <div class="row">
         <div class="col-lg-10 m-auto">
           <div class="rotate-img">
-            <img src="/img/all-images/gallery/gallery-img1.png" alt="Jaipur heritage property" style="width:100%;height:auto;display:block;" />
+            <img src="/img/all-images/gallery/gallery-img1.jpg" alt="Jaipur heritage property" style="width:100%;height:auto;display:block;" />
             <img src="/img/elements/elements3.png" alt="" class="elements3" />
           </div>
         </div>
@@ -618,10 +618,10 @@
         <div class="col-lg-5">
           <div class="images-area">
             <div class="img1 image-anime reveal">
-              <img src="/img/all-images/others/others-img11.png" alt="" />
+              <img src="/img/all-images/others/others-img11.jpg" alt="" />
             </div>
             <div class="img2 image-anime reveal">
-              <img src="/img/all-images/others/others-img12.png" alt="" />
+              <img src="/img/all-images/others/others-img12.jpg" alt="" />
             </div>
             <div class="elements">
               <img src="/img/elements/elements8.png" alt="" />
