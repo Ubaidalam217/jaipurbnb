@@ -94,7 +94,7 @@
                                     <div class="col-lg-5 col-md-6">
                                         <div class="instagram-posts" data-aos="zoom-in-up" data-aos-duration="800">
                                             <div class="img1">
-                                                <img src="/img/all-images/others/others-img7.png" alt="">
+                                                <img src="/img/all-images/gallery/gallery-img2.jpg" alt="Jaipur haveli">
                                             </div>
                                             <div class="icons">
                                                 <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -104,7 +104,7 @@
                                     <div class="col-lg-7 col-md-6" data-aos="zoom-in-up" data-aos-duration="1000">
                                         <div class="instagram-posts">
                                             <div class="img1">
-                                                <img src="/img/all-images/others/others-img8.png" alt="">
+                                                <img src="/img/all-images/gallery/gallery-img3.jpg" alt="Jaipur pool villa">
                                             </div>
                                             <div class="icons">
                                                 <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -115,7 +115,7 @@
                                     <div class="col-lg-7 col-md-6" data-aos="zoom-in-up" data-aos-duration="1100">
                                         <div class="instagram-posts">
                                             <div class="img1">
-                                                <img src="/img/all-images/others/others-img9.png" alt="">
+                                                <img src="/img/all-images/gallery/gallery-img4.jpg" alt="Jaipur property interior">
                                             </div>
                                             <div class="icons">
                                                 <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -126,7 +126,7 @@
                                     <div class="col-lg-5 col-md-6" data-aos="zoom-in-up" data-aos-duration="1200">
                                         <div class="instagram-posts">
                                             <div class="img1">
-                                                <img src="/img/all-images/others/others-img10.png" alt="">
+                                                <img src="/img/all-images/gallery/gallery-img5.jpg" alt="Jaipur garden courtyard">
                                             </div>
                                             <div class="icons">
                                                 <a href="#"><i class="fa-brands fa-instagram"></i></a>
