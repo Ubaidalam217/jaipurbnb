@@ -602,6 +602,51 @@
       </div>
     </div>
   </div>
+
+  {{--
+    4-photo gallery strip. Styled inline rather than in SCSS: Hostinger has
+    no Node and public/build is gitignored, so a SCSS change would mean a
+    local rebuild plus a manual bundle upload. Same pattern as the hero
+    polish block above and contact.blade.php / the legal pages.
+  --}}
+  <style>
+    .jb-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .jb-gallery-grid__item {
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+    }
+    .jb-gallery-grid__item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .5s ease;
+    }
+    .jb-gallery-grid__item:hover img {
+      transform: scale(1.08);
+    }
+    @media (max-width: 767.98px) {
+      .jb-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+      }
+    }
+  </style>
+  <div class="container">
+    <div class="space50"></div>
+    <div class="jb-gallery-grid" data-aos="fade-up" data-aos-duration="800">
+      <div class="jb-gallery-grid__item"><img src="/img/all-images/gallery/gallery-img2.jpg" alt="Jaipur heritage property living space" /></div>
+      <div class="jb-gallery-grid__item"><img src="/img/all-images/gallery/gallery-img3.jpg" alt="Jaipur heritage property villa" /></div>
+      <div class="jb-gallery-grid__item"><img src="/img/all-images/gallery/gallery-img4.jpg" alt="Jaipur heritage property interior" /></div>
+      <div class="jb-gallery-grid__item"><img src="/img/all-images/gallery/gallery-img5.jpg" alt="Jaipur heritage property courtyard" /></div>
+    </div>
+  </div>
+
   <div class="space100 d-lg-block d-none"></div>
   <div class="space50 d-lg-none d-block"></div>
   <!-- ===== GALLERY AREA ENDS ======= -->
