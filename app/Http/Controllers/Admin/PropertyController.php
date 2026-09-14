@@ -12,11 +12,14 @@ use Illuminate\View\View;
 /**
  * Admin moderation queue.
  *
- * Approving sets listing_status = approved and is_verified = true, but
- * deliberately does NOT touch is_visible. Visibility is driven by the
- * subscription: the Milestone 3 payment flow turns it on and the daily
- * expiry cron turns it back off. Conflating the two would publish
- * unpaid listings.
+ * Approving sets listing_status = approved and is_verified = true.
+ * Visibility is normally driven by the subscription: the Milestone 3
+ * payment flow turns is_visible on and the daily expiry cron turns it
+ * back off. The one exception is a host still inside their Founding
+ * Host trial (see User::isFoundingHostActive()) - approve() publishes
+ * those immediately rather than waiting for the next
+ * properties:hide-expired run, which only sweeps once a day and left
+ * newly-approved Founding Host listings invisible until midnight.
  */
 class PropertyController extends Controller
 {
@@ -53,11 +56,17 @@ class PropertyController extends Controller
 
     public function approve(Property $property): RedirectResponse
     {
+        $property->loadMissing('host');
+
         $property->update([
             'listing_status'   => Property::STATUS_APPROVED,
             'is_verified'      => true,
             'rejection_reason' => null,
-            // is_visible intentionally untouched - see class docblock.
+            // Publish immediately if the host's Founding Host trial is
+            // still active, instead of leaving it invisible until the
+            // next daily properties:hide-expired sweep. Otherwise leave
+            // is_visible exactly as it was - see class docblock.
+            'is_visible'       => $property->is_visible || $property->host->isFoundingHostActive(),
         ]);
 
         return redirect()->route('admin.properties.index')
