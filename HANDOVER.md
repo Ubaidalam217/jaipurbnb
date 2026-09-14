@@ -1,7 +1,7 @@
 # Handover
 
-**Last updated: 10 September 2026** — status: **build complete, live on
-Hostinger at https://jaipurbnb.com/app**
+**Last updated: 14 September 2026** — status: **build complete, live on
+Hostinger at https://jaipurbnb.com**
 
 How JaipurBnB transfers into the client's ownership: code, database,
 uploaded photos, hosting, credentials and domain.
@@ -9,6 +9,64 @@ uploaded photos, hosting, credentials and domain.
 Railway was **staging only**. Production is a fresh deployment on the
 client's Hostinger account — nothing was "moved" from Railway except the
 code, which lives in Git.
+
+---
+
+## Recent Updates — September 2026
+
+Commit [`44e21da`](https://github.com/Ubaidalam217/jaipurbnb/commit/44e21da)
+added five client-requested features on top of the four core milestones,
+deployed to Hostinger production on 14 September 2026:
+
+- **Guest breakdown** — hosts now set adults / children / infants
+  separately instead of one guest count. `properties.max_guests` is a
+  **derived** column (`max_adults + max_children`; infants are excluded)
+  computed server-side on every save, never trusted from client input.
+  The browse "Guests" filter ceiling moved from 8 to 16.
+- **Date-based availability filter** — `/browse` accepts `check_in` /
+  `check_out` and excludes any listing with a `blocked` or `booked`
+  `property_availability` row inside that stay range.
+- **Amenities system** — a 25-item picklist (`amenities` +
+  `property_amenities` tables, seeded by `AmenitySeeder`) across three
+  categories (basics, popular, features; `location` reserved and
+  currently empty). Host form has a full multi-select; the browse filter
+  requires **every** ticked amenity (AND semantics), and the property
+  detail page lists them.
+- **Pet-friendly** — a toggle on the host form, a filter checkbox on
+  `/browse`, and a badge on both the browse card and the listing page.
+- **Google Maps location** — hosts enter latitude/longitude as plain
+  text fields (no JS map picker); the listing page embeds a
+  `maps.google.com` iframe when both are set.
+- **Full address fields** — `full_address` / `city` / `state` /
+  `pincode` on every property, and matching optional `host_address` /
+  `host_city` / `host_state` / `host_pincode` fields at host
+  registration. All new address fields are nullable — nothing here makes
+  registration or listing creation stricter than before.
+
+**Verification performed on production (14 September 2026):** all seven
+areas above were exercised end-to-end via a throwaway test host +
+listing (created and fully deleted afterward — no production data was
+touched), confirming: the derived guest count, the 16-guest ceiling, the
+date-range exclusion (including that the checkout night itself is not
+checked), amenity AND-filtering, the pet-friendly badge/filter, the maps
+embed rendering with the correct coordinates, and the address panel. A
+real `/register` submission with host address fields was also posted and
+verified in the database, then removed. `storage/logs/laravel.log`
+carried no new exceptions from this testing. See `TEST_REPORT.md` for
+the full pass/fail detail.
+
+**Server cleanup performed the same day:** two pre-cutover leftovers
+were removed from the Hostinger account — `~/wp-backup-20260910/` (the
+old WordPress DB dump + files tarball taken before the domain was
+repointed to Laravel) and `~/domains/jaipurbnb.com/public_html_old/`
+(the previous WordPress document root, including a stale `staging`
+subfolder). `public_html` was confirmed to still resolve correctly as a
+symlink to `laravel_app/public` afterward. `route:cache` was
+deliberately **not** run — the homepage is a closure route, and caching
+routes on this deployment turns `/` into a 405. **`DEPLOYMENT.md`'s
+optimize-for-production step still lists `route:cache` as of this
+writing — do not run it on this deployment; that step is stale and
+needs correcting.**
 
 ---
 
