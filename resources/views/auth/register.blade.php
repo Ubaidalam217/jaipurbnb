@@ -44,9 +44,7 @@
                  type="tel" id="phone_number" name="phone_number"
                  value="{{ old('phone_number') }}" required
                  autocomplete="tel" inputmode="tel" maxlength="20"
-                 {{-- Format hint only. Uses CONTACT_PHONE (config/contact.php) so no
-                      real-looking number is hardcoded in the markup. --}}
-                 placeholder="{{ config('contact.phone') }}"
+                 placeholder="Your Mobile Number"
                  aria-describedby="phone_number-hint @error('phone_number') phone_number-error @enderror"
                  @error('phone_number') aria-invalid="true" @enderror>
           <span class="jb-auth__hint" id="phone_number-hint">Guests will contact you on this number via WhatsApp and call.</span>

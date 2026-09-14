@@ -254,11 +254,11 @@
                 <img src="/img/elements/elements3.png" alt="" />
               </div>
               <div class="header-heading2">
-                <h5><i class="fa-solid fa-location-dot"></i>Verified Local Hosts</h5>
+                <h5><i class="fa-solid fa-location-dot"></i>Local Jaipur Hosts</h5>
                 <div class="space20"></div>
                 <h2>Authentic Stays. Personal Service.</h2>
                 <div class="space20"></div>
-                <p>Every property on JaipurBnB is checked by our local team. No surprises, just genuine Jaipur hospitality.</p>
+                <p>Every property on JaipurBnB is reviewed by our admin team before going live. No surprises, just genuine Jaipur hospitality.</p>
                 <div class="space32"></div>
                 <div class="btn-area1">
                   <a href="{{ url('/apartment/v4') }}" class="header-btn3">Browse Properties</a>
@@ -368,7 +368,7 @@
             <div class="space16"></div>
             <p data-aos="fade-left" data-aos-duration="900">Discover the essence of Jaipur through our verified properties. From heritage havelis in the Walled City to modern apartments in C-Scheme, find a stay that matches your journey.</p>
             <div class="space16"></div>
-            <p data-aos="fade-left" data-aos-duration="1000">Every listing is checked by our local team, and you speak to the host directly. No booking fees, no middlemen.</p>
+            <p data-aos="fade-left" data-aos-duration="1000">Every listing is reviewed by our admin team, and you speak to the host directly. No booking fees, no middlemen.</p>
             <div class="space32"></div>
             <div class="btn-area1" data-aos="fade-left" data-aos-duration="1200">
               <a href="{{ url('/apartment/v4') }}" class="header-btn4">View Our Property</a>
@@ -401,7 +401,7 @@
             </div>
             <div class="space32"></div>
             <div class="content-area">
-              <a href="{{ url('/apartment/v4') }}">Verified Local Hosts</a>
+              <a href="{{ url('/apartment/v4') }}">Local Jaipur Hosts</a>
               <div class="space18"></div>
               <p>Every listing is reviewed by our team before it goes live.</p>
               <h3>01</h3>
