@@ -245,21 +245,32 @@
       accent-color: #E07A5F;
     }
 
-    /* Amenity filter checkboxes, grouped by category. */
+    /*
+      Amenity filter checkboxes, grouped by category.
+
+      Layout note: the category label is a block-level heading ABOVE its
+      chip row, not an inline flex item beside the first chip. Putting the
+      label inside the same flex-wrap row as the chips (the previous
+      approach) reads fine on a wide screen where everything fits on one
+      line, but on a narrow screen the label ends up sharing a wrapped
+      row with only the first chip - visually attaching "Basics" to
+      "Air conditioning" alone while every other Basics chip wraps onto
+      disconnected lines below. Decoupling the label from the wrap flow
+      fixes that at every width, not just desktop.
+    */
     .jb-amenity-filter {
       margin-top: 20px;
       padding: 20px 24px;
       border: 1px solid #EAEAEA;
       border-radius: 8px;
       background: #fff;
+      /* No overflow/height constraint here on purpose - a fixed height
+         or overflow:hidden would clip whichever wrapped chip rows don't
+         fit, which is exactly the failure this rule guards against. */
     }
 
     .jb-amenity-filter__group {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
+      margin-bottom: 18px;
     }
 
     .jb-amenity-filter__group:last-child {
@@ -267,27 +278,41 @@
     }
 
     .jb-amenity-filter__label {
-      flex: 0 0 auto;
-      min-width: 90px;
+      display: block;
+      margin: 0 0 10px;
       color: #6B7A82;
       font-family: 'Poppins', sans-serif;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
-      text-transform: capitalize;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+
+    .jb-amenity-filter__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .jb-amenity-chip {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 7px 14px;
+      padding: 6px 12px;
       border: 1px solid #EAEAEA;
       border-radius: 999px;
       color: #2F3E46;
       font-family: 'Poppins', sans-serif;
       font-size: 13.5px;
       font-weight: 500;
+      line-height: 1.4;
       cursor: pointer;
+      transition: border-color .15s ease, background-color .15s ease;
+    }
+
+    .jb-amenity-chip:hover {
+      border-color: #D8DDE0;
+      background: rgba(47, 62, 70, .04);
     }
 
     .jb-amenity-chip input {
@@ -299,6 +324,11 @@
     .jb-amenity-chip:has(input:checked) {
       border-color: #E07A5F;
       background: rgba(224, 122, 95, .1);
+    }
+
+    .jb-amenity-chip:has(input:checked):hover {
+      border-color: #E07A5F;
+      background: rgba(224, 122, 95, .16);
     }
   </style>
   <!-- ===== HERO AREA STARTS ======= -->
@@ -461,13 +491,15 @@
           @foreach ($amenitiesByCategory as $category => $categoryAmenities)
             <div class="jb-amenity-filter__group">
               <span class="jb-amenity-filter__label">{{ $category }}</span>
-              @foreach ($categoryAmenities as $amenity)
-                <label class="jb-amenity-chip">
-                  <input type="checkbox" name="amenities[]" value="{{ $amenity->id }}" @checked(in_array($amenity->id, $filters['amenities'], true))>
-                  @if ($amenity->icon)<i class="{{ $amenity->icon }}" aria-hidden="true"></i>@endif
-                  {{ $amenity->name }}
-                </label>
-              @endforeach
+              <div class="jb-amenity-filter__chips">
+                @foreach ($categoryAmenities as $amenity)
+                  <label class="jb-amenity-chip">
+                    <input type="checkbox" name="amenities[]" value="{{ $amenity->id }}" @checked(in_array($amenity->id, $filters['amenities'], true))>
+                    @if ($amenity->icon)<i class="{{ $amenity->icon }}" aria-hidden="true"></i>@endif
+                    {{ $amenity->name }}
+                  </label>
+                @endforeach
+              </div>
             </div>
           @endforeach
         </div>
