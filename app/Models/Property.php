@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -89,15 +90,25 @@ class Property extends Model
         'stay_type',
         'approx_price',
         'max_guests',
+        'max_adults',
+        'max_children',
+        'max_infants',
         'bedrooms',
         'bathrooms',
         'is_verified',
         'is_visible',
+        'is_pet_friendly',
         'listing_status',
         'subscription_expiry',
         'verification_doc_url',
         'ical_feed_url',
         'rejection_reason',
+        'latitude',
+        'longitude',
+        'full_address',
+        'city',
+        'state',
+        'pincode',
     ];
 
     /** @return array<string, string> */
@@ -106,11 +117,17 @@ class Property extends Model
         return [
             'is_verified'         => 'boolean',
             'is_visible'          => 'boolean',
+            'is_pet_friendly'     => 'boolean',
             'subscription_expiry' => 'date',
             'approx_price'        => 'integer',
             'max_guests'          => 'integer',
+            'max_adults'          => 'integer',
+            'max_children'        => 'integer',
+            'max_infants'         => 'integer',
             'bedrooms'            => 'integer',
             'bathrooms'           => 'integer',
+            'latitude'            => 'decimal:8',
+            'longitude'           => 'decimal:8',
         ];
     }
 
@@ -142,6 +159,22 @@ class Property extends Model
     public function coverImage(): HasOne
     {
         return $this->hasOne(PropertyImage::class)->where('is_cover', true);
+    }
+
+    public function amenities(): BelongsToMany
+    {
+        return $this->belongsToMany(Amenity::class, 'property_amenities');
+    }
+
+    /**
+     * Whether this listing has coordinates to put on a map. Both columns
+     * are nullable and only ever set together (see PropertyStoreRequest),
+     * but checking both keeps a half-filled row from rendering a broken
+     * embed.
+     */
+    public function hasCoordinates(): bool
+    {
+        return $this->latitude !== null && $this->longitude !== null;
     }
 
     /**

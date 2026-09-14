@@ -28,6 +28,10 @@ class RegisterController extends Controller
             'email'        => $validated['email'],
             'phone_number' => $validated['phone_number'],
             'password'     => $validated['password'], // hashed by the model cast
+            'host_address' => $validated['host_address'] ?? null,
+            'host_city'    => $validated['host_city'] ?? null,
+            'host_state'   => $validated['host_state'] ?? null,
+            'host_pincode' => $validated['host_pincode'] ?? null,
         ]);
 
         // Founding Host promo: every new host gets 60 days of free listing

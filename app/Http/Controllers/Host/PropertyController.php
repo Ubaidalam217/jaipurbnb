@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Host;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PropertyStoreRequest;
 use App\Http\Requests\PropertyUpdateRequest;
+use App\Models\Amenity;
 use App\Models\Property;
 use App\Models\PropertyImage;
 use Illuminate\Http\RedirectResponse;
@@ -38,7 +39,9 @@ class PropertyController extends Controller
 
     public function create(): View
     {
-        return view('host.properties.create');
+        return view('host.properties.create', [
+            'amenitiesByCategory' => $this->amenitiesByCategory(),
+        ]);
     }
 
     public function store(PropertyStoreRequest $request): RedirectResponse
@@ -47,20 +50,34 @@ class PropertyController extends Controller
 
         $property = DB::transaction(function () use ($data, $request) {
             $property = auth()->user()->properties()->create([
-                'title'          => $data['title'],
-                'description'    => $data['description'],
-                'neighborhood'   => $data['neighborhood'],
-                'stay_type'      => $data['stay_type'],
-                'approx_price'   => $data['approx_price'],
-                'max_guests'     => $data['max_guests'],
-                'bedrooms'       => $data['bedrooms'],
-                'bathrooms'      => $data['bathrooms'],
-                'ical_feed_url'  => $data['ical_feed_url'] ?? null,
+                'title'           => $data['title'],
+                'description'     => $data['description'],
+                'neighborhood'    => $data['neighborhood'],
+                'stay_type'       => $data['stay_type'],
+                'approx_price'    => $data['approx_price'],
+                'max_adults'      => $data['max_adults'],
+                'max_children'    => $data['max_children'],
+                'max_infants'     => $data['max_infants'],
+                // Derived, never taken from the client - see
+                // PropertyStoreRequest's docblock.
+                'max_guests'      => $data['max_adults'] + $data['max_children'],
+                'bedrooms'        => $data['bedrooms'],
+                'bathrooms'       => $data['bathrooms'],
+                'ical_feed_url'   => $data['ical_feed_url'] ?? null,
+                'is_pet_friendly' => $request->boolean('is_pet_friendly'),
+                'latitude'        => $data['latitude'] ?? null,
+                'longitude'       => $data['longitude'] ?? null,
+                'full_address'    => $data['full_address'],
+                'city'            => $data['city'],
+                'state'           => $data['state'],
+                'pincode'         => $data['pincode'],
                 // Set by us, never by the host:
                 'listing_status' => Property::STATUS_PENDING,
                 'is_verified'    => false,
                 'is_visible'     => false,
             ]);
+
+            $property->amenities()->sync($data['amenities'] ?? []);
 
             $this->storePhotos($property, $request->file('photos', []), (int) $data['cover_index']);
 
@@ -82,9 +99,12 @@ class PropertyController extends Controller
     public function edit(Property $property): View
     {
         $property = $this->ownedOrFail($property);
-        $property->load('images');
+        $property->load('images', 'amenities');
 
-        return view('host.properties.edit', compact('property'));
+        return view('host.properties.edit', [
+            'property'            => $property,
+            'amenitiesByCategory' => $this->amenitiesByCategory(),
+        ]);
     }
 
     public function update(PropertyUpdateRequest $request, Property $property): RedirectResponse
@@ -94,15 +114,27 @@ class PropertyController extends Controller
 
         DB::transaction(function () use ($property, $request, $data) {
             $property->fill([
-                'title'         => $data['title'],
-                'description'   => $data['description'],
-                'neighborhood'  => $data['neighborhood'],
-                'stay_type'     => $data['stay_type'],
-                'approx_price'  => $data['approx_price'],
-                'max_guests'    => $data['max_guests'],
-                'bedrooms'      => $data['bedrooms'],
-                'bathrooms'     => $data['bathrooms'],
-                'ical_feed_url' => $data['ical_feed_url'] ?? null,
+                'title'           => $data['title'],
+                'description'     => $data['description'],
+                'neighborhood'    => $data['neighborhood'],
+                'stay_type'       => $data['stay_type'],
+                'approx_price'    => $data['approx_price'],
+                'max_adults'      => $data['max_adults'],
+                'max_children'    => $data['max_children'],
+                'max_infants'     => $data['max_infants'],
+                // Derived, never taken from the client - see
+                // PropertyUpdateRequest's docblock.
+                'max_guests'      => $data['max_adults'] + $data['max_children'],
+                'bedrooms'        => $data['bedrooms'],
+                'bathrooms'       => $data['bathrooms'],
+                'ical_feed_url'   => $data['ical_feed_url'] ?? null,
+                'is_pet_friendly' => $request->boolean('is_pet_friendly'),
+                'latitude'        => $data['latitude'] ?? null,
+                'longitude'       => $data['longitude'] ?? null,
+                'full_address'    => $data['full_address'],
+                'city'            => $data['city'],
+                'state'           => $data['state'],
+                'pincode'         => $data['pincode'],
             ]);
 
             // A rejected listing that has been edited goes back into the
@@ -114,6 +146,8 @@ class PropertyController extends Controller
             }
 
             $property->save();
+
+            $property->amenities()->sync($data['amenities'] ?? []);
 
             // Delete any existing image the host did not tick to keep.
             $keepIds = $data['existing_image_ids'] ?? [];
@@ -163,6 +197,15 @@ class PropertyController extends Controller
         abort_unless($property->host_id === auth()->id(), 404);
 
         return $property;
+    }
+
+    /**
+     * The full amenity picklist for the create/edit form, grouped the
+     * same way the browse filter groups them - see PropertyController.
+     */
+    private function amenitiesByCategory(): \Illuminate\Support\Collection
+    {
+        return Amenity::orderBy('name')->get()->groupBy('category');
     }
 
     /**

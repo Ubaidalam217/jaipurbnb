@@ -40,6 +40,10 @@ class User extends Authenticatable
         'password',
         'phone_number',
         'founding_host_expires_at',
+        'host_address',
+        'host_city',
+        'host_state',
+        'host_pincode',
     ];
 
     /**

@@ -26,6 +26,13 @@ class RegisterRequest extends FormRequest
             'email'        => ['required', 'email', 'max:100', 'unique:users,email'],
             'phone_number' => ['required', 'string', 'max:20', 'unique:users,phone_number'],
             'password'     => ['required', 'string', 'min:8', 'confirmed'],
+
+            // Optional: a host can complete their profile later from the
+            // dashboard, so signup must not block on these.
+            'host_address' => ['nullable', 'string', 'max:2000'],
+            'host_city'    => ['nullable', 'string', 'max:100'],
+            'host_state'   => ['nullable', 'string', 'max:100'],
+            'host_pincode' => ['nullable', 'string', 'max:10'],
         ];
     }
 
@@ -35,6 +42,10 @@ class RegisterRequest extends FormRequest
         return [
             'full_name'    => 'full name',
             'phone_number' => 'phone number',
+            'host_address' => 'address',
+            'host_city'    => 'city',
+            'host_state'   => 'state',
+            'host_pincode' => 'pincode',
         ];
     }
 

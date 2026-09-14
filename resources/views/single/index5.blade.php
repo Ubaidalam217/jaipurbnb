@@ -56,6 +56,76 @@
 @section('content')
   @include('layouts.partials.navbar')
 
+  {{--
+    Styles for the sections this listing page adds beyond the template:
+    amenities grid, address panel and the Google Maps embed. Inline,
+    jb- prefixed, zero dependency on the template SCSS - same convention
+    as contact-buttons.blade.php and apartment/v4.blade.php.
+  --}}
+  <style>
+    .jb-pet-badge2 {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 10px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(47, 62, 70, .08);
+      color: #2F3E46;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .jb-amenities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px 20px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .jb-amenities-grid li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #2F3E46;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+    }
+
+    .jb-amenities-grid li i {
+      width: 20px;
+      color: #B34D33;
+      text-align: center;
+    }
+
+    .jb-address-panel {
+      padding: 24px;
+      border: 1px solid rgba(47, 62, 70, .12);
+      border-radius: 14px;
+      background: #fff;
+      margin-top: 24px;
+    }
+
+    .jb-address-panel p {
+      margin: 0;
+      color: #2F3E46;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .jb-map-embed {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      border-radius: 14px;
+      margin-top: 20px;
+    }
+  </style>
+
   <!-- ===== HERO AREA STARTS ======= -->
   <div class="space80"></div>
   <div class="hero5-area">
@@ -93,6 +163,9 @@
                    edit can flip without any admin having reviewed it. --}}
               @if ($property->isVerified())
                 <span class="heart" title="Verified by the JaipurBnB team"><i class="fa-solid fa-circle-check"></i></span>
+              @endif
+              @if ($property->is_pet_friendly)
+                <span class="jb-pet-badge2"><i class="fa-solid fa-paw" aria-hidden="true"></i> Pet-friendly</span>
               @endif
             </div>
             <div class="space24"></div>
@@ -261,6 +334,47 @@
                       @include('layouts.partials.contact-buttons', ['property' => $property])
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            @if ($property->amenities->isNotEmpty())
+            <div class="row">
+              <div class="col-lg-2"></div>
+              <div class="col-lg-10">
+                <div class="space40"></div>
+                <h3 style="font-family:'Poppins',sans-serif;font-size:22px;font-weight:700;color:#2F3E46;">What this place offers</h3>
+                <div class="space20"></div>
+                <ul class="jb-amenities-grid">
+                  @foreach ($property->amenities as $amenity)
+                    <li>
+                      @if ($amenity->icon)<i class="{{ $amenity->icon }}" aria-hidden="true"></i>@endif
+                      {{ $amenity->name }}
+                    </li>
+                  @endforeach
+                </ul>
+              </div>
+            </div>
+            @endif
+
+            <div class="row">
+              <div class="col-lg-2"></div>
+              <div class="col-lg-10">
+                <div class="jb-address-panel">
+                  <h3 style="margin:0 0 10px;font-family:'Poppins',sans-serif;font-size:20px;font-weight:700;color:#2F3E46;">Where you'll be</h3>
+                  <p>
+                    @if ($property->full_address){{ $property->full_address }}<br>@endif
+                    {{ $property->neighborhood }}, {{ $property->city }}, {{ $property->state }}
+                    @if ($property->pincode) - {{ $property->pincode }} @endif
+                  </p>
+                  @if ($property->hasCoordinates())
+                    <iframe class="jb-map-embed"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                            src="https://maps.google.com/maps?q={{ $property->latitude }},{{ $property->longitude }}&z=14&output=embed"
+                            title="Map location of {{ $property->title }}"></iframe>
+                  @endif
                 </div>
               </div>
             </div>

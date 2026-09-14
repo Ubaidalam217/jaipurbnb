@@ -165,6 +165,141 @@
       flex: 1 1 auto;
       min-width: 0;
     }
+
+    /* Pet-friendly badge on a browse card. */
+    .jb-pet-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin: 0 0 10px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(47, 62, 70, .08);
+      color: #2F3E46;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    /* Date filter inputs - matched to the template's own .nice-select
+       height/border rather than jquery-nice-select, which only styles
+       <select> elements. */
+    .jb-filter-date {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      height: 60px;
+      padding: 0 20px;
+      border: 1px solid #EAEAEA;
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .jb-filter-date label {
+      margin: 0;
+      color: #6B7A82;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .jb-filter-date input[type="date"] {
+      border: 0;
+      padding: 0;
+      color: #2F3E46;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      background: transparent;
+    }
+
+    .jb-filter-date input[type="date"]:focus {
+      outline: none;
+    }
+
+    .jb-filter-pet {
+      display: flex;
+      align-items: center;
+      height: 60px;
+      padding: 0 20px;
+      border: 1px solid #EAEAEA;
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .jb-filter-pet label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      color: #2F3E46;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .jb-filter-pet input {
+      width: 17px;
+      height: 17px;
+      accent-color: #E07A5F;
+    }
+
+    /* Amenity filter checkboxes, grouped by category. */
+    .jb-amenity-filter {
+      margin-top: 20px;
+      padding: 20px 24px;
+      border: 1px solid #EAEAEA;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .jb-amenity-filter__group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .jb-amenity-filter__group:last-child {
+      margin-bottom: 0;
+    }
+
+    .jb-amenity-filter__label {
+      flex: 0 0 auto;
+      min-width: 90px;
+      color: #6B7A82;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+
+    .jb-amenity-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border: 1px solid #EAEAEA;
+      border-radius: 999px;
+      color: #2F3E46;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .jb-amenity-chip input {
+      width: 15px;
+      height: 15px;
+      accent-color: #E07A5F;
+    }
+
+    .jb-amenity-chip:has(input:checked) {
+      border-color: #E07A5F;
+      background: rgba(224, 122, 95, .1);
+    }
   </style>
   <!-- ===== HERO AREA STARTS ======= -->
   <div class="inner-main-hero-area">
@@ -287,6 +422,23 @@
         </select>
         </div>
 
+        <div class="jb-filter-date">
+        <label for="check_in">Check-in</label>
+        <input type="date" name="check_in" id="check_in" value="{{ request('check_in') }}">
+        </div>
+
+        <div class="jb-filter-date">
+        <label for="check_out">Check-out</label>
+        <input type="date" name="check_out" id="check_out" value="{{ request('check_out') }}">
+        </div>
+
+        <div class="jb-filter-pet">
+        <label for="pet_friendly">
+          <input type="checkbox" name="pet_friendly" id="pet_friendly" value="1" @checked($filters['pet_friendly'])>
+          Pet-friendly
+        </label>
+        </div>
+
         <div class="select-area2">
         <select name="sort" class="nice-select">
           <option value="newest" @selected($filters['sort'] === 'newest')>Newest First</option>
@@ -301,6 +453,27 @@
       </div>
       </div>
     </div>
+
+    @if ($amenitiesByCategory->isNotEmpty())
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="jb-amenity-filter">
+          @foreach ($amenitiesByCategory as $category => $categoryAmenities)
+            <div class="jb-amenity-filter__group">
+              <span class="jb-amenity-filter__label">{{ $category }}</span>
+              @foreach ($categoryAmenities as $amenity)
+                <label class="jb-amenity-chip">
+                  <input type="checkbox" name="amenities[]" value="{{ $amenity->id }}" @checked(in_array($amenity->id, $filters['amenities'], true))>
+                  @if ($amenity->icon)<i class="{{ $amenity->icon }}" aria-hidden="true"></i>@endif
+                  {{ $amenity->name }}
+                </label>
+              @endforeach
+            </div>
+          @endforeach
+        </div>
+      </div>
+    </div>
+    @endif
     </form>
 
     <div class="row">
@@ -324,6 +497,9 @@
           <a href="{{ route('properties.show', $property) }}">{{ $property->title }}</a>
         </div>
         <p class="jb-card-stay-type">{{ $property->stay_type }}</p>
+        @if ($property->is_pet_friendly)
+        <span class="jb-pet-badge"><i class="fa-solid fa-paw" aria-hidden="true"></i> Pet-friendly</span>
+        @endif
         {{-- Real capacity, not the template's hardcoded "2 BR / 2 BA". --}}
         <p class="jb-card-capacity">
           <span>{{ $property->max_guests }} {{ Str::plural('guest', $property->max_guests) }}</span>

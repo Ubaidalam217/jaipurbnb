@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Amenity;
 use App\Models\Property;
+use App\Models\PropertyAvailability;
 use App\Support\AvailabilityCalendar;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -31,7 +34,7 @@ class PropertyController extends Controller
      * "n or more". Kept as allow-lists so a crafted ?guests=999 is
      * treated as "no filter" rather than silently returning nothing.
      */
-    public const GUEST_OPTIONS = [1, 2, 4, 6, 8];
+    public const GUEST_OPTIONS = [1, 2, 4, 6, 8, 10, 12, 14, 16];
     public const BEDROOM_OPTIONS = [1, 2, 3, 4];
 
     /** Query-param value => ORDER BY clause. */
@@ -53,6 +56,27 @@ class PropertyController extends Controller
             ->when($filters['max_price'] !== null, fn (Builder $q) => $q->where('approx_price', '<=', $filters['max_price']))
             ->when($filters['guests'] !== null, fn (Builder $q) => $q->where('max_guests', '>=', $filters['guests']))
             ->when($filters['bedrooms'] !== null, fn (Builder $q) => $q->where('bedrooms', '>=', $filters['bedrooms']))
+            ->when($filters['pet_friendly'], fn (Builder $q) => $q->where('is_pet_friendly', true))
+            ->when($filters['amenities'], function (Builder $q, array $amenityIds) {
+                // AND semantics: a listing must have EVERY ticked amenity,
+                // not merely one of them - so each id gets its own
+                // whereHas rather than a single whereIn (which would only
+                // require any one to match).
+                foreach ($amenityIds as $amenityId) {
+                    $q->whereHas('amenities', fn (Builder $sub) => $sub->where('amenities.id', $amenityId));
+                }
+            })
+            ->when($filters['check_in'] && $filters['check_out'], function (Builder $q) use ($filters) {
+                // A date with no availability row is available by default
+                // (see AvailabilityCalendar), so "available for these
+                // dates" means: no row in the stay range says otherwise.
+                $q->whereDoesntHave('availability', function (Builder $sub) use ($filters) {
+                    $sub->whereBetween('calendar_date', [
+                        $filters['check_in']->toDateString(),
+                        $filters['check_out']->subDay()->toDateString(),
+                    ])->where('status', '!=', PropertyAvailability::STATUS_AVAILABLE);
+                });
+            })
             ->orderBy(...self::SORTS[$filters['sort']])
             // Tie-break so paginated pages never repeat or drop a row when
             // several listings share a price / timestamp.
@@ -74,6 +98,7 @@ class PropertyController extends Controller
             'guestOptions'  => self::GUEST_OPTIONS,
             'bedroomOptions' => self::BEDROOM_OPTIONS,
             'sorts'         => array_keys(self::SORTS),
+            'amenitiesByCategory' => Amenity::orderBy('name')->get()->groupBy('category'),
         ]);
     }
 
@@ -81,7 +106,7 @@ class PropertyController extends Controller
     {
         /** @var Property $property */
         $property = $this->visible()
-            ->with(['images', 'host'])
+            ->with(['images', 'host', 'amenities'])
             ->findOrFail($id);
 
         // Fill the "latest listings" carousel with other live listings
@@ -118,7 +143,7 @@ class PropertyController extends Controller
      * Coerce query params into a safe, fully-populated filter set.
      * Unrecognised values become null (= filter off).
      *
-     * @return array{neighborhood: ?string, stay_type: ?string, min_price: ?int, max_price: ?int, guests: ?int, bedrooms: ?int, sort: string}
+     * @return array{neighborhood: ?string, stay_type: ?string, min_price: ?int, max_price: ?int, guests: ?int, bedrooms: ?int, sort: string, pet_friendly: bool, amenities: list<int>, check_in: ?CarbonImmutable, check_out: ?CarbonImmutable}
      */
     private function filters(Request $request): array
     {
@@ -133,6 +158,8 @@ class PropertyController extends Controller
 
         $sort = $request->query('sort');
 
+        [$checkIn, $checkOut] = $this->dateRange($request->query('check_in'), $request->query('check_out'));
+
         return [
             'neighborhood' => $this->oneOf($request->query('neighborhood'), Property::NEIGHBORHOODS),
             'stay_type'    => $this->oneOf($request->query('stay_type'), Property::STAY_TYPES),
@@ -144,7 +171,64 @@ class PropertyController extends Controller
             'guests'       => $this->oneOfInt($request->query('guests'), self::GUEST_OPTIONS),
             'bedrooms'     => $this->oneOfInt($request->query('bedrooms'), self::BEDROOM_OPTIONS),
             'sort'         => is_string($sort) && isset(self::SORTS[$sort]) ? $sort : 'newest',
+            'pet_friendly' => $request->boolean('pet_friendly'),
+            'amenities'    => $this->positiveIntList($request->query('amenities')),
+            'check_in'     => $checkIn,
+            'check_out'    => $checkOut,
         ];
+    }
+
+    /**
+     * Both check-in and check-out must be present, parseable and in
+     * check-in < check-out order, or the whole filter is off - a lone or
+     * malformed date says nothing about which nights to avoid.
+     *
+     * @return array{0: ?CarbonImmutable, 1: ?CarbonImmutable}
+     */
+    private function dateRange(mixed $checkIn, mixed $checkOut): array
+    {
+        $checkIn = $this->parseDate($checkIn);
+        $checkOut = $this->parseDate($checkOut);
+
+        if ($checkIn === null || $checkOut === null || ! $checkOut->gt($checkIn)) {
+            return [null, null];
+        }
+
+        return [$checkIn, $checkOut];
+    }
+
+    private function parseDate(mixed $value): ?CarbonImmutable
+    {
+        if (! is_string($value) || $value === '') {
+            return null;
+        }
+
+        // createFromFormat() throws on a string that does not fit Y-m-d
+        // at all (e.g. "not-a-date"), rather than returning null - so a
+        // garbage ?check_in= must be caught here to stay "no filter"
+        // like every other query param on this page, not a 500.
+        try {
+            return CarbonImmutable::createFromFormat('Y-m-d', $value)?->startOfDay();
+        } catch (\Exception) {
+            return null;
+        }
+    }
+
+    /**
+     * @return list<int>
+     */
+    private function positiveIntList(mixed $value): array
+    {
+        if (! is_array($value)) {
+            return [];
+        }
+
+        return collect($value)
+            ->map(fn ($v) => $this->positiveInt($v))
+            ->filter(fn (?int $v) => $v !== null)
+            ->unique()
+            ->values()
+            ->all();
     }
 
     /**

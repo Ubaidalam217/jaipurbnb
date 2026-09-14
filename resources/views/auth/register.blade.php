@@ -54,6 +54,47 @@
         </div>
 
         <div class="jb-auth__field">
+          <label class="jb-auth__label" for="host_address">Address <span style="font-weight:500;color:#6C7A80;">(optional)</span></label>
+          <textarea class="jb-auth__input @error('host_address') is-invalid @enderror"
+                    id="host_address" name="host_address" maxlength="2000"
+                    style="min-height:90px;resize:vertical;"
+                    placeholder="House / street, area">{{ old('host_address') }}</textarea>
+          @error('host_address')
+            <span class="jb-auth__error" id="host_address-error" role="alert">{{ $message }}</span>
+          @enderror
+        </div>
+
+        <div class="jb-auth__field">
+          <label class="jb-auth__label" for="host_city">City <span style="font-weight:500;color:#6C7A80;">(optional)</span></label>
+          <input class="jb-auth__input @error('host_city') is-invalid @enderror"
+                 type="text" id="host_city" name="host_city"
+                 value="{{ old('host_city', 'Jaipur') }}" maxlength="100">
+          @error('host_city')
+            <span class="jb-auth__error" id="host_city-error" role="alert">{{ $message }}</span>
+          @enderror
+        </div>
+
+        <div class="jb-auth__field">
+          <label class="jb-auth__label" for="host_state">State <span style="font-weight:500;color:#6C7A80;">(optional)</span></label>
+          <input class="jb-auth__input @error('host_state') is-invalid @enderror"
+                 type="text" id="host_state" name="host_state"
+                 value="{{ old('host_state', 'Rajasthan') }}" maxlength="100">
+          @error('host_state')
+            <span class="jb-auth__error" id="host_state-error" role="alert">{{ $message }}</span>
+          @enderror
+        </div>
+
+        <div class="jb-auth__field">
+          <label class="jb-auth__label" for="host_pincode">Pincode <span style="font-weight:500;color:#6C7A80;">(optional)</span></label>
+          <input class="jb-auth__input @error('host_pincode') is-invalid @enderror"
+                 type="text" id="host_pincode" name="host_pincode"
+                 value="{{ old('host_pincode') }}" maxlength="10" placeholder="302001">
+          @error('host_pincode')
+            <span class="jb-auth__error" id="host_pincode-error" role="alert">{{ $message }}</span>
+          @enderror
+        </div>
+
+        <div class="jb-auth__field">
           <label class="jb-auth__label" for="password">Password <span class="jb-auth__req">*</span></label>
           <div class="jb-auth__pw">
             <input class="jb-auth__input @error('password') is-invalid @enderror"

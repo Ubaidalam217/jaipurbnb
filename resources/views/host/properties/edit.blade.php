@@ -97,12 +97,29 @@
             </div>
 
             <div class="jb-auth__field">
-              <label class="jb-auth__label" for="max_guests">Maximum guests <span class="jb-auth__req">*</span></label>
-              <input class="jb-auth__input @error('max_guests') is-invalid @enderror" type="number"
-                     id="max_guests" name="max_guests" value="{{ old('max_guests', $property->max_guests) }}"
-                     min="1" max="20" step="1" inputmode="numeric" required>
-              <span class="jb-auth__hint">Guests filter listings by this on the browse page.</span>
-              @error('max_guests')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
+              <label class="jb-auth__label" for="max_adults">Adults <span class="jb-auth__req">*</span></label>
+              <input class="jb-auth__input @error('max_adults') is-invalid @enderror" type="number"
+                     id="max_adults" name="max_adults" value="{{ old('max_adults', $property->max_adults) }}"
+                     min="1" max="16" step="1" inputmode="numeric" required>
+              <span class="jb-auth__hint">Adults + children set the guest count guests filter by on the browse page.</span>
+              @error('max_adults')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
+            </div>
+
+            <div class="jb-auth__field">
+              <label class="jb-auth__label" for="max_children">Children</label>
+              <input class="jb-auth__input @error('max_children') is-invalid @enderror" type="number"
+                     id="max_children" name="max_children" value="{{ old('max_children', $property->max_children) }}"
+                     min="0" max="10" step="1" inputmode="numeric" required>
+              @error('max_children')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
+            </div>
+
+            <div class="jb-auth__field">
+              <label class="jb-auth__label" for="max_infants">Infants</label>
+              <input class="jb-auth__input @error('max_infants') is-invalid @enderror" type="number"
+                     id="max_infants" name="max_infants" value="{{ old('max_infants', $property->max_infants) }}"
+                     min="0" max="10" step="1" inputmode="numeric" required>
+              <span class="jb-auth__hint">Infants don't count toward the guest total.</span>
+              @error('max_infants')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
             </div>
 
             <div class="jb-auth__field">
@@ -121,10 +138,92 @@
               @error('bathrooms')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
             </div>
           </div>
+
+          <div class="jb-auth__field" style="margin:18px 0 0;">
+            <label class="jb-auth__label" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+              <input type="checkbox" name="is_pet_friendly" value="1" style="width:18px;height:18px;"
+                     @checked(old('is_pet_friendly', $property->is_pet_friendly))>
+              This property is pet-friendly
+            </label>
+          </div>
         </section>
 
         <section class="jb-form__section">
-          <h2 class="jb-form__legend">3. Photos</h2>
+          <h2 class="jb-form__legend">3. Address &amp; location</h2>
+          <p class="jb-form__hint">Guests see the full address only after you approve their enquiry - this powers the map on your listing.</p>
+
+          <div class="jb-auth__field">
+            <label class="jb-auth__label" for="full_address">Full address <span class="jb-auth__req">*</span></label>
+            <textarea class="jb-auth__input @error('full_address') is-invalid @enderror"
+                      id="full_address" name="full_address" maxlength="2000" required
+                      placeholder="House / street, landmark, area">{{ old('full_address', $property->full_address) }}</textarea>
+            @error('full_address')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
+          </div>
+
+          <div class="jb-form__grid">
+            <div class="jb-auth__field">
+              <label class="jb-auth__label" for="city">City <span class="jb-auth__req">*</span></label>
+              <input class="jb-auth__input @error('city') is-invalid @enderror" type="text"
+                     id="city" name="city" value="{{ old('city', $property->city) }}" maxlength="100" required>
+              @error('city')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
+            </div>
+
+            <div class="jb-auth__field">
+              <label class="jb-auth__label" for="state">State <span class="jb-auth__req">*</span></label>
+              <input class="jb-auth__input @error('state') is-invalid @enderror" type="text"
+                     id="state" name="state" value="{{ old('state', $property->state) }}" maxlength="100" required>
+              @error('state')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
+            </div>
+
+            <div class="jb-auth__field">
+              <label class="jb-auth__label" for="pincode">Pincode <span class="jb-auth__req">*</span></label>
+              <input class="jb-auth__input @error('pincode') is-invalid @enderror" type="text"
+                     id="pincode" name="pincode" value="{{ old('pincode', $property->pincode) }}" maxlength="10" required
+                     placeholder="302001">
+              @error('pincode')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
+            </div>
+
+            <div class="jb-auth__field">
+              <label class="jb-auth__label" for="latitude">Latitude <span style="font-weight:500;color:var(--jb-muted);">(optional)</span></label>
+              <input class="jb-auth__input @error('latitude') is-invalid @enderror" type="text"
+                     id="latitude" name="latitude" value="{{ old('latitude', $property->latitude) }}"
+                     inputmode="decimal" placeholder="26.9124">
+              @error('latitude')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
+            </div>
+
+            <div class="jb-auth__field">
+              <label class="jb-auth__label" for="longitude">Longitude <span style="font-weight:500;color:var(--jb-muted);">(optional)</span></label>
+              <input class="jb-auth__input @error('longitude') is-invalid @enderror" type="text"
+                     id="longitude" name="longitude" value="{{ old('longitude', $property->longitude) }}"
+                     inputmode="decimal" placeholder="75.7873">
+              <span class="jb-auth__hint">Right-click the spot on Google Maps and copy the two numbers it shows.</span>
+              @error('longitude')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
+            </div>
+          </div>
+        </section>
+
+        <section class="jb-form__section">
+          <h2 class="jb-form__legend">4. Amenities</h2>
+          <p class="jb-form__hint">Tick everything guests will find at this property.</p>
+
+          @php $jbSelectedAmenities = old('amenities', $property->amenities->pluck('id')->all()); @endphp
+          @foreach ($amenitiesByCategory as $category => $categoryAmenities)
+            <h3 style="margin:0 0 10px;font-size:14px;font-weight:600;text-transform:capitalize;">{{ $category }}</h3>
+            <div class="jb-form__grid" style="margin-bottom:20px;">
+              @foreach ($categoryAmenities as $amenity)
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14.5px;">
+                  <input type="checkbox" name="amenities[]" value="{{ $amenity->id }}" style="width:17px;height:17px;"
+                         @checked(collect($jbSelectedAmenities)->contains($amenity->id))>
+                  @if ($amenity->icon)<i class="{{ $amenity->icon }}" aria-hidden="true"></i>@endif
+                  {{ $amenity->name }}
+                </label>
+              @endforeach
+            </div>
+          @endforeach
+        </section>
+
+        <section class="jb-form__section">
+          <h2 class="jb-form__legend">5. Photos</h2>
           <p class="jb-form__hint">Untick a photo to delete it. Add new ones below. Up to 15 in total, and one must be the cover.</p>
 
           @error('photos')<span class="jb-auth__error" role="alert">{{ $message }}</span>@enderror
@@ -164,7 +263,7 @@
         </section>
 
         <section class="jb-form__section">
-          <h2 class="jb-form__legend">4. External calendar <span style="font-weight:500;color:var(--jb-muted);">(optional)</span></h2>
+          <h2 class="jb-form__legend">6. External calendar <span style="font-weight:500;color:var(--jb-muted);">(optional)</span></h2>
           <p class="jb-form__hint">Paste the .ics export URL from whichever calendar you already use. Dates booked there will automatically be blocked on JaipurBnB.</p>
 
           <div class="jb-auth__field" style="margin-bottom:0;">
