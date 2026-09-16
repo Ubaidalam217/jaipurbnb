@@ -28,7 +28,12 @@ class RegisterRequest extends FormRequest
             'password'     => ['required', 'string', 'min:8', 'confirmed'],
 
             // Optional: a host can complete their profile later from the
-            // dashboard, so signup must not block on these.
+            // dashboard (host.profile.edit), so signup must not block on these.
+            //
+            // whatsapp_number is NOT unique, unlike phone_number - a family
+            // business legitimately shares one WhatsApp line. Left blank, the
+            // WhatsApp button falls back to phone_number.
+            'whatsapp_number' => ['nullable', 'string', 'max:20'],
             'host_address' => ['nullable', 'string', 'max:2000'],
             'host_city'    => ['nullable', 'string', 'max:100'],
             'host_state'   => ['nullable', 'string', 'max:100'],
@@ -40,8 +45,9 @@ class RegisterRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'full_name'    => 'full name',
-            'phone_number' => 'phone number',
+            'full_name'       => 'full name',
+            'phone_number'    => 'phone number',
+            'whatsapp_number' => 'WhatsApp number',
             'host_address' => 'address',
             'host_city'    => 'city',
             'host_state'   => 'state',

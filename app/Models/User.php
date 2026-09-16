@@ -39,6 +39,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone_number',
+        'whatsapp_number',
         'founding_host_expires_at',
         'host_address',
         'host_city',
@@ -114,7 +115,36 @@ class User extends Authenticatable
             return null;
         }
 
-        $digits = preg_replace('/\D+/', '', $this->phone_number);
+        return $this->normalisePhone($this->phone_number);
+    }
+
+    /**
+     * The number WhatsApp messages should go to, as bare local digits.
+     *
+     * Hosts who answer calls and chat on different lines can set
+     * whatsapp_number; when they have not, this is just their phone_number,
+     * which is what every host had before that column existed.
+     */
+    public function cleanWhatsappNumber(): ?string
+    {
+        return $this->normalisePhone($this->whatsapp_number) ?? $this->cleanPhoneNumber();
+    }
+
+    /**
+     * Strip a typed-in number down to bare local digits.
+     *
+     * Registration only requires a string (any spacing/punctuation the host
+     * types is accepted), so this drops everything but digits and removes a
+     * redundant +91/91 country code if present - callers always prepend "91"
+     * themselves.
+     */
+    private function normalisePhone(?string $value): ?string
+    {
+        if (! $value) {
+            return null;
+        }
+
+        $digits = preg_replace('/\D+/', '', $value);
 
         if (strlen($digits) > 10 && str_starts_with($digits, '91')) {
             $digits = substr($digits, 2);

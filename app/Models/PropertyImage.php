@@ -40,9 +40,22 @@ class PropertyImage extends Model
     /**
      * Browser-ready src for this photo.
      *
-     * Real host uploads are disk-relative and need Storage::url(). Seeded
-     * demo photos are already absolute remote URLs and must pass through
-     * untouched. Protocol-relative ("//host/img.jpg") counts as absolute.
+     * Three shapes reach this accessor:
+     *
+     *   "properties/ab12.jpg"      real host upload, disk-relative -> Storage::url()
+     *   "/img/all-images/..."      file shipped in public/, already a valid src
+     *   "https://host/img.jpg"     absolute; protocol-relative "//host/" counts too
+     *
+     * The middle case is the one that used to be wrong: a leading slash is not
+     * matched by the absolute check, so seeded demo photos fell through to
+     * Storage::url() and came back as "/storage/img/all-images/..." - a 404.
+     * That is why production's demo images were once repointed to fully
+     * qualified https://jaipurbnb.com/img/... URLs; handling the root-relative
+     * form here is the real fix and keeps the paths portable across local,
+     * staging and production.
+     *
+     * Order matters: check "//" (protocol-relative) BEFORE the single-slash
+     * case, or "//host/img.jpg" would be misread as a local path.
      */
     protected function displayUrl(): Attribute
     {
@@ -50,6 +63,10 @@ class PropertyImage extends Model
             $path = (string) $this->image_url;
 
             if (Str::startsWith($path, ['http://', 'https://', '//'])) {
+                return $path;
+            }
+
+            if (Str::startsWith($path, '/')) {
                 return $path;
             }
 

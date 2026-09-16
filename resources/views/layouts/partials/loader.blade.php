@@ -3,6 +3,60 @@
 <!--===== PRELOADER ENDS =======-->
 
 <!--===== PROGRESS STARTS=======-->
+{{--
+  Scroll-to-top overrides.
+
+  Kept here rather than in layout/pages/_others.scss for the same reason the
+  homepage hero overrides live in index.blade.php: Hostinger has no Node and
+  public/build is gitignored, so an SCSS edit costs a local `npm run build`
+  plus a manual bundle upload, while this deploys as a plain file copy. The
+  SCSS block carries a pointer comment back to here so the two do not drift.
+
+  Two separate problems are fixed below.
+--}}
+<style>
+    /* 1. STACKING. _others.scss ships z-index:10000, which is above every
+          Bootstrap layer - so the button floated on top of the open mobile
+          nav drawer (.offcanvas, z-index 1045) and would cover any modal
+          (1055) too. 1020 puts it under the sticky navbar (1030, set in
+          navbar.blade.php), the drawer, and modals, while still clearing
+          ordinary page content. */
+    .progress-wrap {
+        z-index: 1020;
+    }
+
+    @media (max-width: 767.98px) {
+        /* 2. OVERLAP. At 56px inset 30px from each edge the button sat
+              directly over the right-hand end of the full-width WhatsApp /
+              Call buttons on listing cards and over footer links. Shrinking
+              to 44px and tucking it into the corner moves it clear of both.
+              44px is the floor here - it is the minimum comfortable touch
+              target, so do not shrink this further.
+
+              The safe-area inset keeps it above the iOS home indicator on
+              notched iPhones; it evaluates to 0px everywhere else, so the
+              effective offset stays 14px on Android and on desktop Chrome's
+              device emulation. */
+        .progress-wrap {
+            right: 14px;
+            bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+            height: 44px;
+            width: 44px;
+        }
+
+        /* The arrow glyph is drawn by ::after (and ::before on hover), both
+           hardcoded to 56px with a matching line-height. Left alone they
+           would render a 56px box inside a 44px circle - the arrow sits low
+           and right of centre and the hover swap misaligns. */
+        .progress-wrap::after,
+        .progress-wrap::before {
+            height: 44px;
+            width: 44px;
+            line-height: 44px;
+            font-size: 15px;
+        }
+    }
+</style>
 <div class="paginacontainer">
     <div class="progress-wrap">
         <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">

@@ -109,6 +109,7 @@ class Property extends Model
         'city',
         'state',
         'pincode',
+        'is_demo',
     ];
 
     /** @return array<string, string> */
@@ -118,6 +119,7 @@ class Property extends Model
             'is_verified'         => 'boolean',
             'is_visible'          => 'boolean',
             'is_pet_friendly'     => 'boolean',
+            'is_demo'             => 'boolean',
             'subscription_expiry' => 'date',
             'approx_price'        => 'integer',
             'max_guests'          => 'integer',
@@ -229,12 +231,15 @@ class Property extends Model
      * expects the classic application/x-www-form-urlencoded style,
      * where a space becomes "+" rather than "%20".
      *
-     * Access via $property->host->cleanPhoneNumber() assumes 'host' is
-     * loaded - every caller of this method already eager-loads it.
+     * Access via $property->host->cleanWhatsappNumber() assumes 'host' is
+     * loaded - every caller of this method already eager-loads it. That
+     * accessor falls back to phone_number when the host has not set a
+     * separate WhatsApp line, so this keeps working for every host who
+     * registered before whatsapp_number existed.
      */
     public function whatsappUrl(): ?string
     {
-        $phone = $this->host->cleanPhoneNumber();
+        $phone = $this->host->cleanWhatsappNumber();
 
         if (! $phone) {
             return null;

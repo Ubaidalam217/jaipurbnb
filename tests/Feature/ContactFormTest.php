@@ -21,11 +21,24 @@ use Tests\TestCase;
  */
 class ContactFormTest extends TestCase
 {
-    /** @var array<string, string> */
+    /**
+     * NOTE: these tests hit the network. The email rule is email:rfc,dns, so
+     * the domain is resolved for real on every submission.
+     *
+     * The address must be at a domain that actually ACCEPTS mail. example.com
+     * is not usable despite being the obvious choice: it publishes a null MX
+     * record ("."), which is the standard way a domain declares it receives no
+     * mail, and the validator correctly rejects it. gmail.com is used instead
+     * because its MX records are about as stable as DNS gets.
+     *
+     * @var array<string, string>
+     */
     private const VALID = [
         'name'    => 'Ananya Sharma',
         'phone'   => '+91 98765 43210',
+        'email'   => 'ananya.sharma@gmail.com',
         'message' => 'Hi, I want to list my haveli in Amer. What does it cost?',
+        'consent' => '1',
     ];
 
     protected function setUp(): void
@@ -189,9 +202,19 @@ class ContactFormTest extends TestCase
         $this->assertSame('New Contact Form Submission from JaipurBnB', $email->getSubject());
         $this->assertStringContainsString(self::VALID['name'], $body);
         $this->assertStringContainsString(self::VALID['phone'], $body);
+        $this->assertStringContainsString(self::VALID['email'], $body);
         $this->assertStringContainsString(self::VALID['message'], $body);
         // The body carries a timestamp, labelled IST rather than the app's UTC.
         $this->assertStringContainsString('IST', $body);
+        // The only durable record that consent was given - there is no
+        // enquiries table.
+        $this->assertStringContainsString('Consent:', $body);
+
+        // Reply-To, not From: From has to stay the authenticated SMTP account
+        // or the mail fails SPF for the guest's domain. Reply-To is what makes
+        // "Reply" in the client's inbox reach the guest.
+        $this->assertSame(self::VALID['email'], $email->getReplyTo()[0]->getAddress());
+        $this->assertNotSame(self::VALID['email'], $email->getFrom()[0]->getAddress());
     }
 
     /**
@@ -206,6 +229,18 @@ class ContactFormTest extends TestCase
             'phone too long'   => [['phone' => str_repeat('9', 21)], 'phone'],
             'message missing'  => [['message' => ''], 'message'],
             'message too long' => [['message' => str_repeat('a', 2001)], 'message'],
+            'email missing'    => [['email' => ''], 'email'],
+            'email malformed'  => [['email' => 'not-an-email'], 'email'],
+            // Syntactically valid but the domain does not resolve - this is
+            // what the dns half of email:rfc,dns is there to catch, and the
+            // reason the rule is not just 'email'.
+            'email domain does not resolve' => [['email' => 'guest@thisdomaindoesnotexist.invalid'], 'email'],
+            'email too long'   => [['email' => str_repeat('a', 250).'@gmail.com'], 'email'],
+            // An unticked box is omitted from the payload entirely by the
+            // browser, so '' is the closest a test can get to reproducing it;
+            // both must fail.
+            'consent unticked' => [['consent' => ''], 'consent'],
+            'consent refused'  => [['consent' => '0'], 'consent'],
         ];
     }
 
@@ -230,7 +265,10 @@ class ContactFormTest extends TestCase
         $this->post('/contact', [
             'name'    => str_repeat('a', 100),
             'phone'   => str_repeat('9', 20),
+            // 255 chars exactly: 245 + '@gmail.com' (10).
+            'email'   => str_repeat('a', 245).'@gmail.com',
             'message' => str_repeat('a', 2000),
+            'consent' => '1',
         ])->assertSessionHasNoErrors();
 
         $this->assertCount(1, $this->sentMessages());

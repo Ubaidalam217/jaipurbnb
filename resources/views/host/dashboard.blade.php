@@ -84,6 +84,7 @@
       <div class="jb-dash__actions">
         <a class="jb-dash__cta" href="{{ route('host.properties.create') }}">Add New Property</a>
         <a class="jb-dash__ghost" href="{{ route('host.properties.index') }}">My Properties</a>
+        <a class="jb-dash__ghost" href="{{ route('host.profile.edit') }}">My Profile</a>
 
         <form method="POST" action="{{ route('logout') }}">
           @csrf

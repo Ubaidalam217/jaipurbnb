@@ -773,7 +773,7 @@
             <p data-aos="fade-left" data-aos-duration="1000">Every listing is reviewed by our admin team, and you speak to the host directly. No booking fees, no middlemen.</p>
             <div class="space32"></div>
             <div class="btn-area1" data-aos="fade-left" data-aos-duration="1200">
-              <a href="{{ url('/apartment/v4') }}" class="header-btn4">View Our Property</a>
+              <a href="{{ url('/apartment/v4') }}" class="header-btn4">Browse Properties</a>
             </div>
           </div>
         </div>

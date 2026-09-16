@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Property;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Env;
 use Tests\TestCase;
 
 /**
@@ -53,10 +54,35 @@ class ContentCleanupTest extends TestCase
         }
     }
 
+    /**
+     * The guard here is that config/contact.php never ships a REAL number as
+     * its fallback, so an unconfigured deployment reads as obviously unset
+     * rather than dialling a stranger.
+     *
+     * It re-evaluates the config file with CONTACT_PHONE cleared from the env
+     * repository, because that is the situation being asserted about. Reading
+     * config('contact.phone') directly - as this did originally - only passes
+     * on a machine whose .env happens not to set CONTACT_PHONE, so it failed
+     * on every developer machine and on production, where it is set to the
+     * client's real support line.
+     */
     public function test_the_shipped_default_is_an_obvious_placeholder(): void
     {
-        $this->assertSame('+91 00000 00000', config('contact.phone'));
-        $this->assertSame('+910000000000', config('contact.phone_tel'));
+        $repository = Env::getRepository();
+        $original = $repository->get('CONTACT_PHONE');
+        $repository->clear('CONTACT_PHONE');
+
+        try {
+            $config = require config_path('contact.php');
+
+            $this->assertSame('+91 00000 00000', $config['phone']);
+            $this->assertSame('+910000000000', $config['phone_tel']);
+        } finally {
+            // Restore, or every later test in this process sees the default.
+            if ($original !== null) {
+                $repository->set('CONTACT_PHONE', $original);
+            }
+        }
     }
 
     /* ---------------- subscription state vs listing title ---------------- */

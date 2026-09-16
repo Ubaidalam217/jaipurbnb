@@ -137,6 +137,13 @@
     }
 
 //  Page Progress Area //
+//
+// NOTE: right/bottom/height/width and z-index below are OVERRIDDEN at
+// <768px by the <style> block in views/layouts/partials/loader.blade.php,
+// which is where this component's markup lives. The z-index:10000 here is
+// also overridden site-wide (it sat above the mobile nav drawer and modals).
+// Change both, or neither - see the comment in that partial for why the
+// override is not folded back into this file.
 .progress-wrap {
     position: fixed;
     right: 30px;

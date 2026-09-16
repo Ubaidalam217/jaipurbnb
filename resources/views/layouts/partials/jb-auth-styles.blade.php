@@ -382,6 +382,37 @@
         color: var(--jb-ink);
     }
 
+    /* ---------- consent checkbox ---------- */
+    /* Used by the /contact form and the host profile form. The footer has its
+       own copy styled for a dark background, in footer.blade.php. */
+    .jb-consent__label {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin: 0;
+        color: var(--jb-ink);
+        font-size: 14px;
+        line-height: 1.55;
+        font-weight: 400;
+        cursor: pointer;
+    }
+
+    /* accent-color tints the native control rather than replacing it, so it
+       keeps its built-in focus ring and screen-reader semantics. */
+    .jb-consent__label input[type="checkbox"] {
+        flex: 0 0 auto;
+        width: 18px;
+        height: 18px;
+        margin-top: 1px;
+        accent-color: var(--jb-cta);
+        cursor: pointer;
+    }
+
+    .jb-consent__label a {
+        color: var(--jb-cta);
+        text-decoration: underline;
+    }
+
     /* ---------- focus ---------- */
     .jb-auth a:focus-visible,
     .jb-auth button:focus-visible,

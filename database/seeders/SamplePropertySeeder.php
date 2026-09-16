@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Amenity;
 use App\Models\Property;
+use App\Models\PropertyAvailability;
 use App\Models\PropertyImage;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -15,11 +17,18 @@ use Illuminate\Database\Seeder;
  * PropertyController: listing_status = 'approved' AND is_visible = true.
  * Both are required - 'approved' alone renders nothing.
  *
- * Photos are remote picsum URLs rather than uploads, because Railway's
- * container filesystem is ephemeral and there is no volume mounted on the
- * web service, so anything written to storage/app/public vanishes on the
- * next deploy. PropertyImage::$display_url passes absolute URLs through
+ * Photos are root-relative paths into public/img, NOT uploads: Railway's
+ * container filesystem is ephemeral with no volume mounted on the web
+ * service, so anything written to storage/app/public vanishes on the next
+ * deploy. PropertyImage::$display_url passes a leading-slash path through
  * untouched while still running real uploads through Storage::url().
+ *
+ * These were previously remote picsum.photos URLs. Picsum had a global
+ * outage that blanked every listing image on production, and it serves
+ * random stock - the browse page was showing Lisbon trams on a site that
+ * sells Jaipur stays. Production was patched as data only at the time, which
+ * meant re-running this seeder silently reverted it; these local paths are
+ * the permanent fix. Do not reintroduce a remote image host here.
  *
  * Idempotent: keyed on host email and on (host_id, title), so re-running
  * on every container boot updates in place and never duplicates.
@@ -49,8 +58,38 @@ class SamplePropertySeeder extends Seeder
             'guests'       => 4,
             'bedrooms'     => 2,
             'bathrooms'    => 2,
-            'description'  => "A restored heritage haveli in the heart of Jaipur's Walled City, minutes from Hawa Mahal and Johari Bazaar.",
-            'image'        => 'https://picsum.photos/seed/jaipur1/600/400',
+            'description'  => "A restored heritage haveli in the heart of Jaipur's Walled City, minutes from Hawa Mahal and Johari Bazaar. Hand-painted frescoes, a marble courtyard and a rooftop that looks straight out over the old city.",
+            'image'        => '/img/all-images/hero/hero-img6.webp',
+
+            // This is the client's designated reference listing, so it is the
+            // one seeded complete: address + coordinates for the map embed,
+            // a photo gallery rather than a lone cover, amenities, and a
+            // calendar with real blocked/booked dates. The other five stay
+            // deliberately sparse - they exist to populate /browse and to
+            // give the filters something to narrow.
+            'reference'    => true,
+            'address'      => 'Gangauri Bazaar, near Tripolia Gate, Walled City',
+            'pincode'      => '302002',
+            'latitude'     => 26.9239,   // Hawa Mahal / Tripolia Bazaar area
+            'longitude'    => 75.8267,
+            'pet_friendly' => true,
+            // Chosen so none of these is also a cover on another listing -
+            // the same photo appearing twice in a six-item demo set is the
+            // kind of thing a client spots immediately.
+            'gallery'      => [
+                '/img/all-images/apartment/apartment-img3.png',
+                '/img/all-images/apartment/apartment-img5.png',
+                '/img/all-images/service/service-img4.jpg',
+                '/img/all-images/service/service-img7.jpg',
+            ],
+            // These MUST match AmenitySeeder's names exactly - they are looked
+            // up by name, and anything unmatched is skipped rather than
+            // created, so a typo silently yields a shorter amenity list.
+            'amenities'    => [
+                'Wifi', 'Air conditioning', 'Kitchen', 'Free parking',
+                'Hot water', 'Pool', 'Essentials', 'Cooking basics',
+                'Outdoor furniture', 'Hairdryer',
+            ],
         ],
         [
             'title'        => 'Premium Terrace Studio near Central Cafes',
@@ -61,7 +100,7 @@ class SamplePropertySeeder extends Seeder
             'bedrooms'     => 1,
             'bathrooms'    => 1,
             'description'  => 'Modern studio apartment in upscale C-Scheme, walking distance to trendy cafes and restaurants.',
-            'image'        => 'https://picsum.photos/seed/jaipur2/600/400',
+            'image'        => '/img/all-images/property/property-img5.jpg',
         ],
         [
             'title'        => 'Aravali Hills View Family Escape',
@@ -72,7 +111,7 @@ class SamplePropertySeeder extends Seeder
             'bedrooms'     => 4,
             'bathrooms'    => 3,
             'description'  => 'Spacious family villa with stunning Aravali hills views, perfect for large groups and events.',
-            'image'        => 'https://picsum.photos/seed/jaipur3/600/400',
+            'image'        => '/img/all-images/property/property-img4.jpg',
         ],
         [
             'title'        => 'Cozy Amer Fort View Homestay',
@@ -83,7 +122,7 @@ class SamplePropertySeeder extends Seeder
             'bedrooms'     => 1,
             'bathrooms'    => 1,
             'description'  => 'Charming homestay with direct views of Amer Fort, experience authentic Rajasthani hospitality.',
-            'image'        => 'https://picsum.photos/seed/jaipur4/600/400',
+            'image'        => '/img/all-images/hero/hero-img1.webp',
         ],
         [
             'title'        => 'Bani Park Boutique Getaway',
@@ -94,7 +133,7 @@ class SamplePropertySeeder extends Seeder
             'bedrooms'     => 2,
             'bathrooms'    => 2,
             'description'  => 'Elegant boutique stay in peaceful Bani Park, close to the railway station and city center.',
-            'image'        => 'https://picsum.photos/seed/jaipur5/600/400',
+            'image'        => '/img/all-images/apartment/apartment-img2.png',
         ],
         [
             'title'        => 'Nahargarh Heritage Retreat',
@@ -105,7 +144,7 @@ class SamplePropertySeeder extends Seeder
             'bedrooms'     => 3,
             'bathrooms'    => 3,
             'description'  => 'Heritage retreat near Nahargarh Fort with rooftop terrace and panoramic city views.',
-            'image'        => 'https://picsum.photos/seed/jaipur6/600/400',
+            'image'        => '/img/all-images/hero/hero-img5.webp',
         ],
     ];
 
@@ -132,6 +171,20 @@ class SamplePropertySeeder extends Seeder
             $property->is_verified         = true;
             $property->is_visible          = true;
             $property->subscription_expiry = now()->addYear();
+
+            // Every listing this seeder creates is sample content, and the
+            // public card/detail views key their "Demo listing" badge off
+            // this. Without it a guest cannot tell seeded content from a real
+            // host's property, and the demo host's WhatsApp line is live.
+            $property->is_demo = true;
+
+            // Optional richness, only present on the reference listing.
+            $property->full_address    = $definition['address'] ?? null;
+            $property->pincode         = $definition['pincode'] ?? null;
+            $property->latitude        = $definition['latitude'] ?? null;
+            $property->longitude       = $definition['longitude'] ?? null;
+            $property->is_pet_friendly = $definition['pet_friendly'] ?? false;
+
             $property->save();
 
             // One cover photo per listing. Keying on is_cover means a rerun
@@ -143,6 +196,13 @@ class SamplePropertySeeder extends Seeder
 
             $image->image_url = $definition['image'];
             $image->save();
+
+            $this->syncGallery($property, $definition['gallery'] ?? []);
+            $this->syncAmenities($property, $definition['amenities'] ?? []);
+
+            if ($definition['reference'] ?? false) {
+                $this->seedCalendar($property);
+            }
         }
 
         $this->command->info(sprintf(
@@ -150,6 +210,103 @@ class SamplePropertySeeder extends Seeder
             count(self::PROPERTIES),
             self::HOST_EMAIL
         ));
+    }
+
+    /**
+     * Non-cover gallery photos.
+     *
+     * Local paths under public/img rather than picsum: picsum had a global
+     * outage that blanked every listing image on production, and these are
+     * template assets that ship with the repo. PropertyImage::$display_url
+     * passes a leading-slash path straight through.
+     *
+     * Deletes the existing non-cover rows first so a rerun replaces the
+     * gallery instead of appending a second copy of it.
+     *
+     * @param  list<string>  $paths
+     */
+    private function syncGallery(Property $property, array $paths): void
+    {
+        if ($paths === []) {
+            return;
+        }
+
+        PropertyImage::where('property_id', $property->id)
+            ->where('is_cover', false)
+            ->delete();
+
+        foreach ($paths as $path) {
+            PropertyImage::create([
+                'property_id' => $property->id,
+                'image_url'   => $path,
+                'is_cover'    => false,
+            ]);
+        }
+    }
+
+    /**
+     * Attach amenities by name.
+     *
+     * sync() (not attach) so a rerun converges rather than tripping the
+     * unique(property_id, amenity_id) index. Names are looked up, never
+     * created - AmenitySeeder owns that list, and inventing rows here would
+     * put an amenity in the browse filter that no real host can pick.
+     *
+     * @param  list<string>  $names
+     */
+    private function syncAmenities(Property $property, array $names): void
+    {
+        if ($names === []) {
+            return;
+        }
+
+        $ids = Amenity::whereIn('name', $names)->pluck('id');
+
+        $property->amenities()->sync($ids);
+
+        $missing = count($names) - $ids->count();
+
+        if ($missing > 0) {
+            $this->command->warn(sprintf(
+                '%d amenity name(s) on "%s" did not match AmenitySeeder and were skipped.',
+                $missing,
+                $property->title
+            ));
+        }
+    }
+
+    /**
+     * A calendar with something actually on it.
+     *
+     * A listing with no availability rows renders as fully available (dates
+     * default to available - see AvailabilityCalendar), so the reference page
+     * would show an empty three-month grid and the client could not tell the
+     * calendar was working. This blocks a short mid-month window and books a
+     * weekend so both states are visible.
+     *
+     * Dates are relative to today and updateOrCreate'd against the
+     * unique(property_id, calendar_date) index, so reseeding later still
+     * lands on future dates rather than leaving the demo in the past.
+     */
+    private function seedCalendar(Property $property): void
+    {
+        $blocked = [5, 6, 7, 8];          // days from today
+        $booked  = [14, 15, 16, 21, 22];
+
+        foreach ([PropertyAvailability::STATUS_BLOCKED => $blocked, PropertyAvailability::STATUS_BOOKED => $booked] as $status => $offsets) {
+            foreach ($offsets as $offset) {
+                PropertyAvailability::updateOrCreate(
+                    [
+                        'property_id'   => $property->id,
+                        'calendar_date' => now()->addDays($offset)->toDateString(),
+                    ],
+                    [
+                        'status' => $status,
+                        'source' => PropertyAvailability::SOURCE_MANUAL,
+                    ]
+                );
+            }
+        }
     }
 
     /**

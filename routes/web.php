@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Host\AvailabilityController;
 use App\Http\Controllers\Host\PaymentController;
+use App\Http\Controllers\Host\ProfileController as HostProfileController;
 use App\Http\Controllers\Host\PropertyController as HostPropertyController;
 use App\Http\Controllers\PropertyController as PublicPropertyController;
 use App\Models\LeadAnalytic;
@@ -177,6 +178,13 @@ Route::middleware(['auth', 'host'])->prefix('host')->name('host.')->group(functi
             'recentProperties'  => $recentProperties,
         ]);
     })->name('dashboard');
+
+    // Host self-service profile. Registered BEFORE the properties resource:
+    // that resource claims /host/properties/{property}, and while 'profile'
+    // does not collide today, keeping the fixed-segment routes above the
+    // wildcard ones is the habit that stops the next one from being shadowed.
+    Route::get('/profile', [HostProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [HostProfileController::class, 'update'])->name('profile.update');
 
     Route::resource('properties', HostPropertyController::class)->except(['show']);
     Route::get('/properties/{property}', [HostPropertyController::class, 'show'])->name('properties.show');

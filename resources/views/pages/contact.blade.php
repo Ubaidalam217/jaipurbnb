@@ -186,7 +186,9 @@
                    Resolve each message through $fromPage instead. --}}
               @php($nameError = $fromPage ? $errors->first('name') : '')
               @php($phoneError = $fromPage ? $errors->first('phone') : '')
+              @php($emailError = $fromPage ? $errors->first('email') : '')
               @php($messageError = $fromPage ? $errors->first('message') : '')
+              @php($consentError = $fromPage ? $errors->first('consent') : '')
 
               <div class="jb-auth__field">
                 <label class="jb-auth__label" for="contact-name">Your name <span class="jb-auth__req">*</span></label>
@@ -215,6 +217,18 @@
               </div>
 
               <div class="jb-auth__field">
+                <label class="jb-auth__label" for="contact-email">Email address <span class="jb-auth__req">*</span></label>
+                <input class="jb-auth__input @if ($emailError) is-invalid @endif"
+                       type="email" id="contact-email" name="email"
+                       value="{{ $fromPage ? old('email') : '' }}" maxlength="255" required
+                       autocomplete="email" inputmode="email"
+                       @if ($emailError) aria-invalid="true" aria-describedby="contact-email-error" @endif>
+                @if ($emailError)
+                  <span class="jb-auth__error" id="contact-email-error" role="alert">{{ $emailError }}</span>
+                @endif
+              </div>
+
+              <div class="jb-auth__field">
                 <label class="jb-auth__label" for="contact-message">Your message <span class="jb-auth__req">*</span></label>
                 <textarea class="jb-auth__input @if ($messageError) is-invalid @endif"
                           id="contact-message" name="message"
@@ -222,6 +236,24 @@
                           @if ($messageError) aria-invalid="true" aria-describedby="contact-message-error" @endif>{{ $fromPage ? old('message') : '' }}</textarea>
                 @if ($messageError)
                   <span class="jb-auth__error" id="contact-message-error" role="alert">{{ $messageError }}</span>
+                @endif
+              </div>
+
+              {{-- Consent is unticked by default and has no old() repopulation:
+                   a consent box that survives a failed submission has not been
+                   actively agreed to on THIS attempt. --}}
+              <div class="jb-auth__field jb-consent">
+                <label class="jb-consent__label" for="contact-consent">
+                  <input type="checkbox" id="contact-consent" name="consent" value="1" required
+                         @if ($consentError) aria-invalid="true" aria-describedby="contact-consent-error" @endif>
+                  <span>
+                    I agree to the <a href="{{ route('legal.privacy') }}" target="_blank" rel="noopener">privacy policy</a>
+                    and consent to JaipurBnB using these details to reply to my enquiry.
+                    <span class="jb-auth__req">*</span>
+                  </span>
+                </label>
+                @if ($consentError)
+                  <span class="jb-auth__error" id="contact-consent-error" role="alert">{{ $consentError }}</span>
                 @endif
               </div>
 

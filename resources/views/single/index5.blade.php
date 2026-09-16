@@ -77,6 +77,41 @@
       font-weight: 600;
     }
 
+    /* Sample-listing marker. A badge alone is not enough on the detail page:
+       this is where the Call / WhatsApp buttons live, and the demo host's
+       number is a real, reachable line. A guest must not be able to get here
+       and send an enquiry about a property that does not exist. So the badge
+       is paired with an explicit sentence next to the contact buttons.
+
+       Amber, not brand terracotta - it is a system warning, not a feature. */
+    .jb-demo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 14px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #B45309;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .jb-demo-note {
+      margin: 0 0 4px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(180, 83, 9, .3);
+      background: rgba(180, 83, 9, .08);
+      color: #7A3B06;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12.5px;
+      line-height: 1.55;
+    }
+
     .jb-amenities-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -127,12 +162,25 @@
   </style>
 
   <!-- ===== HERO AREA STARTS ======= -->
+  {{--
+    The hero background is THIS listing's cover photo.
+
+    components/_hero.scss pins .hero5-area to a hardcoded template image
+    (hero-bg-img1.png), so before this every property detail page opened on
+    the same stock building regardless of which property you were looking at.
+    An inline background-image outranks the stylesheet without needing an
+    SCSS rebuild - and _hero.scss already lays a 70%-opacity charcoal ::after
+    over this area, so the white heading stays legible on any photo.
+  --}}
   <div class="space80"></div>
-  <div class="hero5-area">
+  <div class="hero5-area" style="background-image: url('{{ $jbCoverUrl }}');">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-5">
           <div class="hero-header header-heading3">
+            @if ($property->is_demo)
+              <span class="jb-demo-badge"><i class="fa-solid fa-flask" aria-hidden="true"></i> Demo listing</span>
+            @endif
             <h2 class="text-anime-style-3">{{ $property->title }}</h2>
             <div class="space20"></div>
             <p data-aos="fade-left" data-aos-duration="800">{{ \Illuminate\Support\Str::limit($property->description, 220) }}</p>
@@ -169,6 +217,14 @@
               @endif
             </div>
             <div class="space24"></div>
+            @if ($property->is_demo)
+              <p class="jb-demo-note">
+                This is sample content used to demonstrate the site. The property
+                is not real and the contact details below belong to a demo
+                account &mdash; please do not send a booking enquiry.
+              </p>
+              <div class="space16"></div>
+            @endif
             <div class="btn-area1">
               @include('layouts.partials.contact-buttons', ['property' => $property])
             </div>

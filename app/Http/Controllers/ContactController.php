@@ -47,19 +47,34 @@ class ContactController extends Controller
     /**
      * Validate an enquiry and email it to the platform inbox.
      *
-     * No email field is collected - the client asked for name/phone/message
-     * only and replies happen by phone - so the mail carries no Reply-To.
+     * The form originally collected name/phone/message only, on the basis
+     * that the client replies by phone. An email address is now required as
+     * well, so enquiries can be answered in writing - it is set as the mail's
+     * Reply-To, which makes "Reply" in the client's inbox go to the guest
+     * instead of to the noreply@ sender.
      */
     public function send(Request $request): RedirectResponse
     {
         $source = $request->input('source') === 'footer' ? 'footer' : 'page';
 
         $validator = Validator::make($request->all(), [
-            'name'    => ['required', 'string', 'max:100'],
-            'phone'   => ['required', 'string', 'max:20'],
+            'name'  => ['required', 'string', 'max:100'],
+            'phone' => ['required', 'string', 'max:20'],
+            // email:rfc,dns - rfc checks the syntax, dns then resolves the
+            // domain's MX/A records, which rejects typo domains like
+            // "gmial.com" that are perfectly valid syntactically. It costs a
+            // live DNS lookup per submission; the form is throttled to 5/min
+            // in routes/web.php, so that is not an amplification risk.
+            'email'   => ['required', 'string', 'email:rfc,dns', 'max:255'],
             'message' => ['required', 'string', 'max:2000'],
+            // 'accepted' is the rule for a consent box: it passes only on
+            // "yes"/"on"/1/true, so an unchecked box (which browsers omit
+            // from the payload entirely) fails rather than silently passing.
+            'consent' => ['accepted'],
         ], [
-            'message.max' => 'Please keep your message under 2,000 characters.',
+            'message.max'       => 'Please keep your message under 2,000 characters.',
+            'email.email'       => 'That email address does not look deliverable. Please check it.',
+            'consent.accepted'  => 'Please agree to the privacy policy before sending.',
         ]);
 
         // Deliberately not $request->validate(): that throws ValidationException
@@ -75,11 +90,16 @@ class ContactController extends Controller
         $validated = $validator->validated();
 
         try {
-            Mail::raw($this->body($validated, $request), function ($mail) {
+            Mail::raw($this->body($validated, $request), function ($mail) use ($validated) {
                 // config(), not env() - env() returns null once config:cache
                 // has run on the server. See config/contact.php.
                 $mail->to(config('contact.email'))
-                    ->subject('New Contact Form Submission from JaipurBnB');
+                    ->subject('New Contact Form Submission from JaipurBnB')
+                    // From stays noreply@ (the authenticated SMTP account) -
+                    // sending as the guest's address would fail SPF/DKIM for
+                    // their domain and land the mail in spam. Reply-To is the
+                    // header that actually routes a reply back to them.
+                    ->replyTo($validated['email'], $validated['name']);
             });
         } catch (Throwable $e) {
             // A dead SMTP box must not throw a 500 at a guest who did nothing
@@ -89,6 +109,7 @@ class ContactController extends Controller
                 'error' => $e->getMessage(),
                 'name'  => $validated['name'],
                 'phone' => $validated['phone'],
+                'email' => $validated['email'],
             ]);
 
             return $this->backTo($source)
@@ -127,7 +148,7 @@ class ContactController extends Controller
      * from a property page is a different conversation from one sent off the
      * homepage, and the client cannot tell them apart otherwise.
      *
-     * @param  array{name: string, phone: string, message: string}  $data
+     * @param  array{name: string, phone: string, email: string, message: string}  $data
      */
     private function body(array $data, Request $request): string
     {
@@ -136,9 +157,14 @@ class ContactController extends Controller
             '',
             'Name:    '.$data['name'],
             'Phone:   '.$data['phone'],
+            'Email:   '.$data['email'],
             'Sent at: '.now()->timezone('Asia/Kolkata')->format('d M Y, g:i A').' IST',
             'Page:    '.($request->headers->get('referer') ?: 'unknown'),
             'IP:      '.$request->ip(),
+            // Recorded in the mail because there is no enquiries table - this
+            // message is the only durable record that consent was given, and
+            // the timestamp/IP above are what evidence it.
+            'Consent: Privacy policy accepted at submission',
             '',
             'Message:',
             $data['message'],

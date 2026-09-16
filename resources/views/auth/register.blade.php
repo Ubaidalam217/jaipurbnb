@@ -47,9 +47,24 @@
                  placeholder="Your Mobile Number"
                  aria-describedby="phone_number-hint @error('phone_number') phone_number-error @enderror"
                  @error('phone_number') aria-invalid="true" @enderror>
-          <span class="jb-auth__hint" id="phone_number-hint">Guests will contact you on this number via WhatsApp and call.</span>
+          <span class="jb-auth__hint" id="phone_number-hint">Guests will call you on this number, and message it on WhatsApp unless you add a separate one below.</span>
           @error('phone_number')
             <span class="jb-auth__error" id="phone_number-error" role="alert">{{ $message }}</span>
+          @enderror
+        </div>
+
+        <div class="jb-auth__field">
+          <label class="jb-auth__label" for="whatsapp_number">WhatsApp number <span style="font-weight:500;color:#6C7A80;">(optional)</span></label>
+          <input class="jb-auth__input @error('whatsapp_number') is-invalid @enderror"
+                 type="tel" id="whatsapp_number" name="whatsapp_number"
+                 value="{{ old('whatsapp_number') }}"
+                 autocomplete="tel" inputmode="tel" maxlength="20"
+                 placeholder="Only if different from above"
+                 aria-describedby="whatsapp_number-hint @error('whatsapp_number') whatsapp_number-error @enderror"
+                 @error('whatsapp_number') aria-invalid="true" @enderror>
+          <span class="jb-auth__hint" id="whatsapp_number-hint">Leave blank to use your phone number for WhatsApp too.</span>
+          @error('whatsapp_number')
+            <span class="jb-auth__error" id="whatsapp_number-error" role="alert">{{ $message }}</span>
           @enderror
         </div>
 

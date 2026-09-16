@@ -27,6 +27,7 @@ class RegisterController extends Controller
             'name'         => $validated['full_name'],
             'email'        => $validated['email'],
             'phone_number' => $validated['phone_number'],
+            'whatsapp_number' => $validated['whatsapp_number'] ?? null,
             'password'     => $validated['password'], // hashed by the model cast
             'host_address' => $validated['host_address'] ?? null,
             'host_city'    => $validated['host_city'] ?? null,

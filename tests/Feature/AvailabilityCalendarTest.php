@@ -190,7 +190,7 @@ class AvailabilityCalendarTest extends TestCase
         $html = $this->get(route('properties.show', $property))->assertOk()->getContent();
 
         $this->assertMatchesRegularExpression(
-            '/jb-cal__day jb-cal__day--blocked"[^>]*aria-label="'.preg_quote($blocked->format('j F Y'), '/').' — blocked"/',
+            '/jb-cal__day jb-cal__day--blocked"[^>]*aria-label="'.preg_quote($blocked->format('j F Y'), '/').', blocked"/',
             $html
         );
     }
@@ -213,7 +213,7 @@ class AvailabilityCalendarTest extends TestCase
             // "blocked by Airbnb sync" would tell every visitor that this host
             // also lists on a competing marketplace. The host's own calendar
             // still spells it out - see the host test above.
-            ->assertSee($blocked->format('j F Y').' — unavailable', false)
+            ->assertSee($blocked->format('j F Y').', unavailable', false)
             ->assertDontSee('Airbnb');
     }
 

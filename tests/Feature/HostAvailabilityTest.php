@@ -219,6 +219,6 @@ class HostAvailabilityTest extends TestCase
 
         $this->get(route('properties.show', $this->property))
             ->assertOk()
-            ->assertSee($date->format('j F Y').' — blocked', false);
+            ->assertSee($date->format('j F Y').', blocked', false);
     }
 }

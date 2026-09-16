@@ -99,6 +99,15 @@ class PropertyController extends Controller
             'bedroomOptions' => self::BEDROOM_OPTIONS,
             'sorts'         => array_keys(self::SORTS),
             'amenitiesByCategory' => Amenity::orderBy('name')->get()->groupBy('category'),
+            // Drives the "Clear all filters" affordance. Previously that link
+            // lived only in the @empty branch of the results loop, so it
+            // appeared ONLY when a filter matched nothing - narrow down to
+            // three results and there was no way back to the full list short
+            // of resetting ten controls by hand or editing the URL.
+            'hasActiveFilters' => $this->hasActiveFilters($filters),
+            // Total live listings ignoring filters, so the page can say
+            // "3 of 6" and a reader can tell filtering from an empty catalogue.
+            'totalVisible'  => $this->visible()->count(),
         ]);
     }
 
@@ -137,6 +146,30 @@ class PropertyController extends Controller
         return Property::query()
             ->where('listing_status', Property::STATUS_APPROVED)
             ->where('is_visible', true);
+    }
+
+    /**
+     * Is the guest looking at a narrowed list rather than the full catalogue?
+     *
+     * Every key in $filters except 'sort' narrows the result set; 'sort' only
+     * reorders it, but it is still something "Clear all filters" resets, so a
+     * non-default sort counts as active too. filters() has already normalised
+     * absent params to null / false / [], so this is a plain emptiness check
+     * and cannot be fooled by "?neighborhood=" or a junk value.
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    private function hasActiveFilters(array $filters): bool
+    {
+        foreach (['neighborhood', 'stay_type', 'min_price', 'max_price', 'guests', 'bedrooms', 'check_in', 'check_out'] as $key) {
+            if ($filters[$key] !== null) {
+                return true;
+            }
+        }
+
+        return $filters['pet_friendly']
+            || $filters['amenities'] !== []
+            || $filters['sort'] !== 'newest';
     }
 
     /**

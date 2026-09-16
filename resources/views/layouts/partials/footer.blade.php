@@ -1,4 +1,42 @@
 <!--===== FOOTER AREA STARTS =======-->
+{{--
+  Consent checkbox styling. Inline for the same reason as the alerts below:
+  Hostinger has no Node and public/build is gitignored, so an SCSS change
+  would cost a local rebuild plus a manual bundle upload.
+
+  Colours are for the dark footer specifically - the /contact copy of this
+  control sits on white and is styled separately in jb-auth-styles.
+--}}
+<style>
+    .jb-footer-consent {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin: 0;
+        color: rgba(255, 255, 255, .82);
+        font-family: 'Poppins', sans-serif;
+        font-size: 13.5px;
+        line-height: 1.5;
+        cursor: pointer;
+    }
+
+    /* accent-color tints the native control instead of replacing it, so the
+       checkbox keeps its built-in keyboard focus ring and screen-reader
+       semantics. margin-top nudges the box onto the first text baseline. */
+    .jb-footer-consent input[type="checkbox"] {
+        flex: 0 0 auto;
+        width: 17px;
+        height: 17px;
+        margin-top: 2px;
+        accent-color: #E07A5F;
+        cursor: pointer;
+    }
+
+    .jb-footer-consent a {
+        color: #E07A5F;
+        text-decoration: underline;
+    }
+</style>
 <div class="footer3-section-area">
     <div class="container">
         <div class="row">
@@ -73,10 +111,29 @@
                                         <div class="col-lg-12">
                                             <div class="space16"></div>
                                             <div class="input-area">
+                                                <input type="email" name="email" id="footer-contact-email"
+                                                       placeholder="Email Address*" aria-label="Email address"
+                                                       maxlength="255" required
+                                                       autocomplete="email" inputmode="email"
+                                                       value="{{ $fromFooter ? old('email') : '' }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="space16"></div>
+                                            <div class="input-area">
                                                 <textarea name="message" id="footer-contact-message"
                                                           placeholder="Your Message*" aria-label="Your message"
                                                           maxlength="2000" required>{{ $fromFooter ? old('message') : '' }}</textarea>
                                             </div>
+                                        </div>
+                                        {{-- Never repopulated from old(): consent has to be given on the
+                                             attempt that actually sends, not inherited from a failed one. --}}
+                                        <div class="col-lg-12">
+                                            <div class="space16"></div>
+                                            <label class="jb-footer-consent" for="footer-contact-consent">
+                                                <input type="checkbox" name="consent" id="footer-contact-consent" value="1" required>
+                                                <span>I agree to the <a href="{{ route('legal.privacy') }}" target="_blank" rel="noopener">privacy policy</a>.</span>
+                                            </label>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="space32"></div>
