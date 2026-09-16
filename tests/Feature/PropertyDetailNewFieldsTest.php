@@ -10,7 +10,7 @@ use Tests\TestCase;
 /**
  * What the property detail page (/property/{id}) renders for the new
  * columns: amenities list, pet-friendly badge, address panel and the
- * Google Maps embed.
+ * OpenStreetMap embed.
  */
 class PropertyDetailNewFieldsTest extends TestCase
 {
@@ -71,7 +71,14 @@ class PropertyDetailNewFieldsTest extends TestCase
             ->assertSee('302002');
     }
 
-    public function test_it_embeds_a_map_when_coordinates_are_set(): void
+    /**
+     * OpenStreetMap, not Google. Google's keyless embed answers 301 with
+     * X-Frame-Options: SAMEORIGIN, which browsers enforce on the redirect, so
+     * the iframe was silently blocked and the panel rendered empty. The
+     * assertion that maps.google.com is ABSENT is the part that matters -
+     * it is what stops the broken embed being reintroduced.
+     */
+    public function test_it_embeds_an_openstreetmap_map_when_coordinates_are_set(): void
     {
         $property = Property::factory()->live()->create([
             'latitude'  => 26.9124,
@@ -81,7 +88,8 @@ class PropertyDetailNewFieldsTest extends TestCase
         $this->get('/property/'.$property->id)
             ->assertOk()
             ->assertSee('26.9124', false)
-            ->assertSee('maps.google.com', false);
+            ->assertSee('openstreetmap.org/export/embed', false)
+            ->assertDontSee('maps.google.com', false);
     }
 
     public function test_no_map_is_rendered_without_coordinates(): void
@@ -93,6 +101,7 @@ class PropertyDetailNewFieldsTest extends TestCase
 
         $this->get('/property/'.$property->id)
             ->assertOk()
+            ->assertDontSee('openstreetmap.org/export/embed', false)
             ->assertDontSee('maps.google.com', false);
     }
 }

@@ -180,6 +180,69 @@ class Property extends Model
     }
 
     /**
+     * How far either side of the pin the embedded map should reach, in
+     * degrees. At Jaipur's latitude 0.008 deg is roughly 900m of latitude and
+     * 800m of longitude, so the frame shows the surrounding neighbourhood
+     * rather than an unreadable patch of rooftops.
+     */
+    private const MAP_SPAN = 0.008;
+
+    /**
+     * Embeddable map URL for this listing, or null if it has no coordinates.
+     *
+     * OpenStreetMap, NOT Google Maps. The previous
+     * `maps.google.com/maps?q=...&output=embed` URL is an undocumented
+     * endpoint that now answers 301 with `X-Frame-Options: SAMEORIGIN`, and a
+     * browser enforces that header on the redirect response, so the iframe was
+     * blocked and every listing showed an empty panel. Google's supported
+     * alternative is the Maps Embed API, which requires an API key and a
+     * billing account. OSM's export embed needs neither and sends no
+     * frame-blocking headers.
+     *
+     * bbox order is min-longitude, min-latitude, max-longitude, max-latitude -
+     * longitude FIRST, which is the opposite order from the marker parameter
+     * immediately after it. Getting that backwards silently lands the map in
+     * the wrong hemisphere rather than erroring.
+     */
+    public function mapEmbedUrl(): ?string
+    {
+        if (! $this->hasCoordinates()) {
+            return null;
+        }
+
+        // Cast away the decimal:8 string form before doing arithmetic.
+        $lat = (float) $this->latitude;
+        $lon = (float) $this->longitude;
+
+        return 'https://www.openstreetmap.org/export/embed.html?'.http_build_query([
+            'bbox' => implode(',', [
+                $lon - self::MAP_SPAN,
+                $lat - self::MAP_SPAN,
+                $lon + self::MAP_SPAN,
+                $lat + self::MAP_SPAN,
+            ]),
+            'layer'  => 'mapnik',
+            'marker' => $lat.','.$lon,
+        ]);
+    }
+
+    /**
+     * Full-size map for this listing on openstreetmap.org, for the "view
+     * larger map" link beside the embed. Null when there are no coordinates.
+     */
+    public function mapLinkUrl(): ?string
+    {
+        if (! $this->hasCoordinates()) {
+            return null;
+        }
+
+        $lat = (float) $this->latitude;
+        $lon = (float) $this->longitude;
+
+        return 'https://www.openstreetmap.org/?mlat='.$lat.'&mlon='.$lon.'#map=16/'.$lat.'/'.$lon;
+    }
+
+    /**
      * Base query for anything a guest is allowed to see: approved by an
      * admin AND still flagged visible. Mirrors
      * PropertyController::visible() - kept here as well so the marketing

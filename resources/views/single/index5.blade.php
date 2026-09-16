@@ -155,9 +155,112 @@
     .jb-map-embed {
       width: 100%;
       aspect-ratio: 16 / 9;
-      border: 0;
       border-radius: 14px;
       margin-top: 20px;
+      /* OSM's embed renders on a pale tile background; without a border the
+         map edge dissolves into the white panel it sits on. (The old Google
+         embed used border:0 because its tiles ran dark to the edge.) */
+      border: 1px solid rgba(47, 62, 70, .12);
+    }
+
+    .jb-map-link {
+      margin: 10px 0 0;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13.5px;
+    }
+
+    .jb-map-link a {
+      color: #B34D33;
+      font-weight: 600;
+    }
+
+    .jb-map-link i {
+      font-size: 11px;
+      margin-left: 3px;
+    }
+
+    /* ------------------------------------------------------------------ *
+     * "At a Glance" alignment.
+     *
+     * components/_about.scss pins .service-images-area .img1 img to a fixed
+     * height of 635px, while the details column next to it is only ~310px
+     * tall. Bootstrap rows are align-items:stretch by default, so the
+     * details column was top-aligned against an image twice its height and
+     * left ~320px of dead space beneath it - the two halves read as
+     * unrelated rather than as a pair.
+     * ------------------------------------------------------------------ */
+    /* NOTE ON SPECIFICITY: the rules being overridden live in
+       components/_service.scss nested under .service5-section-area, so they
+       compile to three-class selectors like
+       `.service5-section-area .service-images-area .img1 img` (0,3,1).
+       Overrides here MUST carry the .service5-section-area prefix too - a
+       two-class selector loses on specificity no matter that this <style>
+       block comes later in the document. */
+    .service5-section-area .service-images-area > .row {
+      align-items: center;
+    }
+
+    /* The details column carries padding:0 0 0 100px. Inside a col-lg-5 that
+       leaves ~425px for a three-column flex list, so "Sleeps 6" and
+       "3 bedrooms" each wrapped mid-phrase. Less padding plus wrapping lets
+       each item sit on one line; the gap replaces the per-ul right margin so
+       the last column is not pushed out of alignment. */
+    .service5-section-area .service-images-area .author-header {
+      padding-left: 56px;
+    }
+
+    .service5-section-area .service-images-area .author-header .list-area {
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 0 28px;
+    }
+
+    .service5-section-area .service-images-area .author-header .list-area ul {
+      margin-right: 0;
+    }
+
+    /* 992-1199 is the gap _service.scss leaves uncovered: its $md and $xs
+       blocks zero this padding, but neither matches that range, so the full
+       100px was still being applied in the narrowest desktop layout. */
+    @media (max-width: 1199.98px) {
+      .service5-section-area .service-images-area .author-header {
+        padding-left: 32px;
+      }
+    }
+
+    /* Below 992px Bootstrap stacks the columns, so centring no longer applies
+       and the image should stop being a 635px monolith sitting above the
+       text. */
+    @media (max-width: 991.98px) {
+      .service5-section-area .service-images-area .author-header {
+        padding-left: 0;
+        padding-top: 32px;
+      }
+
+      /* .reveal (utils/_typography.scss) is display:-webkit-inline-box, so
+         this wrapper shrink-wraps instead of filling the stacked column - it
+         measured 560px inside a 696px column, sitting left with dead space
+         beside it. Same defect and same fix as the homepage blocks handled
+         in index.blade.php.
+
+         !important because the reveal animation writes an inline width while
+         it runs; forcing the width means the image simply appears at full
+         size rather than animating, which is the right trade on a phone. */
+      .service5-section-area .service-images-area .img1 {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .service5-section-area .service-images-area .img1 img {
+        height: 420px;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .service5-section-area .service-images-area .img1 img {
+        height: 300px;
+      }
     }
   </style>
 
@@ -423,13 +526,24 @@
                     {{ $property->neighborhood }}, {{ $property->city }}, {{ $property->state }}
                     @if ($property->pincode) - {{ $property->pincode }} @endif
                   </p>
-                  @if ($property->hasCoordinates())
+                  {{--
+                    OpenStreetMap, not Google. See Property::mapEmbedUrl():
+                    Google's keyless embed now 301s with
+                    X-Frame-Options: SAMEORIGIN, so the browser blocked the
+                    iframe and this panel rendered empty on every listing.
+                    OSM needs no API key and sets no frame headers.
+                  --}}
+                  @if ($property->mapEmbedUrl())
                     <iframe class="jb-map-embed"
                             loading="lazy"
-                            allowfullscreen
                             referrerpolicy="no-referrer-when-downgrade"
-                            src="https://maps.google.com/maps?q={{ $property->latitude }},{{ $property->longitude }}&z=14&output=embed"
-                            title="Map location of {{ $property->title }}"></iframe>
+                            src="{{ $property->mapEmbedUrl() }}"
+                            title="Map showing the location of {{ $property->title }} in {{ $property->neighborhood }}, Jaipur"></iframe>
+                    <p class="jb-map-link">
+                      <a href="{{ $property->mapLinkUrl() }}" target="_blank" rel="noopener noreferrer">
+                        View larger map <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                      </a>
+                    </p>
                   @endif
                 </div>
               </div>
@@ -548,8 +662,19 @@
     <!-- ===== CONTACT AREA STARTS ======= -->
     <div class="contact5-section-area sp5">
       <div class="container">
+        {{--
+          Text and buttons only. The cover photo that used to sit in a
+          col-lg-4 on the right was removed at client request: by this point
+          on the page the same image has already appeared in the hero, the
+          At a Glance panel and the gallery, so a fourth copy added nothing
+          and pushed the WhatsApp/Call buttons into a narrow column.
+
+          The column is col-lg-8 rather than the old col-lg-5 so the
+          paragraph keeps a readable measure instead of becoming a narrow
+          ribbon with half the band empty beside it.
+        --}}
         <div class="row">
-          <div class="col-lg-5">
+          <div class="col-lg-8">
             <div class="heading2">
               <h5 data-aos="fade-left" data-aos-duration="800">Contact Us</h5>
               <div class="space20"></div>
@@ -560,12 +685,6 @@
               <div class="btn-area1" data-aos="fade-left" data-aos-duration="1200">
                 @include('layouts.partials.contact-buttons', ['property' => $property])
               </div>
-            </div>
-          </div>
-          <div class="col-lg-3"></div>
-          <div class="col-lg-4">
-            <div class="contact-img1" data-aos="flip-right" data-aos-duration="1000">
-              <img src="{{ $jbCoverUrl }}" alt="{{ $property->title }}" />
             </div>
           </div>
         </div>

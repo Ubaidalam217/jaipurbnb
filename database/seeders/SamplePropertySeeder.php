@@ -101,6 +101,10 @@ class SamplePropertySeeder extends Seeder
             'bathrooms'    => 1,
             'description'  => 'Modern studio apartment in upscale C-Scheme, walking distance to trendy cafes and restaurants.',
             'image'        => '/img/all-images/property/property-img5.jpg',
+            'address'      => 'Ashok Marg, C-Scheme',
+            'pincode'      => '302001',
+            'latitude'     => 26.9048,
+            'longitude'    => 75.7905,
         ],
         [
             'title'        => 'Aravali Hills View Family Escape',
@@ -112,6 +116,10 @@ class SamplePropertySeeder extends Seeder
             'bathrooms'    => 3,
             'description'  => 'Spacious family villa with stunning Aravali hills views, perfect for large groups and events.',
             'image'        => '/img/all-images/property/property-img4.jpg',
+            'address'      => 'Kukas, Delhi Road',
+            'pincode'      => '303101',
+            'latitude'     => 27.0448,
+            'longitude'    => 75.8702,
         ],
         [
             'title'        => 'Cozy Amer Fort View Homestay',
@@ -123,6 +131,10 @@ class SamplePropertySeeder extends Seeder
             'bathrooms'    => 1,
             'description'  => 'Charming homestay with direct views of Amer Fort, experience authentic Rajasthani hospitality.',
             'image'        => '/img/all-images/hero/hero-img1.webp',
+            'address'      => 'Near Amer Fort, Amer',
+            'pincode'      => '302028',
+            'latitude'     => 26.9855,
+            'longitude'    => 75.8513,
         ],
         [
             'title'        => 'Bani Park Boutique Getaway',
@@ -134,6 +146,10 @@ class SamplePropertySeeder extends Seeder
             'bathrooms'    => 2,
             'description'  => 'Elegant boutique stay in peaceful Bani Park, close to the railway station and city center.',
             'image'        => '/img/all-images/apartment/apartment-img2.png',
+            'address'      => 'Kabir Marg, Bani Park',
+            'pincode'      => '302016',
+            'latitude'     => 26.9312,
+            'longitude'    => 75.7961,
         ],
         [
             'title'        => 'Nahargarh Heritage Retreat',
@@ -145,6 +161,10 @@ class SamplePropertySeeder extends Seeder
             'bathrooms'    => 3,
             'description'  => 'Heritage retreat near Nahargarh Fort with rooftop terrace and panoramic city views.',
             'image'        => '/img/all-images/hero/hero-img5.webp',
+            'address'      => 'Nahargarh Fort Road',
+            'pincode'      => '302002',
+            'latitude'     => 26.9374,
+            'longitude'    => 75.8154,
         ],
     ];
 
