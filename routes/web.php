@@ -34,6 +34,15 @@ Route::get('/', function () {
         // with the browse page's hardcoded "22". See
         // Property::liveNeighborhoodCount().
         'neighborhoodCount' => Property::liveNeighborhoodCount(),
+
+        // Options for the hero search bar. It is a plain GET form pointed at
+        // properties.browse, so these MUST be the same sources the browse
+        // page filters against - PublicPropertyController re-validates every
+        // value with oneOf()/oneOfInt() against these exact lists and
+        // silently drops anything else.
+        'neighborhoods' => Property::NEIGHBORHOODS,
+        'stayTypes'     => Property::STAY_TYPES,
+        'guestOptions'  => PublicPropertyController::GUEST_OPTIONS,
     ]);
 });
 
