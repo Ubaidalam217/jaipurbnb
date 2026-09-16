@@ -152,19 +152,40 @@
       line-height: 1.7;
     }
 
-    .jb-map-embed {
-      width: 100%;
-      aspect-ratio: 16 / 9;
+    /* Wrapper owns the border/radius/clipping; the iframe just fills it.
+       overflow:hidden here is the literal "cannot bleed" guard the client
+       asked for - belt and braces on top of the section height fix below,
+       which is the fix that actually stops the map colliding with
+       Availability. Fixed height (not aspect-ratio) so the map is the same
+       size regardless of how wide its column happens to be - at a 1440px
+       viewport the old aspect-ratio box rendered 577px tall, which is most
+       of what pushed this section past its old fixed height in the first
+       place. */
+    .jb-map-wrap {
+      overflow: hidden;
       border-radius: 14px;
-      margin-top: 20px;
-      /* OSM's embed renders on a pale tile background; without a border the
-         map edge dissolves into the white panel it sits on. (The old Google
-         embed used border:0 because its tiles ran dark to the edge.) */
       border: 1px solid rgba(47, 62, 70, .12);
+      margin-top: 20px;
+    }
+
+    .jb-map-embed {
+      display: block;
+      width: 100%;
+      height: 350px;
+      border: 0;
+    }
+
+    @media (max-width: 575.98px) {
+      .jb-map-embed {
+        height: 300px;
+      }
     }
 
     .jb-map-link {
-      margin: 10px 0 0;
+      /* 40px bottom clearance is the client's explicit ask ("min mb-5 or
+         40px") so the Availability heading starts cleanly below even if the
+         section-height fix above were ever reverted. */
+      margin: 14px 0 40px;
       font-family: 'Poppins', sans-serif;
       font-size: 13.5px;
     }
@@ -177,6 +198,32 @@
     .jb-map-link i {
       font-size: 11px;
       margin-left: 3px;
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Section height - this is the actual cause of the map/Availability
+     * overlap, not the map itself.
+     *
+     * components/_service.scss sets `.service5-section-area { height:
+     * 1360px }` with `overflow: visible` (only relaxed to auto at $md/$xs,
+     * i.e. below 992px). That is a fixed pixel height baked in for the
+     * template's original demo content. This blade reuses the class for
+     * "At a Glance", whose real content - gallery photo, description,
+     * amenities grid, address panel, map - runs well past 1360px on every
+     * property (measured ~1985px on a 6-amenity listing at 1440px wide).
+     *
+     * Because overflow stays visible, nothing gets clipped - the content
+     * keeps rendering past the box's bottom edge. But the NEXT section
+     * starts immediately after where the box claims to end, at 1360px, not
+     * after where the content actually stops. The result is the map (or
+     * amenities, or the address text, depending on a listing's specific
+     * amount of content) visually sitting on top of "Check Available
+     * Dates". Fixing the map's own size does not fix this - a listing with
+     * more amenities or a longer address would push the SAME overlap onto
+     * a different element. The section has to size to its own content.
+     * ------------------------------------------------------------------ */
+    .service5-section-area {
+      height: auto !important;
     }
 
     /* ------------------------------------------------------------------ *
@@ -196,7 +243,14 @@
        Overrides here MUST carry the .service5-section-area prefix too - a
        two-class selector loses on specificity no matter that this <style>
        block comes later in the document. */
-    .service5-section-area .service-images-area > .row {
+
+    /* .jb-glance-row is the image+details row itself: col-lg-6 image, col-lg-6
+       details. Named explicitly (rather than matching bare .row) because it
+       now sits nested inside the .col-lg-2/.col-lg-10 wrapper that keeps this
+       row's left edge aligned with the amenities and address rows below it -
+       a bare ".service-images-area .row" selector would also match that
+       outer wrapper row. */
+    .service5-section-area .service-images-area .jb-glance-row {
       align-items: center;
     }
 
@@ -449,48 +503,59 @@
             <div class="service-images-area">
               <div class="row">
                 <div class="col-lg-2"></div>
-                <div class="col-lg-5">
-                  <div class="img1 image-anime reveal">
-                    <img src="{{ $jbGallery->isNotEmpty() ? $jbGallery->first()->display_url : $jbCoverUrl }}" alt="{{ $property->title }}" />
-                  </div>
-                </div>
-                <div class="col-lg-5">
-                  <div class="heading5 author-header">
-                    <p data-aos="fade-up" data-aos-duration="800">{{ \Illuminate\Support\Str::limit($property->description, 300) }}</p>
-                    <div class="space24"></div>
-                    <div class="list-area" data-aos="fade-up" data-aos-duration="1000">
-                      <ul>
-                        <li>
-                          <span><img src="/img/icons/check1.svg" alt="" /> {{ $property->stay_type }}</span>
-                        </li>
-                        <li>
-                          <span><img src="/img/icons/check1.svg" alt="" /> {{ $property->neighborhood }}, Jaipur</span>
-                        </li>
-                      </ul>
-                      <ul>
-                        <li>
-                          <span><img src="/img/icons/check1.svg" alt="" /> {{ $jbPrice }}</span>
-                        </li>
-                        <li>
-                          <span><img src="/img/icons/check1.svg" alt="" /> Hosted by {{ $property->host->name }}</span>
-                        </li>
-                      </ul>
-                      {{-- Capacity from the listing itself. --}}
-                      <ul>
-                        <li>
-                          <span><img src="/img/icons/bed-icon1.svg" alt="" /> Sleeps {{ $property->max_guests }}</span>
-                        </li>
-                        <li>
-                          <span><img src="/img/icons/squre-icon1.svg" alt="" /> {{ $property->bedrooms }} {{ Str::plural('bedroom', $property->bedrooms) }}</span>
-                        </li>
-                        <li>
-                          <span><img src="/img/icons/bat-icon1.svg" alt="" /> {{ $property->bathrooms }} {{ Str::plural('bathroom', $property->bathrooms) }}</span>
-                        </li>
-                      </ul>
+                {{--
+                  col-lg-10 wrapper keeps this row's left edge aligned with
+                  the amenities and "Where you'll be" rows below, which use
+                  the same col-lg-2 offset. The actual 2-column layout - image
+                  col-lg-6, details col-lg-6, vertically centred via
+                  .jb-glance-row - is the nested row inside it.
+                --}}
+                <div class="col-lg-10">
+                  <div class="row jb-glance-row">
+                    <div class="col-lg-6">
+                      <div class="img1 image-anime reveal">
+                        <img src="{{ $jbGallery->isNotEmpty() ? $jbGallery->first()->display_url : $jbCoverUrl }}" alt="{{ $property->title }}" />
+                      </div>
                     </div>
-                    <div class="space40"></div>
-                    <div class="btn-area1" data-aos="fade-up" data-aos-duration="1200">
-                      @include('layouts.partials.contact-buttons', ['property' => $property])
+                    <div class="col-lg-6">
+                      <div class="heading5 author-header">
+                        <p data-aos="fade-up" data-aos-duration="800">{{ \Illuminate\Support\Str::limit($property->description, 300) }}</p>
+                        <div class="space24"></div>
+                        <div class="list-area" data-aos="fade-up" data-aos-duration="1000">
+                          <ul>
+                            <li>
+                              <span><img src="/img/icons/check1.svg" alt="" /> {{ $property->stay_type }}</span>
+                            </li>
+                            <li>
+                              <span><img src="/img/icons/check1.svg" alt="" /> {{ $property->neighborhood }}, Jaipur</span>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <span><img src="/img/icons/check1.svg" alt="" /> {{ $jbPrice }}</span>
+                            </li>
+                            <li>
+                              <span><img src="/img/icons/check1.svg" alt="" /> Hosted by {{ $property->host->name }}</span>
+                            </li>
+                          </ul>
+                          {{-- Capacity from the listing itself. --}}
+                          <ul>
+                            <li>
+                              <span><img src="/img/icons/bed-icon1.svg" alt="" /> Sleeps {{ $property->max_guests }}</span>
+                            </li>
+                            <li>
+                              <span><img src="/img/icons/squre-icon1.svg" alt="" /> {{ $property->bedrooms }} {{ Str::plural('bedroom', $property->bedrooms) }}</span>
+                            </li>
+                            <li>
+                              <span><img src="/img/icons/bat-icon1.svg" alt="" /> {{ $property->bathrooms }} {{ Str::plural('bathroom', $property->bathrooms) }}</span>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="space40"></div>
+                        <div class="btn-area1" data-aos="fade-up" data-aos-duration="1200">
+                          @include('layouts.partials.contact-buttons', ['property' => $property])
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -534,11 +599,13 @@
                     OSM needs no API key and sets no frame headers.
                   --}}
                   @if ($property->mapEmbedUrl())
-                    <iframe class="jb-map-embed"
-                            loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"
-                            src="{{ $property->mapEmbedUrl() }}"
-                            title="Map showing the location of {{ $property->title }} in {{ $property->neighborhood }}, Jaipur"></iframe>
+                    <div class="jb-map-wrap">
+                      <iframe class="jb-map-embed"
+                              loading="lazy"
+                              referrerpolicy="no-referrer-when-downgrade"
+                              src="{{ $property->mapEmbedUrl() }}"
+                              title="Map showing the location of {{ $property->title }} in {{ $property->neighborhood }}, Jaipur"></iframe>
+                    </div>
                     <p class="jb-map-link">
                       <a href="{{ $property->mapLinkUrl() }}" target="_blank" rel="noopener noreferrer">
                         View larger map <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
