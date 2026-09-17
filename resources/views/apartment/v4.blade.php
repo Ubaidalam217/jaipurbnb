@@ -628,7 +628,7 @@
         @if ($property->coverImage)
         <img src="{{ $property->coverImage->display_url }}" alt="{{ $property->title }}" />
         @else
-        <img src="/img/all-images/apartment/apartment-img1.webp" alt="{{ $property- width="1110" height="740">title }}" />
+        <img src="/img/all-images/apartment/apartment-img1.webp" alt="{{ $property->title }}" width="1110" height="740" />
         @endif
         </a>
         </div>
