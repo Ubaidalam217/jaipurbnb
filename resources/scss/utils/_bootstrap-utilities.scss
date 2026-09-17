@@ -1,0 +1,45 @@
+// Hand-written replacement for Bootstrap's generated utilities API.
+//
+// Bootstrap's utilities/_api.scss generates hundreds of classes (spacing,
+// color, flex, position, sizing, ...) from the $utilities map - importing
+// it pulls in far more than this site uses. Only these ~8 classes appear
+// anywhere in resources/views (verified by grepping every class="..."
+// attribute across every blade file), so they're written directly instead.
+// If a new Bootstrap utility class is added to a view, add its rule here
+// too - it will not come from anywhere else.
+
+.d-none {
+    display: none !important;
+}
+
+.d-block {
+    display: block !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.text-end {
+    text-align: right !important;
+}
+
+.align-items-center {
+    align-items: center !important;
+}
+
+@media (min-width: 768px) {
+    .d-md-none {
+        display: none !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .d-lg-none {
+        display: none !important;
+    }
+
+    .d-lg-block {
+        display: block !important;
+    }
+}

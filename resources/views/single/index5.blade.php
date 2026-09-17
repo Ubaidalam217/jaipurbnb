@@ -11,7 +11,7 @@
   // have removed them all after approval), so every img falls back to a
   // template asset rather than rendering a broken tile.
   $jbCover = $property->images->firstWhere('is_cover', true) ?? $property->images->first();
-  $jbCoverUrl = $jbCover ? $jbCover->display_url : '/img/all-images/apartment/apartment-img1.jpg';
+  $jbCoverUrl = $jbCover ? $jbCover->display_url : '/img/all-images/apartment/apartment-img1.webp';
   $jbGallery = $property->images->where('id', '!=', $jbCover?->id)->values();
   $jbPrice = 'Approx Rs ' . number_format($property->approx_price) . ' / night';
 
@@ -440,7 +440,7 @@
   </div>
   <!-- ===== OTHERS AREA ENDS ======= -->
 
-  <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-body-tertiary rounded-2" tabindex="0">
+  <div>
     <!-- ===== PROPERTY AREA STARTS ======= -->
     <div class="property5-section-area sp6" id="property">
       <div class="img1">

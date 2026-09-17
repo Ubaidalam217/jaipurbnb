@@ -1,10 +1,18 @@
-@import '/node_modules/bootstrap/dist/css/bootstrap.min.css';
+// Bootstrap: only the pieces this site actually uses (grid, offcanvas for
+// the mobile nav, and the one dashboard <table>) rather than the full
+// ~190KB dist bundle. Every other Bootstrap component (cards, badges,
+// alerts, modals, dropdowns, forms, accordions, its own carousel, etc.)
+// was audited against every blade view and is not referenced anywhere -
+// all real UI here uses custom jb-* classes instead. See
+// resources/scss/utils/_bootstrap-utilities.scss for the handful of
+// Bootstrap utility classes (d-none, text-center, ...) that ARE used,
+// hand-written instead of pulling in Bootstrap's generated utilities API.
+@use './vendor/bootstrap-custom';
+@import './utils/bootstrap-utilities';
 @import './components/fontawesome';
-@import '/node_modules/magnific-popup/dist/magnific-popup.css';
 @import './components/select';
 @import './components/sidebar';
 @import './components/mobile';
-@import '/node_modules/slick-slider/slick/slick.css';
 @import '/node_modules/owl.carousel/dist/assets/owl.carousel.min.css';
 @import '/node_modules/aos/dist/aos.css';
 

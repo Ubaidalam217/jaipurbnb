@@ -1,0 +1,26 @@
+// Loaded from main.scss via `@use`, not `@import`, on purpose: Bootstrap's
+// own _variables.scss defines a Sass variable named $colors, and so does
+// this project's resources/scss/utils/_colors.scss (the brand palette map).
+// A flat @import merges both into one global namespace and Dart Sass
+// refuses to compile ("this module and the new module both define a
+// variable named $colors"). @use keeps this whole subtree in its own
+// private module scope - its CSS output still gets emitted into the
+// bundle, but $colors and friends never leak out to collide with the
+// project's own utils module.
+//
+// Only the Bootstrap pieces this site actually uses: grid/containers,
+// the offcanvas mobile nav, and the one dashboard <table>. Every other
+// component (cards, badges, alerts, modals, dropdowns, forms, its own
+// carousel, ...) was checked against every blade view and is not
+// referenced anywhere - real UI here uses custom jb-* classes instead.
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/tables';
+@import 'bootstrap/scss/offcanvas';

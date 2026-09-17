@@ -37,6 +37,23 @@
   </script>
 @endpush
 
+@push('preload')
+  {{--
+    LCP element: hero slide 1 (see the fetchpriority="high" <picture> below).
+    imagesrcset/imagesizes mirror that <source> exactly so the preload fetches
+    the SAME candidate the browser will actually render, not a guess at one
+    fixed size - a mismatched preload just wastes bandwidth on an extra
+    download. type filters this to browsers that will use the webp <source>;
+    everything else falls through to the plain <img> with no preload hint,
+    which is fine since it is not this render's LCP-critical fetch anyway.
+  --}}
+  <link rel="preload" as="image" type="image/webp"
+        imagesrcset="/img/all-images/hero/hero-img6-400w.webp 400w,
+                      /img/all-images/hero/hero-img6-800w.webp 800w,
+                      /img/all-images/hero/hero-img6-1200w.webp 1200w"
+        imagesizes="100vw">
+@endpush
+
 @section('content')
   @include('layouts.partials.navbar')
 

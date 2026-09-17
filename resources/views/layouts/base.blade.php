@@ -3,6 +3,11 @@
 
 <head>
 
+    {{-- Pushed by pages with an LCP image (e.g. the homepage hero) - kept
+         first in <head> so the browser's preload scanner sees it before
+         anything else while it is still parsing the raw HTML. --}}
+    @stack('preload')
+
     @include('layouts.partials.title-meta')
 
     <!--===== CSS LINK =======-->
