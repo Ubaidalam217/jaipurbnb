@@ -1,0 +1,30 @@
+// Inlined into <head> via Vite::content() - see resources/views/layouts/base.blade.php.
+//
+// This is NOT the full critical-CSS-extraction technique (rendering the
+// page and capturing every rule that touches the above-fold viewport).
+// Most of the actual above-fold styling here is already inline per-page
+// (navbar.blade.php and index.blade.php both carry their own <style>
+// blocks with real colours/sizing, self-contained on purpose - see their
+// own comments). What those per-page blocks assume is already in place is
+// the STRUCTURAL foundation under them: the CSS reset and the grid system
+// (.container/.row/.col-*) that both the navbar and the hero are built on.
+// Without it the page is readable but visibly wrong (unstyled headings,
+// stacked/overlapping columns) for the ~1 round-trip until the async main
+// bundle (see base.blade.php) arrives. This inlines exactly that
+// foundation, nothing page-specific - safe to reuse on every page.
+//
+// Deliberately duplicated with resources/scss/vendor/_bootstrap-custom.scss
+// rather than factored out: this file must compile to a small STANDALONE
+// stylesheet Vite::content() can inline whole, while main.scss's copy stays
+// part of the one bundle every page still loads (async) as its real,
+// long-term-cached stylesheet. Keeping the async bundle also-correct
+// without depending on the inline copy having succeeded is the point -
+// if a browser doesn't run the onload swap (see base.blade.php), the
+// noscript fallback stylesheet is still complete on its own.
+@use './vendor/bootstrap-custom';
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+}

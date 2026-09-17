@@ -1,0 +1,29 @@
+// CLS fix for every Owl Carousel instance on the site (hero, similar
+// listings, property gallery, about section - see resources/js/main.js
+// for the full list of the 4 real ones).
+//
+// owl.carousel.min.css ships `.owl-carousel{display:none}` and only
+// reveals it via `.owl-loaded{display:block}` once Owl's JS has run and
+// built the real slide structure. Until then the whole carousel renders
+// at 0 height, then jumps to its full height the instant JS finishes -
+// on a slow mobile connection/CPU that can be a very late, very large
+// shift. `:not(.owl-loaded)` scopes this to only the pre-init window;
+// the moment Owl adds that class these rules stop applying and Owl's own
+// transform-based slide positioning takes over untouched.
+//
+// Specificity note: `.owl-carousel:not(.owl-loaded)` is a class selector
+// plus a :not() whose argument is also a class selector, so this is
+// (0,2,0) - it beats owl.carousel.min.css's own `.owl-carousel{display:
+// none}` at (0,1,0) regardless of import order, but @import-ing this
+// after owl.carousel.min.css in main.scss keeps source order matching
+// specificity for anyone reading the compiled output later.
+.owl-carousel:not(.owl-loaded) {
+    display: block;
+
+    // Show only the first slide, at its natural unwrapped height, instead
+    // of every slide stacking in normal flow (which would itself be a
+    // second, larger shift once Owl trims it back down to one slide).
+    > *:not(:first-child) {
+        display: none;
+    }
+}

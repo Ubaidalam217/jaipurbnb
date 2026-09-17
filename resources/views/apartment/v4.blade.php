@@ -408,6 +408,25 @@
       border-color: #E07A5F;
       background: rgba(224, 122, 95, .16);
     }
+
+    /* CLS fix: the template's own .img1 img rule is `height:100%` with no
+       height set anywhere on .img1 itself, so the card's photo area had no
+       reserved size until each card's own image loaded - host photos are
+       arbitrary aspect ratios, so every card would also jump a different
+       amount, un-aligning the grid row by row as images arrived. A fixed
+       aspect-ratio reserves the exact same box up front regardless of the
+       source photo's real dimensions, and object-fit:cover (already set)
+       crops to fill it. 3:2 matches the two actual demo cover photos most
+       closely (1320x880 is exactly 3:2). */
+    .apartment-inner2-section-area .apartment-boxarea .img1 {
+      aspect-ratio: 3 / 2;
+    }
+
+    .apartment-inner2-section-area .apartment-boxarea .img1 img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
   </style>
   <!-- ===== HERO AREA STARTS ======= -->
   <div class="inner-main-hero-area">

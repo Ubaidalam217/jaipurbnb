@@ -7,6 +7,8 @@ export default defineConfig({
             input: [
                 //css
                 'resources/scss/main.scss',
+                // Inlined in <head> via Vite::content() - see base.blade.php.
+                'resources/scss/critical.scss',
 
 
                 //js

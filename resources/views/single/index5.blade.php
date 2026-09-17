@@ -316,6 +316,26 @@
         height: 300px;
       }
     }
+
+    /* CLS fix: .apartment5-area pins .owl-stage-outer to position:absolute
+       on desktop (so .img1's own height doesn't affect layout there), but
+       switches it to position:relative on tablet/mobile - and .img1 itself
+       has no height set anywhere, only `img{height:100%}`. Below 992px
+       these related-listing cards had no reserved space until each one's
+       own (host-uploaded, arbitrary-ratio) photo loaded. Same fix as the
+       browse grid: fixed aspect-ratio instead of a guessed pixel height,
+       since these render at a different column width than the browse page. */
+    @media (max-width: 991.98px) {
+      .apartment5-area .arpart-slider-area .apartment-boxarea .img1 {
+        aspect-ratio: 3 / 2;
+      }
+
+      .apartment5-area .arpart-slider-area .apartment-boxarea .img1 img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
   </style>
 
   <!-- ===== HERO AREA STARTS ======= -->

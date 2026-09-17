@@ -528,6 +528,25 @@
         text-align: center;
       }
     }
+    /* CLS floor for the hero carousel specifically - the generic
+       "show only slide 1 before Owl loads" fix lives in
+       resources/scss/components/_owl-cls-fix.scss and applies to every
+       owl-carousel on the site. This is just a minimum height for the
+       rare case slide 1's own content renders unexpectedly short (e.g.
+       before its webp decodes), and the charcoal background so there is
+       no white flash while the hero photo is still decoding instead of a
+       bright flash-then-darken. */
+    .header-carousel-area3.owl-carousel {
+      min-height: 600px;
+    }
+    .header-carousel-area3.owl-carousel .main-hero-area {
+      background-color: #2F3E46;
+    }
+    @media (max-width: 767.98px) {
+      .header-carousel-area3.owl-carousel {
+        min-height: 300px;
+      }
+    }
   </style>
 
   <!-- ===== HERO AREA STARTS ======= -->
