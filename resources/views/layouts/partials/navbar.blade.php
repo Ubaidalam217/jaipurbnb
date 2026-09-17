@@ -397,7 +397,7 @@
 
 <nav class="jb-nav" aria-label="Primary">
     <div class="jb-nav__inner">
-        <a class="jb-nav__brand" href="{{ url('/') }}"><img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" style="height: 85px; width: auto; background: transparent;" class="navbar-logo"></a>
+        <a class="jb-nav__brand" href="{{ url('/') }}"><img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" width="93" height="85" style="height: 85px; width: auto; background: transparent;" class="navbar-logo"></a>
 
         <div class="jb-nav__desktop">
             <ul class="jb-nav__menu">
@@ -444,7 +444,7 @@
          id="jbMobileNav"
          aria-labelledby="jbMobileNavLabel">
         <div class="jb-offcanvas__header">
-            <a class="jb-offcanvas__brand" id="jbMobileNavLabel" href="{{ url('/') }}"><img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" style="height: 85px; width: auto; background: transparent;" class="navbar-logo"></a>
+            <a class="jb-offcanvas__brand" id="jbMobileNavLabel" href="{{ url('/') }}"><img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" width="93" height="85" style="height: 85px; width: auto; background: transparent;" class="navbar-logo"></a>
             <button class="jb-offcanvas__close"
                     type="button"
                     data-bs-dismiss="offcanvas"

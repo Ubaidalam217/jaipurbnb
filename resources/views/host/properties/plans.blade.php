@@ -281,7 +281,7 @@
 @endsection
 
 @section('scripts')
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
   <script>
     (function () {
       var orderUrl  = @json(route('host.properties.order', $property));

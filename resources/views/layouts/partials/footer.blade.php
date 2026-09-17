@@ -151,7 +151,7 @@
                                     <div class="col-lg-5 col-md-6">
                                         <div class="instagram-posts" data-aos="zoom-in-up" data-aos-duration="800">
                                             <div class="img1">
-                                                <img src="/img/all-images/gallery/gallery-img2.jpg" alt="Jaipur haveli">
+                                                <img src="/img/all-images/gallery/gallery-img2.webp" alt="Jaipur haveli" width="1024" height="733">
                                             </div>
                                             <div class="icons">
                                                 <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -161,7 +161,7 @@
                                     <div class="col-lg-7 col-md-6" data-aos="zoom-in-up" data-aos-duration="1000">
                                         <div class="instagram-posts">
                                             <div class="img1">
-                                                <img src="/img/all-images/gallery/gallery-img3.jpg" alt="Jaipur pool villa">
+                                                <img src="/img/all-images/gallery/gallery-img3.webp" alt="Jaipur pool villa" width="1200" height="800">
                                             </div>
                                             <div class="icons">
                                                 <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -172,7 +172,7 @@
                                     <div class="col-lg-7 col-md-6" data-aos="zoom-in-up" data-aos-duration="1100">
                                         <div class="instagram-posts">
                                             <div class="img1">
-                                                <img src="/img/all-images/gallery/gallery-img4.jpg" alt="Jaipur property interior">
+                                                <img src="/img/all-images/gallery/gallery-img4.webp" alt="Jaipur property interior" width="396" height="316">
                                             </div>
                                             <div class="icons">
                                                 <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -183,7 +183,7 @@
                                     <div class="col-lg-5 col-md-6" data-aos="zoom-in-up" data-aos-duration="1200">
                                         <div class="instagram-posts">
                                             <div class="img1">
-                                                <img src="/img/all-images/gallery/gallery-img5.jpg" alt="Jaipur garden courtyard">
+                                                <img src="/img/all-images/gallery/gallery-img5.webp" alt="Jaipur garden courtyard" width="1200" height="922">
                                             </div>
                                             <div class="icons">
                                                 <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -214,7 +214,7 @@
                                          header comment in jaipurbnb-logo-compact.svg.
                                          The inline height also has to beat _footer-1.scss, which
                                          pins .footer-logo img to 150x48 with object-fit:contain. --}}
-                                    <img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" style="height:70px;width:auto;display:block;">
+                                    <img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" width="76" height="70" style="height:70px;width:auto;display:block;">
                                 </a>
                             </div>
                             <div class="footer-menu">

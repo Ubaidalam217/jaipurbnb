@@ -59,7 +59,7 @@ class SamplePropertySeeder extends Seeder
             'bedrooms'     => 2,
             'bathrooms'    => 2,
             'description'  => "A restored heritage haveli in the heart of Jaipur's Walled City, minutes from Hawa Mahal and Johari Bazaar. Hand-painted frescoes, a marble courtyard and a rooftop that looks straight out over the old city.",
-            'image'        => '/img/all-images/hero/hero-img6.webp',
+            'image'        => '/img/all-images/hero/hero-img6-1200w.webp',
 
             // This is the client's designated reference listing, so it is the
             // one seeded complete: address + coordinates for the map embed,
@@ -77,10 +77,10 @@ class SamplePropertySeeder extends Seeder
             // the same photo appearing twice in a six-item demo set is the
             // kind of thing a client spots immediately.
             'gallery'      => [
-                '/img/all-images/apartment/apartment-img3.png',
-                '/img/all-images/apartment/apartment-img5.png',
-                '/img/all-images/service/service-img4.jpg',
-                '/img/all-images/service/service-img7.jpg',
+                '/img/all-images/apartment/apartment-img3.webp',
+                '/img/all-images/apartment/apartment-img5.webp',
+                '/img/all-images/service/service-img4.webp',
+                '/img/all-images/service/service-img7.webp',
             ],
             // These MUST match AmenitySeeder's names exactly - they are looked
             // up by name, and anything unmatched is skipped rather than
@@ -100,7 +100,7 @@ class SamplePropertySeeder extends Seeder
             'bedrooms'     => 1,
             'bathrooms'    => 1,
             'description'  => 'Modern studio apartment in upscale C-Scheme, walking distance to trendy cafes and restaurants.',
-            'image'        => '/img/all-images/property/property-img5.jpg',
+            'image'        => '/img/all-images/property/property-img5.webp',
             'address'      => 'Ashok Marg, C-Scheme',
             'pincode'      => '302001',
             'latitude'     => 26.9048,
@@ -115,7 +115,7 @@ class SamplePropertySeeder extends Seeder
             'bedrooms'     => 4,
             'bathrooms'    => 3,
             'description'  => 'Spacious family villa with stunning Aravali hills views, perfect for large groups and events.',
-            'image'        => '/img/all-images/property/property-img4.jpg',
+            'image'        => '/img/all-images/property/property-img4.webp',
             'address'      => 'Kukas, Delhi Road',
             'pincode'      => '303101',
             'latitude'     => 27.0448,
@@ -130,7 +130,7 @@ class SamplePropertySeeder extends Seeder
             'bedrooms'     => 1,
             'bathrooms'    => 1,
             'description'  => 'Charming homestay with direct views of Amer Fort, experience authentic Rajasthani hospitality.',
-            'image'        => '/img/all-images/hero/hero-img1.webp',
+            'image'        => '/img/all-images/hero/hero-img1-1200w.webp',
             'address'      => 'Near Amer Fort, Amer',
             'pincode'      => '302028',
             'latitude'     => 26.9855,
@@ -145,7 +145,7 @@ class SamplePropertySeeder extends Seeder
             'bedrooms'     => 2,
             'bathrooms'    => 2,
             'description'  => 'Elegant boutique stay in peaceful Bani Park, close to the railway station and city center.',
-            'image'        => '/img/all-images/apartment/apartment-img2.png',
+            'image'        => '/img/all-images/apartment/apartment-img2.webp',
             'address'      => 'Kabir Marg, Bani Park',
             'pincode'      => '302016',
             'latitude'     => 26.9312,
@@ -160,7 +160,7 @@ class SamplePropertySeeder extends Seeder
             'bedrooms'     => 3,
             'bathrooms'    => 3,
             'description'  => 'Heritage retreat near Nahargarh Fort with rooftop terrace and panoramic city views.',
-            'image'        => '/img/all-images/hero/hero-img5.webp',
+            'image'        => '/img/all-images/hero/hero-img5-1200w.webp',
             'address'      => 'Nahargarh Fort Road',
             'pincode'      => '302002',
             'latitude'     => 26.9374,

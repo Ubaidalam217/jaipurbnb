@@ -528,7 +528,11 @@
       --}}
       <div class="img1">
         <picture>
-          <source srcset="/img/all-images/hero/hero-img6.webp" type="image/webp">
+          <source type="image/webp"
+                  srcset="/img/all-images/hero/hero-img6-400w.webp 400w,
+                          /img/all-images/hero/hero-img6-800w.webp 800w,
+                          /img/all-images/hero/hero-img6-1200w.webp 1200w"
+                  sizes="100vw">
           <img src="/img/all-images/hero/hero-img6.png"
                alt="Lantern-lit haveli courtyard in Jaipur with a pool and bougainvillea at dusk"
                width="1448" height="1086"
@@ -536,14 +540,14 @@
         </picture>
       </div>
       <div class="bg-elements">
-        <img src="/img/elements/elements7.png" alt="" class="elements2" />
+        <img src="/img/elements/elements7.webp" alt="" class="elements2" width="800" height="517" />
       </div>
       <div class="container">
         <div class="row">
           <div class="col-lg-5 col-md-9">
             <div class="header-content-area header-heading">
               <div class="elements">
-                <img src="/img/elements/elements3.png" alt="" />
+                <img src="/img/elements/elements3.webp" alt="" width="666" height="665" />
               </div>
               <div class="header-heading2">
                 <h5><i class="fa-solid fa-location-dot"></i>Serving all of Jaipur, Rajasthan</h5>
@@ -563,7 +567,7 @@
             <div class="auhtor-box">
               <div class="others-box">
                 <div class="img3">
-                  <img src="/img/all-images/others/others-img1.jpg" alt="" />
+                  <img src="/img/all-images/others/others-img1.webp" alt="" width="240" height="180" />
                 </div>
                 <div class="text">
                   <h3>The Royal Walled City Haveli</h3>
@@ -580,7 +584,11 @@
     <div class="main-hero-area">
       <div class="img1">
         <picture>
-          <source srcset="/img/all-images/hero/hero-img5.webp" type="image/webp">
+          <source type="image/webp"
+                  srcset="/img/all-images/hero/hero-img5-400w.webp 400w,
+                          /img/all-images/hero/hero-img5-800w.webp 800w,
+                          /img/all-images/hero/hero-img5-1200w.webp 1200w"
+                  sizes="100vw">
           <img src="/img/all-images/hero/hero-img5.png"
                alt="Marble haveli courtyard in Jaipur with a carved fountain and candle lanterns"
                width="1448" height="1086"
@@ -588,14 +596,14 @@
         </picture>
       </div>
       <div class="bg-elements">
-        <img src="/img/elements/elements7.png" alt="" class="elements2" />
+        <img src="/img/elements/elements7.webp" alt="" class="elements2" width="800" height="517" />
       </div>
       <div class="container">
         <div class="row">
           <div class="col-lg-5 col-md-9">
             <div class="header-content-area header-heading">
               <div class="elements">
-                <img src="/img/elements/elements3.png" alt="" />
+                <img src="/img/elements/elements3.webp" alt="" width="666" height="665" />
               </div>
               <div class="header-heading2">
                 <h5><i class="fa-solid fa-location-dot"></i>Local Jaipur Hosts</h5>
@@ -615,7 +623,7 @@
             <div class="auhtor-box">
               <div class="others-box">
                 <div class="img3">
-                  <img src="/img/all-images/others/others-img1.jpg" alt="" />
+                  <img src="/img/all-images/others/others-img1.webp" alt="" width="240" height="180" />
                 </div>
                 <div class="text">
                   <h3>The Royal Walled City Haveli</h3>
@@ -632,7 +640,11 @@
     <div class="main-hero-area">
       <div class="img1">
         <picture>
-          <source srcset="/img/all-images/hero/hero-img1.webp" type="image/webp">
+          <source type="image/webp"
+                  srcset="/img/all-images/hero/hero-img1-400w.webp 400w,
+                          /img/all-images/hero/hero-img1-800w.webp 800w,
+                          /img/all-images/hero/hero-img1-1200w.webp 1200w"
+                  sizes="100vw">
           <img src="/img/all-images/hero/hero-img1.png"
                alt="Jaipur suite living room looking out over Hawa Mahal at sunset"
                width="1448" height="1086"
@@ -640,14 +652,14 @@
         </picture>
       </div>
       <div class="bg-elements">
-        <img src="/img/elements/elements7.png" alt="" class="elements2" />
+        <img src="/img/elements/elements7.webp" alt="" class="elements2" width="800" height="517" />
       </div>
       <div class="container">
         <div class="row">
           <div class="col-lg-5 col-md-9">
             <div class="header-content-area header-heading">
               <div class="elements">
-                <img src="/img/elements/elements3.png" alt="" />
+                <img src="/img/elements/elements3.webp" alt="" width="666" height="665" />
               </div>
               <div class="header-heading2">
                 @php
@@ -676,7 +688,7 @@
             <div class="auhtor-box">
               <div class="others-box">
                 <div class="img3">
-                  <img src="/img/all-images/others/others-img1.jpg" alt="" />
+                  <img src="/img/all-images/others/others-img1.webp" alt="" width="240" height="180" />
                 </div>
                 <div class="text">
                   <h3>The Royal Walled City Haveli</h3>
@@ -751,13 +763,13 @@
         <div class="col-lg-6">
           <div class="property-images-area">
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/property/property-img4.jpg" alt="" />
+              <img src="/img/all-images/property/property-img4.webp" alt="" width="1320" height="880" />
             </div>
             <div class="img2 reveal image-anime">
-              <img src="/img/all-images/property/property-img5.jpg" alt="" />
+              <img src="/img/all-images/property/property-img5.webp" alt="" width="1320" height="1014" />
             </div>
             <div class="elements reveal image-anime">
-              <img src="/img/elements/elements9.png" alt="" />
+              <img src="/img/elements/elements9.webp" alt="" width="666" height="665" />
             </div>
           </div>
         </div>
@@ -799,7 +811,7 @@
         <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="800">
           <div class="amenities-boxarea">
             <div class="img1">
-              <img src="/img/all-images/service/service-img4.jpg" alt="" />
+              <img src="/img/all-images/service/service-img4.webp" alt="" width="480" height="344" />
             </div>
             <div class="space32"></div>
             <div class="content-area">
@@ -815,7 +827,7 @@
           <div class="space40 d-lg-block d-none"></div>
           <div class="amenities-boxarea">
             <div class="img1">
-              <img src="/img/all-images/service/service-img5.jpg" alt="" />
+              <img src="/img/all-images/service/service-img5.webp" alt="" width="396" height="316" />
             </div>
             <div class="space32"></div>
             <div class="content-area">
@@ -832,7 +844,7 @@
         <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="1100">
           <div class="amenities-boxarea">
             <div class="img1">
-              <img src="/img/all-images/service/service-img7.jpg" alt="" />
+              <img src="/img/all-images/service/service-img7.webp" alt="" width="480" height="360" />
             </div>
             <div class="space32"></div>
             <div class="content-area">
@@ -850,7 +862,7 @@
           <div class="space40 d-lg-block d-none"></div>
           <div class="amenities-boxarea">
             <div class="img1">
-              <img src="/img/all-images/service/service-img8.jpg" alt="" />
+              <img src="/img/all-images/service/service-img8.webp" alt="" width="480" height="360" />
             </div>
             <div class="space32"></div>
             <div class="content-area">
@@ -884,29 +896,29 @@
         <div class="col-lg-6">
           <div class="about-slider-area owl-carousel">
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.jpg" alt="" />
+              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.jpg" alt="" />
+              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.jpg" alt="" />
+              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.jpg" alt="" />
+              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
 
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.jpg" alt="" />
+              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.jpg" alt="" />
+              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.jpg" alt="" />
+              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.jpg" alt="" />
+              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
           </div>
           <div class="space30"></div>
@@ -926,7 +938,7 @@
             <div class="col-lg-6 col-md-6">
               <div class="about-video-area">
                 <div class="img1 image-anime reveal">
-                  <img src="/img/all-images/about/about-img5.jpg" alt="" />
+                  <img src="/img/all-images/about/about-img5.webp" alt="" width="870" height="652" />
                 </div>
               </div>
             </div>
@@ -946,7 +958,7 @@
             {{-- Photo is clickable too, not just the title and arrow. --}}
             <div class="img1 reveal image-anime">
               <a href="{{ $jbFeaturedUrl }}" style="display:block;" aria-label="View {{ $featured?->title ?? 'properties' }}">
-                <img src="{{ $featured?->coverImage?->display_url ?? '/img/all-images/about/about-img4.png' }}" alt="{{ $featured?->title ?? '' }}" />
+                <img src="{{ $featured?->coverImage?->display_url ?? '/img/all-images/about/about-img4.webp' }}" alt="{{ $featured?->title ?? '' }}" />
               </a>
             </div>
             <div class="content-area">
@@ -955,11 +967,11 @@
                 <div class="space20"></div>
                 <ul>
                   <li>
-                    <span><img src="/img/icons/bed-icon1.svg" alt="" /> {{ $featured?->stay_type ?? 'Heritage stays' }}</span>
+                    <span><img src="/img/icons/bed-icon1.svg" alt="" width="18" height="18" /> {{ $featured?->stay_type ?? 'Heritage stays' }}</span>
                   </li>
                   @if ($featured)
                     <li>
-                      <span>|</span> <span><img src="/img/icons/squre-icon1.svg" alt="" /> {{ $featured->neighborhood }}</span>
+                      <span>|</span> <span><img src="/img/icons/squre-icon1.svg" alt="" width="18" height="18" /> {{ $featured->neighborhood }}</span>
                     </li>
                   @endif
                 </ul>
@@ -969,7 +981,7 @@
               </div>
             </div>
             <div class="elements3">
-              <img src="/img/elements/elements3.png" alt="" />
+              <img src="/img/elements/elements3.webp" alt="" width="666" height="665" />
             </div>
           </div>
         </div>
@@ -997,8 +1009,8 @@
       <div class="row">
         <div class="col-lg-10 m-auto">
           <div class="rotate-img">
-            <img src="/img/all-images/gallery/gallery-img1.jpg" alt="Jaipur heritage property" style="width:100%;height:auto;display:block;" />
-            <img src="/img/elements/elements3.png" alt="" class="elements3" />
+            <img src="/img/all-images/gallery/gallery-img1.webp" alt="Jaipur heritage property" style="width:100%;height:auto;display:block;" width="1448" height="1086" />
+            <img src="/img/elements/elements3.webp" alt="" class="elements3" width="666" height="665" />
           </div>
         </div>
       </div>
@@ -1020,13 +1032,13 @@
         <div class="col-lg-5">
           <div class="images-area">
             <div class="img1 image-anime reveal">
-              <img src="/img/all-images/others/others-img11.jpg" alt="" />
+              <img src="/img/all-images/others/others-img11.webp" alt="" width="951" height="634" />
             </div>
             <div class="img2 image-anime reveal">
-              <img src="/img/all-images/others/others-img12.jpg" alt="" />
+              <img src="/img/all-images/others/others-img12.webp" alt="" width="954" height="733" />
             </div>
             <div class="elements">
-              <img src="/img/elements/elements8.png" alt="" />
+              <img src="/img/elements/elements8.webp" alt="" width="479" height="479" />
             </div>
           </div>
         </div>

@@ -400,7 +400,7 @@
           <div class="auhtor-tabs-area">
             <div class="boxes">
               <div class="icons">
-                <img src="/img/icons/others-icon5.svg" alt="" />
+                <img src="/img/icons/others-icon5.svg" alt="" width="26" height="26" />
               </div>
               <div class="content">
                 <span>{{ $property->stay_type }}</span>
@@ -409,7 +409,7 @@
 
             <div class="boxes">
               <div class="icons">
-                <img src="/img/icons/others-icon6.svg" alt="" />
+                <img src="/img/icons/others-icon6.svg" alt="" width="26" height="26" />
               </div>
               <div class="content">
                 <span>{{ $property->neighborhood }}</span>
@@ -418,7 +418,7 @@
 
             <div class="boxes">
               <div class="icons">
-                <img src="/img/icons/others-icon7.svg" alt="" />
+                <img src="/img/icons/others-icon7.svg" alt="" width="24" height="24" />
               </div>
               <div class="content">
                 <span>{{ $jbPrice }}</span>
@@ -427,7 +427,7 @@
 
             <div class="boxes">
               <div class="icons">
-                <img src="/img/icons/others-icon8.svg" alt="" />
+                <img src="/img/icons/others-icon8.svg" alt="" width="24" height="24" />
               </div>
               <div class="content">
                 <span>{{ $property->isVerified() ? 'Verified Listing' : 'Hosted by ' . $property->host->name }}</span>
@@ -524,30 +524,30 @@
                         <div class="list-area" data-aos="fade-up" data-aos-duration="1000">
                           <ul>
                             <li>
-                              <span><img src="/img/icons/check1.svg" alt="" /> {{ $property->stay_type }}</span>
+                              <span><img src="/img/icons/check1.svg" alt="" width="21" height="21" /> {{ $property->stay_type }}</span>
                             </li>
                             <li>
-                              <span><img src="/img/icons/check1.svg" alt="" /> {{ $property->neighborhood }}, Jaipur</span>
+                              <span><img src="/img/icons/check1.svg" alt="" width="21" height="21" /> {{ $property->neighborhood }}, Jaipur</span>
                             </li>
                           </ul>
                           <ul>
                             <li>
-                              <span><img src="/img/icons/check1.svg" alt="" /> {{ $jbPrice }}</span>
+                              <span><img src="/img/icons/check1.svg" alt="" width="21" height="21" /> {{ $jbPrice }}</span>
                             </li>
                             <li>
-                              <span><img src="/img/icons/check1.svg" alt="" /> Hosted by {{ $property->host->name }}</span>
+                              <span><img src="/img/icons/check1.svg" alt="" width="21" height="21" /> Hosted by {{ $property->host->name }}</span>
                             </li>
                           </ul>
                           {{-- Capacity from the listing itself. --}}
                           <ul>
                             <li>
-                              <span><img src="/img/icons/bed-icon1.svg" alt="" /> Sleeps {{ $property->max_guests }}</span>
+                              <span><img src="/img/icons/bed-icon1.svg" alt="" width="18" height="18" /> Sleeps {{ $property->max_guests }}</span>
                             </li>
                             <li>
-                              <span><img src="/img/icons/squre-icon1.svg" alt="" /> {{ $property->bedrooms }} {{ Str::plural('bedroom', $property->bedrooms) }}</span>
+                              <span><img src="/img/icons/squre-icon1.svg" alt="" width="18" height="18" /> {{ $property->bedrooms }} {{ Str::plural('bedroom', $property->bedrooms) }}</span>
                             </li>
                             <li>
-                              <span><img src="/img/icons/bat-icon1.svg" alt="" /> {{ $property->bathrooms }} {{ Str::plural('bathroom', $property->bathrooms) }}</span>
+                              <span><img src="/img/icons/bat-icon1.svg" alt="" width="18" height="18" /> {{ $property->bathrooms }} {{ Str::plural('bathroom', $property->bathrooms) }}</span>
                             </li>
                           </ul>
                         </div>
@@ -666,7 +666,7 @@
               @foreach ($related as $other)
               <div class="apartment-boxarea">
                 <div class="img1 image-anime">
-                  <img src="{{ $other->coverImage ? $other->coverImage->display_url : '/img/all-images/apartment/apartment-img6.png' }}" alt="{{ $other->title }}" />
+                  <img src="{{ $other->coverImage ? $other->coverImage->display_url : '/img/all-images/apartment/apartment-img6.webp' }}" alt="{{ $other->title }}" />
                 </div>
                 <div class="content">
                   <a href="{{ route('properties.show', $other) }}">{{ $other->title }}</a>

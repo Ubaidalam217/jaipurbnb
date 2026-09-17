@@ -50,10 +50,10 @@ body {
     // Desktop-only garnish. Every decorative swirl/pattern lives under
     // /img/elements/ and is wrapped in .elements / .elements2 / .elements3 /
     // .bg-elements. Measured at 375px they were badly oversized:
-    //   elements9.png  .elements.reveal.image-anime  800x665  spanning -83..717
-    //   elements3.png  .elements3                    501x500  spanning  12..513
-    //   elements3.png  .elements3                    222x222  spanning 341..563
-    //   elements8.png  .elements                     351x351  spanning  12..363
+    //   elements9.webp  .elements.reveal.image-anime  800x665  spanning -83..717
+    //   elements3.webp  .elements3                    501x500  spanning  12..513
+    //   elements3.webp  .elements3                    222x222  spanning 341..563
+    //   elements8.webp  .elements                     351x351  spanning  12..363
     // Hiding the wrapper (not just the img) so no empty box is left behind.
     .elements,
     .elements2,

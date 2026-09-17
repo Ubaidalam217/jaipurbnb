@@ -412,10 +412,10 @@
   <!-- ===== HERO AREA STARTS ======= -->
   <div class="inner-main-hero-area">
     <div class="img1">
-    <img src="/img/all-images/hero/hero-img1.png" alt="" />
+    <img src="/img/all-images/hero/hero-img1.png" alt="" width="1448" height="1086" />
     </div>
     <div class="img2">
-    <img src="/img/all-images/hero/hero-img2.png" alt="" />
+    <img src="/img/all-images/hero/hero-img2.webp" alt="" width="919" height="800" />
     </div>
     <div class="container">
     <div class="row">
@@ -445,7 +445,7 @@
       <div class="auhtor-box">
         <div class="others-box">
         <div class="img3">
-          <img src="/img/all-images/others/others-img1.jpg" alt="" />
+          <img src="/img/all-images/others/others-img1.webp" alt="" width="240" height="180" />
         </div>
         <div class="text">
           <h3>{{ $properties->total() }} {{ Str::plural('stay', $properties->total()) }} available</h3>
@@ -628,7 +628,7 @@
         @if ($property->coverImage)
         <img src="{{ $property->coverImage->display_url }}" alt="{{ $property->title }}" />
         @else
-        <img src="/img/all-images/apartment/apartment-img1.jpg" alt="{{ $property->title }}" />
+        <img src="/img/all-images/apartment/apartment-img1.webp" alt="{{ $property- width="1110" height="740">title }}" />
         @endif
         </a>
         </div>
@@ -707,7 +707,7 @@
       <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="800">
       <div class="amenities-boxarea">
         <div class="img1">
-        <img src="/img/all-images/service/service-img4.jpg" alt="" />
+        <img src="/img/all-images/service/service-img4.webp" alt="" width="480" height="344" />
         </div>
         <div class="space32"></div>
         <div class="content-area">
@@ -725,7 +725,7 @@
       <div class="space40 d-lg-block d-none"></div>
       <div class="amenities-boxarea">
         <div class="img1">
-        <img src="/img/all-images/service/service-img5.jpg" alt="" />
+        <img src="/img/all-images/service/service-img5.webp" alt="" width="396" height="316" />
         </div>
         <div class="space32"></div>
         <div class="content-area">
@@ -742,7 +742,7 @@
       <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="1100">
       <div class="amenities-boxarea">
         <div class="img1">
-        <img src="/img/all-images/service/service-img7.jpg" alt="" />
+        <img src="/img/all-images/service/service-img7.webp" alt="" width="480" height="360" />
         </div>
         <div class="space32"></div>
         <div class="content-area">
@@ -760,7 +760,7 @@
       <div class="space40 d-lg-block d-none"></div>
       <div class="amenities-boxarea">
         <div class="img1">
-        <img src="/img/all-images/service/service-img8.jpg" alt="" />
+        <img src="/img/all-images/service/service-img8.webp" alt="" width="480" height="360" />
         </div>
         <div class="space32"></div>
         <div class="content-area">
