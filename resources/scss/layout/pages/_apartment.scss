@@ -457,6 +457,7 @@
     }
     .arpart-slider-area.owl-carousel .owl-stage-outer {
         position: absolute !important;
+        width: 100%;
         @media #{$xs} {
             position: relative !important;
         }
