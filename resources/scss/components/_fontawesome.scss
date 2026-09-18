@@ -13149,7 +13149,7 @@ readers do not read off random characters that represent icons */
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("/resources/fonts/fa-brands-400.woff2") format("woff2"), url("/resources/fonts/fa-brands-400.ttf") format("truetype"); }
+  src: url("/resources/fonts/fa-brands-400-subset.woff2") format("woff2"); }
 
 .fab,
 .fa-brands {
@@ -27356,7 +27356,7 @@ readers do not read off random characters that represent icons */
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url("/resources/fonts/fa-solid-900.woff2") format("woff2"), url("/resources/fonts/fa-solid-900.ttf") format("truetype"); }
+  src: url("/resources/fonts/fa-solid-900-subset.woff2") format("woff2"); }
 
 .fas,
 .fa-solid {
@@ -27379,13 +27379,13 @@ readers do not read off random characters that represent icons */
   font-family: 'Font Awesome 5 Brands';
   font-display: swap;
   font-weight: 400;
-  src: url("/resources/fonts/fa-brands-400.woff2") format("woff2"), url("/resources/fonts/fa-brands-400.ttf") format("truetype"); }
+  src: url("/resources/fonts/fa-brands-400-subset.woff2") format("woff2"); }
 
 @font-face {
   font-family: 'Font Awesome 5 Pro';
   font-display: swap;
   font-weight: 900;
-  src: url("/resources/fonts/fa-solid-900.woff2") format("woff2"), url("/resources/fonts/fa-solid-900.ttf") format("truetype"); }
+  src: url("/resources/fonts/fa-solid-900-subset.woff2") format("woff2"); }
 
 @font-face {
   font-family: 'Font Awesome 5 Pro';
@@ -27407,12 +27407,12 @@ readers do not read off random characters that represent icons */
 @font-face {
   font-family: 'FontAwesome';
   font-display: swap;
-  src: url("/resources/fonts/fa-solid-900.woff2") format("woff2"), url("/resources/fonts/fa-solid-900.ttf") format("truetype"); }
+  src: url("/resources/fonts/fa-solid-900-subset.woff2") format("woff2"); }
 
 @font-face {
   font-family: 'FontAwesome';
   font-display: swap;
-  src: url("/resources/fonts/fa-brands-400.woff2") format("woff2"), url("/resources/fonts/fa-brands-400.ttf") format("truetype"); }
+  src: url("/resources/fonts/fa-brands-400-subset.woff2") format("woff2"); }
 
 @font-face {
   font-family: 'FontAwesome';

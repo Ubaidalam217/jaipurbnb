@@ -1,6 +1,22 @@
-<!--===== PRELOADER STARTS =======-->
-<div class="preloader" style="background-image: url('/img/logo/preloader.gif');"></div>
-<!--===== PRELOADER ENDS =======-->
+{{--
+  PRELOADER REMOVED (perf) - do not reinstate.
+
+  The template shipped a <div class="preloader"> here: an opaque white
+  position:fixed overlay at 100%x100%, z-index 999999, torn down by
+  main.js on $(window).on("load") + a 200ms setTimeout.
+
+  window.load waits for EVERY subresource - all ~31 images (~2MB), the
+  Font Awesome woff2s, the JS bundle. So the entire viewport stayed blank
+  white until the last byte of the heaviest below-fold gallery image
+  landed, then the finished page appeared all at once. Lighthouse's
+  filmstrip showed exactly that step function (pure white at 1125ms,
+  fully complete at 2250ms), which is what Speed Index penalises hardest -
+  SI was 5.0-5.9s while FCP/LCP were already fine at ~1.9s.
+
+  There is nothing to replace it with: the page renders progressively on
+  its own now. If a loading indicator is ever wanted again, it must not
+  cover content and must not be gated on window.load.
+--}}
 
 <!--===== PROGRESS STARTS=======-->
 {{--

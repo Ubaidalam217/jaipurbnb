@@ -122,19 +122,10 @@
   }
   // HEADER SEARCH AREA ENDS //
 
-  // Preloader //
-  .preloader{
-    position:fixed; 
-    left:0px;
-    top:0px;
-    width:100%;
-    height:100%;
-    z-index:999999;
-    background-color:#ffffff;
-    background-position:center center;
-    background-repeat:no-repeat;
-    background-image:url(/img/logo/preloader.gif);
-    }
+  // Preloader - REMOVED (perf). The rule that used to live here made an
+  // opaque white full-viewport overlay at z-index 999999, which main.js
+  // only removed on window.load. Nothing renders it any more; see
+  // resources/views/layouts/partials/loader.blade.php for why.
 
 //  Page Progress Area //
 //

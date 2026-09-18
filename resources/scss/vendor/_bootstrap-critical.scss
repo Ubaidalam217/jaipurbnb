@@ -1,0 +1,33 @@
+// The above-the-fold slice of Bootstrap, for the inlined critical stylesheet.
+// Consumed by resources/scss/critical.scss via `@use` - see that file for what
+// is included, what is deliberately left out, and the size budget.
+//
+// Bootstrap's own partials are NOT safe to `@use` piecemeal: _variables.scss
+// calls the _assert-ascending mixin that _mixins.scss defines, and `@use`
+// gives each partial its own namespace, so that call fails with
+// "Undefined mixin". Bootstrap only supports being pulled in through a flat
+// `@import` chain where everything shares one global namespace. So the
+// @imports below stay @imports, and the ONE `@use` of this file from
+// critical.scss is what keeps that global namespace boxed in (same pattern,
+// and same reason, as vendor/_bootstrap-custom.scss - which additionally has
+// to stop Bootstrap's $colors leaking into the project's own $colors).
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+
+// NOTE: 'bootstrap/scss/root' is deliberately NOT imported. It emits every
+// --bs-* custom property Bootstrap has - the full theme palette, each colour's
+// -rgb triplet, the subtle/emphasis variants and the whole dark-mode set -
+// which compiled to 5.7 KB, over half of this stylesheet, to satisfy the 18
+// properties reboot and containers actually reference. Those 18 are declared
+// by hand in critical.scss instead. If a Bootstrap partial is ever added to
+// this file, re-check that list: a var() with no declaration silently falls
+// back to nothing rather than erroring.
+
+// The CSS reset.
+@import 'bootstrap/scss/reboot';
+
+// .container / .container-fluid and their breakpoint max-widths.
+@import 'bootstrap/scss/containers';

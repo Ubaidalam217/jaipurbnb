@@ -274,12 +274,11 @@ $('.arpart-slider-area').owlCarousel({
   }
 });
 //========== PRELOADER ============= //
-$(window).on("load", function (event) {
-  setTimeout(function () {
-    $(".preloader").fadeToggle();
-  }, 200);
-
-});
+// Removed - the .preloader overlay it tore down no longer exists. It hid the
+// whole viewport behind an opaque white layer until window.load (i.e. until
+// every image on the page had downloaded), which was the single biggest
+// Speed Index regression on the site. See the comment in
+// resources/views/layouts/partials/loader.blade.php for the full rationale.
 
 
   if($('.reveal').length){gsap.registerPlugin(ScrollTrigger);

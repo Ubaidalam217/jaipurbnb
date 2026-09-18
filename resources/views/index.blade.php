@@ -799,13 +799,13 @@
         <div class="col-lg-6">
           <div class="property-images-area">
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/property/property-img4.webp" alt="" width="1320" height="880" />
+              <img loading="lazy" decoding="async" src="/img/all-images/property/property-img4.webp" alt="" width="1320" height="880" />
             </div>
             <div class="img2 reveal image-anime">
-              <img src="/img/all-images/property/property-img5.webp" alt="" width="1320" height="1014" />
+              <img loading="lazy" decoding="async" src="/img/all-images/property/property-img5.webp" alt="" width="1320" height="1014" />
             </div>
             <div class="elements reveal image-anime">
-              <img src="/img/elements/elements9.webp" alt="" width="666" height="665" />
+              <img loading="lazy" decoding="async" src="/img/elements/elements9.webp" alt="" width="666" height="665" />
             </div>
           </div>
         </div>
@@ -847,7 +847,7 @@
         <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="800">
           <div class="amenities-boxarea">
             <div class="img1">
-              <img src="/img/all-images/service/service-img4.webp" alt="" width="480" height="344" />
+              <img loading="lazy" decoding="async" src="/img/all-images/service/service-img4.webp" alt="" width="480" height="344" />
             </div>
             <div class="space32"></div>
             <div class="content-area">
@@ -863,7 +863,7 @@
           <div class="space40 d-lg-block d-none"></div>
           <div class="amenities-boxarea">
             <div class="img1">
-              <img src="/img/all-images/service/service-img5.webp" alt="" width="396" height="316" />
+              <img loading="lazy" decoding="async" src="/img/all-images/service/service-img5.webp" alt="" width="396" height="316" />
             </div>
             <div class="space32"></div>
             <div class="content-area">
@@ -880,7 +880,7 @@
         <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="1100">
           <div class="amenities-boxarea">
             <div class="img1">
-              <img src="/img/all-images/service/service-img7.webp" alt="" width="480" height="360" />
+              <img loading="lazy" decoding="async" src="/img/all-images/service/service-img7.webp" alt="" width="480" height="360" />
             </div>
             <div class="space32"></div>
             <div class="content-area">
@@ -898,7 +898,7 @@
           <div class="space40 d-lg-block d-none"></div>
           <div class="amenities-boxarea">
             <div class="img1">
-              <img src="/img/all-images/service/service-img8.webp" alt="" width="480" height="360" />
+              <img loading="lazy" decoding="async" src="/img/all-images/service/service-img8.webp" alt="" width="480" height="360" />
             </div>
             <div class="space32"></div>
             <div class="content-area">
@@ -932,29 +932,29 @@
         <div class="col-lg-6">
           <div class="about-slider-area owl-carousel">
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
+              <img loading="lazy" decoding="async" src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
+              <img loading="lazy" decoding="async" src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
+              <img loading="lazy" decoding="async" src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
+              <img loading="lazy" decoding="async" src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
 
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
+              <img loading="lazy" decoding="async" src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
+              <img loading="lazy" decoding="async" src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
+              <img loading="lazy" decoding="async" src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
             <div class="img1 reveal image-anime">
-              <img src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
+              <img loading="lazy" decoding="async" src="/img/all-images/about/about-img3.webp" alt="" width="1448" height="1086" />
             </div>
           </div>
           <div class="space30"></div>
@@ -974,7 +974,7 @@
             <div class="col-lg-6 col-md-6">
               <div class="about-video-area">
                 <div class="img1 image-anime reveal">
-                  <img src="/img/all-images/about/about-img5.webp" alt="" width="870" height="652" />
+                  <img loading="lazy" decoding="async" src="/img/all-images/about/about-img5.webp" alt="" width="870" height="652" />
                 </div>
               </div>
             </div>
@@ -994,7 +994,7 @@
             {{-- Photo is clickable too, not just the title and arrow. --}}
             <div class="img1 reveal image-anime">
               <a href="{{ $jbFeaturedUrl }}" style="display:block;" aria-label="View {{ $featured?->title ?? 'properties' }}">
-                <img src="{{ $featured?->coverImage?->display_url ?? '/img/all-images/about/about-img4.webp' }}" alt="{{ $featured?->title ?? '' }}" />
+                <img loading="lazy" decoding="async" src="{{ $featured?->coverImage?->display_url ?? '/img/all-images/about/about-img4.webp' }}" alt="{{ $featured?->title ?? '' }}" />
               </a>
             </div>
             <div class="content-area">
@@ -1003,11 +1003,11 @@
                 <div class="space20"></div>
                 <ul>
                   <li>
-                    <span><img src="/img/icons/bed-icon1.svg" alt="" width="18" height="18" /> {{ $featured?->stay_type ?? 'Heritage stays' }}</span>
+                    <span><img loading="lazy" decoding="async" src="/img/icons/bed-icon1.svg" alt="" width="18" height="18" /> {{ $featured?->stay_type ?? 'Heritage stays' }}</span>
                   </li>
                   @if ($featured)
                     <li>
-                      <span>|</span> <span><img src="/img/icons/squre-icon1.svg" alt="" width="18" height="18" /> {{ $featured->neighborhood }}</span>
+                      <span>|</span> <span><img loading="lazy" decoding="async" src="/img/icons/squre-icon1.svg" alt="" width="18" height="18" /> {{ $featured->neighborhood }}</span>
                     </li>
                   @endif
                 </ul>
@@ -1017,7 +1017,7 @@
               </div>
             </div>
             <div class="elements3">
-              <img src="/img/elements/elements3.webp" alt="" width="666" height="665" />
+              <img loading="lazy" decoding="async" src="/img/elements/elements3.webp" alt="" width="666" height="665" />
             </div>
           </div>
         </div>
@@ -1045,8 +1045,8 @@
       <div class="row">
         <div class="col-lg-10 m-auto">
           <div class="rotate-img">
-            <img src="/img/all-images/gallery/gallery-img1.webp" alt="Jaipur heritage property" style="width:100%;height:auto;display:block;" width="1448" height="1086" />
-            <img src="/img/elements/elements3.webp" alt="" class="elements3" width="666" height="665" />
+            <img loading="lazy" decoding="async" src="/img/all-images/gallery/gallery-img1.webp" alt="Jaipur heritage property" style="width:100%;height:auto;display:block;" width="1448" height="1086" />
+            <img loading="lazy" decoding="async" src="/img/elements/elements3.webp" alt="" class="elements3" width="666" height="665" />
           </div>
         </div>
       </div>
@@ -1068,13 +1068,13 @@
         <div class="col-lg-5">
           <div class="images-area">
             <div class="img1 image-anime reveal">
-              <img src="/img/all-images/others/others-img11.webp" alt="" width="951" height="634" />
+              <img loading="lazy" decoding="async" src="/img/all-images/others/others-img11.webp" alt="" width="951" height="634" />
             </div>
             <div class="img2 image-anime reveal">
-              <img src="/img/all-images/others/others-img12.webp" alt="" width="954" height="733" />
+              <img loading="lazy" decoding="async" src="/img/all-images/others/others-img12.webp" alt="" width="954" height="733" />
             </div>
             <div class="elements">
-              <img src="/img/elements/elements8.webp" alt="" width="479" height="479" />
+              <img loading="lazy" decoding="async" src="/img/elements/elements8.webp" alt="" width="479" height="479" />
             </div>
           </div>
         </div>

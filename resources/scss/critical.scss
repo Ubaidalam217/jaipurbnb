@@ -1,27 +1,113 @@
 // Inlined into <head> via Vite::content() - see resources/views/layouts/base.blade.php.
 //
-// This is NOT the full critical-CSS-extraction technique (rendering the
-// page and capturing every rule that touches the above-fold viewport).
-// Most of the actual above-fold styling here is already inline per-page
-// (navbar.blade.php and index.blade.php both carry their own <style>
-// blocks with real colours/sizing, self-contained on purpose - see their
-// own comments). What those per-page blocks assume is already in place is
-// the STRUCTURAL foundation under them: the CSS reset and the grid system
-// (.container/.row/.col-*) that both the navbar and the hero are built on.
-// Without it the page is readable but visibly wrong (unstyled headings,
-// stacked/overlapping columns) for the ~1 round-trip until the async main
-// bundle (see base.blade.php) arrives. This inlines exactly that
-// foundation, nothing page-specific - safe to reuse on every page.
+// SCOPE: the structural foundation the above-the-fold markup sits on, and
+// nothing else. Everything visual up there already carries its own complete
+// inline <style> block (navbar.blade.php and index.blade.php both do, on
+// purpose - see their own comments), so this only has to supply the reset,
+// the container, and the handful of grid classes those blocks assume exist.
 //
-// Deliberately duplicated with resources/scss/vendor/_bootstrap-custom.scss
-// rather than factored out: this file must compile to a small STANDALONE
-// stylesheet Vite::content() can inline whole, while main.scss's copy stays
-// part of the one bundle every page still loads (async) as its real,
-// long-term-cached stylesheet. Keeping the async bundle also-correct
-// without depending on the inline copy having succeeded is the point -
-// if a browser doesn't run the onload swap (see base.blade.php), the
-// noscript fallback stylesheet is still complete on its own.
-@use './vendor/bootstrap-custom';
+// SIZE IS THE POINT. This is re-sent inside the HTML of every single page
+// response, uncacheable, on the critical path. It previously pulled the whole
+// of vendor/bootstrap-custom - reboot + containers + the FULL 6-breakpoint
+// grid + tables + offcanvas - and compiled to 38 KB, which is 5x the 8 KB
+// budget and made inline CSS 60% of the homepage's HTML document. Adding
+// anything here has to be weighed against that per-request cost.
+//
+// WHAT IS DELIBERATELY *NOT* HERE:
+//   - bootstrap/grid : generates .col-1..12 + offsets + gutters across 6
+//     breakpoints. The above-fold markup uses exactly .row, .col-lg-2,
+//     .col-lg-4, .col-lg-5 and .col-md-9 (the navbar uses no bootstrap grid
+//     at all - it is entirely custom jb-* classes), so those are hand-written
+//     below instead. Re-check this list if the hero markup changes.
+//   - bootstrap/tables : only the host dashboard has a <table>, never above
+//     the fold on a public page.
+//   - bootstrap/offcanvas : the mobile nav drawer. It IS what keeps the drawer
+//     hidden (.offcanvas is visibility:hidden + translated off-canvas) so it
+//     looks load-bearing, but it cannot flash: main.scss is a SYNCHRONOUS
+//     render-blocking <link>, so the browser paints nothing at all until the
+//     full bundle has arrived and applied. Which is also the honest caveat on
+//     this whole file - with a blocking stylesheet, inline critical CSS saves
+//     no paint time. It is kept small and correct rather than deleted so the
+//     async-stylesheet option stays open; if anyone ever does flip main.scss
+//     to an async load, offcanvas and the template's several-hundred
+//     fixed-height rules have to come back in here first or the page will
+//     flash its nav drawer and shift hard. See base.blade.php.
+
+// reset + .container, via a flat-@import vendor module. Bootstrap cannot be
+// `@use`d partial-by-partial from here; see the comment at the top of
+// vendor/_bootstrap-critical.scss.
+@use './vendor/bootstrap-critical';
+
+// The --bs-* custom properties reboot/containers reference, and only those.
+// Bootstrap's own root partial declares the entire theme (5.7 KB compiled) to
+// provide these 18; see vendor/_bootstrap-critical.scss. Values are copied
+// verbatim from Bootstrap 5's light theme so the reset renders identically to
+// the full bundle that loads a moment later - if these drift, text restyles
+// visibly when main.css applies.
+//
+// --bs-body-text-align, --bs-gutter-x and --bs-link-opacity are referenced but
+// intentionally left undeclared here, exactly as upstream leaves them: the
+// first two are set per-component (.container/.row declare their own gutter)
+// and the third is only meaningful once the link-opacity utilities exist.
+:root {
+    --bs-body-bg: #fff;
+    --bs-body-color: #212529;
+    --bs-body-font-family: 'Poppins', sans-serif;
+    --bs-body-font-size: 1rem;
+    --bs-body-font-weight: 400;
+    --bs-body-line-height: 1.5;
+    --bs-border-width: 1px;
+    --bs-code-color: #d63384;
+    --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    --bs-heading-color: inherit;
+    --bs-highlight-bg: #fff3cd;
+    --bs-highlight-color: #212529;
+    --bs-link-color-rgb: 13, 110, 253;
+    --bs-link-hover-color-rgb: 10, 88, 202;
+    --bs-secondary-color: rgba(33, 37, 41, 0.75);
+}
+
+// Minimal grid - see the note above for why this is hand-written.
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0;
+    margin-right: -0.75rem;
+    margin-left: -0.75rem;
+
+    > * {
+        flex-shrink: 0;
+        width: 100%;
+        max-width: 100%;
+        padding-right: 0.75rem;
+        padding-left: 0.75rem;
+        margin-top: 0;
+    }
+}
+
+@media (min-width: 768px) {
+    .col-md-9 {
+        flex: 0 0 auto;
+        width: 75%;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-lg-2 {
+        flex: 0 0 auto;
+        width: 16.66666667%;
+    }
+
+    .col-lg-4 {
+        flex: 0 0 auto;
+        width: 33.33333333%;
+    }
+
+    .col-lg-5 {
+        flex: 0 0 auto;
+        width: 41.66666667%;
+    }
+}
 
 body {
     margin: 0;

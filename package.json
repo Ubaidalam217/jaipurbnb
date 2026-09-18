@@ -3,6 +3,7 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "prebuild": "node scripts/subset-fontawesome.cjs",
         "build": "vite build",
         "postbuild": "node scripts/purge-css.cjs",
         "dev": "vite"
