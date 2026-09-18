@@ -11,6 +11,25 @@
       to render a structurally-correct page the instant body parsing
       starts, without waiting on the external stylesheet below.
     --}}
+    {{--
+      Poppins, self-hosted. Preloaded ahead of everything else because a
+      @font-face file is otherwise not fetched until layout proves some
+      rendered element actually matches that face - which happens well after
+      the HTML is parsed. Preloading starts all three in parallel immediately,
+      so they are normally in place BEFORE first paint and the font-display:
+      swap never visibly swaps. A swap that lands after first paint is a late
+      visual change, which is precisely what Speed Index punishes.
+
+      Only the three weights that appear above the fold (400 body, 600 nav +
+      hero eyebrow, 700 hero headline). 300 and 500 are declared in the
+      critical CSS but left to load on demand - preloading all five would put
+      ~39 KB on the critical path to save a swap on text nobody sees yet.
+    --}}
+    @foreach ([400, 600, 700] as $jbFontWeight)
+        <link rel="preload" as="font" type="font/woff2" crossorigin
+              href="{{ asset("fonts/poppins/poppins-{$jbFontWeight}-latin.woff2") }}">
+    @endforeach
+
     <style>{!! \Illuminate\Support\Facades\Vite::content('resources/scss/critical.scss') !!}</style>
 
     {{-- Pushed by pages with an LCP image (e.g. the homepage hero) - kept

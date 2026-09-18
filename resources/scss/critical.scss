@@ -109,6 +109,36 @@
     }
 }
 
+// Poppins, self-hosted. These @font-face rules live in the INLINED critical
+// stylesheet on purpose: declared here they cost zero requests to discover, so
+// the browser can start fetching the font as soon as it has the HTML. The
+// previous setup made first paint wait on a render-blocking <link> to
+// fonts.googleapis.com, and only then learned the real font URLs on a second
+// origin (fonts.gstatic.com) - two serial third-party round trips ahead of any
+// text. See scripts/fetch-poppins.cjs for how these files are produced and why
+// only the `latin` subset is kept.
+//
+// font-display:swap keeps text visible during the swap, matching what the
+// Google Fonts URL used to request.
+$poppins-weights: 300, 400, 500, 600, 700;
+
+@each $weight in $poppins-weights {
+    @font-face {
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: $weight;
+        font-display: swap;
+        // Root-absolute on purpose, NOT a relative path Vite would rewrite.
+        // These are served straight out of public/fonts/poppins/ with stable,
+        // unhashed filenames so base.blade.php can emit a matching
+        // <link rel=preload> for them - a Vite-hashed URL could not be named
+        // from a blade template without a manifest lookup. Font binaries never
+        // change in place, and the .htaccess woff2 rule already caches them
+        // for a year, so there is nothing for a content hash to solve here.
+        src: url('/fonts/poppins/poppins-#{$weight}-latin.woff2') format('woff2');
+    }
+}
+
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;

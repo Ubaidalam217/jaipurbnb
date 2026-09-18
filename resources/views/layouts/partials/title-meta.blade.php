@@ -66,9 +66,20 @@
 <meta name="twitter:description" content="{!! $jbDescription !!}">
 <meta name="twitter:image" content="{!! $jbImage !!}">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+{{--
+  Poppins is SELF-HOSTED - there is deliberately no <link> to
+  fonts.googleapis.com here, and no preconnect to it either.
+
+  The @font-face rules ship inside the inlined critical CSS (see
+  resources/scss/critical.scss), so the browser can start fetching the font
+  straight from the HTML with no blocking stylesheet request first. The old
+  setup cost two serial third-party round trips before any text could paint:
+  a render-blocking CSS request to fonts.googleapis.com, which then pointed
+  at font files on a second origin, fonts.gstatic.com.
+
+  If a Google-hosted font is ever reintroduced, put the preconnects back with
+  it - without them it is even slower than what was removed here.
+--}}
 
 <!--=====FAB ICON=======-->
 <link rel="icon" href="{{ asset('img/jaipurbnb-logo.svg') }}" type="image/svg+xml">
