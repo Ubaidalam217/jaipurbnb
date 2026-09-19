@@ -1,6 +1,8 @@
 @extends('layouts.base', ['logo5' => true])
 
-@section('title', 'Browse Properties in Jaipur - JaipurBnB')
+@section('title', 'Browse Jaipur BnB Properties - Heritage Havelis & Boutique Stays in Jaipur')
+
+@section('meta_description', 'Explore verified Jaipur BnB listings by neighborhood, stay type and guests. Amer, Walled City, Nahargarh and more. Direct host contact.')
 
 @section('content')
   @include('layouts.partials.navbar')

@@ -129,12 +129,14 @@
 
 //  Page Progress Area //
 //
-// NOTE: right/bottom/height/width and z-index below are OVERRIDDEN at
-// <768px by the <style> block in views/layouts/partials/loader.blade.php,
-// which is where this component's markup lives. The z-index:10000 here is
-// also overridden site-wide (it sat above the mobile nav drawer and modals).
-// Change both, or neither - see the comment in that partial for why the
-// override is not folded back into this file.
+// NOTE: right/bottom and z-index below are OVERRIDDEN SITE-WIDE, and
+// height/width additionally at <768px, by the <style> block in
+// views/layouts/partials/loader.blade.php, which is where this component's
+// markup lives. The z-index:10000 sat above the mobile nav drawer and
+// modals; the right:30px/bottom:30px corner now belongs to the floating
+// WhatsApp button (views/layouts/partials/whatsapp-float.blade.php) and this
+// button is offset to stack above it. Change both, or neither - see the
+// comment in that partial for why the override is not folded back here.
 .progress-wrap {
     position: fixed;
     right: 30px;

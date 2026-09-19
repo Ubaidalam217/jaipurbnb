@@ -1,25 +1,34 @@
 @extends('layouts.base', ['logo5' => true])
 
-@section('title', 'JaipurBnB - Authentic Jaipur Stays')
+@section('title', 'JaipurBnB - Authentic Jaipur Stays, Boutique Havelis & Heritage Homes')
 
-@section('meta_description', 'Find verified homestays, heritage havelis, boutique apartments and luxury villas across Jaipur. Browse free and contact hosts directly on WhatsApp or by phone.')
+@section('meta_description', 'Discover verified boutique havelis, heritage homes and family villas across Jaipur. Contact hosts directly on WhatsApp. No booking fees.')
 
 {{--
-  Organization schema. Built as a PHP array and json_encode()d rather than
+  LocalBusiness schema. Built as a PHP array and json_encode()d rather than
   hand-written JSON so the contact details, which come from config, are
   escaped properly - an unescaped quote in a value would otherwise produce
   invalid JSON-LD that Google silently discards.
+
+  The JSON-LD type was plain Organization. LocalBusiness is a subtype of it, so nothing
+  that consumed the old markup breaks, and it is the honest description: this
+  is a Jaipur business with a street address and a support line, not an
+  abstract web entity. It also unlocks the address/areaServed/openingHours
+  properties already being emitted below, which Organization does not define.
 --}}
 @push('jsonld')
   <script type="application/ld+json">
     {!! json_encode([
         '@context' => 'https://schema.org',
-        '@type' => 'Organization',
-        'name' => 'JaipurBNB',
+        '@type' => 'LocalBusiness',
+        '@id' => url('/') . '#business',
+        'name' => 'JaipurBnB',
         'url' => url('/'),
         'logo' => asset('img/jaipurbnb-logo.svg'),
+        'image' => asset('img/all-images/hero/hero-img6-1200w.webp'),
         'email' => config('contact.email'),
         'telephone' => config('contact.phone_tel'),
+        'priceRange' => '₹₹',
         'description' => 'A paid listing directory for verified Jaipur stays. Hosts subscribe to list; guests browse free and contact hosts directly.',
         'address' => [
             '@type' => 'PostalAddress',

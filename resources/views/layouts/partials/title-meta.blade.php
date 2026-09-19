@@ -44,8 +44,28 @@
       'Browse verified homestays, heritage havelis, boutique apartments and luxury villas across Jaipur. Contact hosts directly on WhatsApp or by phone - no booking fees, no middleman.'
   );
 
-  $jbTitle = $jbSection('og_title', trim($__env->yieldContent('title')) ?: 'JaipurBnB - Authentic Jaipur Stays');
-  $jbImage = $jbSection('og_image', asset('img/jaipurbnb-logo.svg'));
+  $jbTitle = $jbSection('og_title', trim($__env->yieldContent('title')) ?: 'JaipurBnB - Authentic Jaipur Stays, Boutique Havelis & Heritage Homes');
+
+  // Social preview image.
+  //
+  // Default is the homepage hero photo, NOT the logo SVG that used to be
+  // here. Facebook, WhatsApp, LinkedIn and X all refuse image/svg+xml, so
+  // every share of every page was rendering with no thumbnail at all. The
+  // 1200w variant is used because 1200x630-ish is what summary_large_image
+  // and og both want; the 400w/800w srcset variants are too small and get
+  // dropped by Twitter's validator.
+  //
+  // Pages override it with @section('og_image') - listing pages pass their
+  // own cover photo. Those arrive as ROOT-RELATIVE paths ("/storage/...")
+  // because that is what ImageModel::display_url returns, and og:image must
+  // be absolute or crawlers discard it, so anything without a scheme is
+  // promoted through url() here rather than in each calling view.
+  $jbImageRaw = trim($__env->yieldContent('og_image')) ?: asset('img/all-images/hero/hero-img6-1200w.webp');
+  $jbImageRaw = html_entity_decode($jbImageRaw, ENT_QUOTES, 'UTF-8');
+  $jbImage = e(\Illuminate\Support\Str::startsWith($jbImageRaw, ['http://', 'https://'])
+      ? $jbImageRaw
+      : url($jbImageRaw));
+
   $jbUrl = e(url()->current());
 @endphp
 
@@ -60,11 +80,13 @@
 <meta property="og:description" content="{!! $jbDescription !!}">
 <meta property="og:url" content="{!! $jbUrl !!}">
 <meta property="og:image" content="{!! $jbImage !!}">
+<meta property="og:image:alt" content="{!! $jbTitle !!}">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{!! $jbTitle !!}">
 <meta name="twitter:description" content="{!! $jbDescription !!}">
 <meta name="twitter:image" content="{!! $jbImage !!}">
+<meta name="twitter:image:alt" content="{!! $jbTitle !!}">
 
 {{--
   Poppins is SELF-HOSTED - there is deliberately no <link> to

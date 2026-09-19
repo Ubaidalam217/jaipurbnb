@@ -25,6 +25,12 @@
     $jbDashboard = $jbIsAdmin ? 'admin.dashboard' : 'host.dashboard';
     $jbCtaHref = $jbUser ? route($jbDashboard) : route('register');
     $jbCtaLabel = $jbUser ? ($jbIsAdmin ? 'Admin Panel' : 'Dashboard') : 'List Your Property';
+
+    // Guest-facing primary CTA. Points at /browse, NOT at a checkout: there
+    // is no on-platform booking - guests pick a listing and contact the host
+    // over WhatsApp or by phone from the listing page. /browse is the first
+    // step of that journey, so "Book Now" is the entry point to it.
+    $jbBookHref = route('properties.browse');
 @endphp
 
 <style>
@@ -189,6 +195,57 @@
 
     .jb-nav__cta:active {
         transform: translateY(1px);
+    }
+
+    /* ---------- CTA hierarchy ----------
+       Two CTAs now sit side by side, aimed at two different audiences:
+       "Book Now" at guests, "List Your Property" / "Dashboard" at hosts.
+       Rendering both as filled terracotta buttons would give the bar two
+       competing primaries and no visual answer to "what do I click?", so
+       the host CTA is demoted to an outline and "Book Now" keeps the fill.
+
+       Both use --jb-cta (#B34D33), not the #E07A5F brand primary: as text
+       or as a border on white, #E07A5F only reaches 2.95:1 and fails WCAG
+       AA for non-decorative UI. #B34D33 is 5.21:1 either way. */
+    .jb-nav__cta--ghost {
+        border: 1.5px solid var(--jb-cta);
+        background: transparent;
+        color: var(--jb-cta);
+    }
+
+    .jb-nav__cta--ghost:hover,
+    .jb-nav__cta--ghost:focus {
+        background: var(--jb-tint);
+        color: var(--jb-cta-hover);
+        border-color: var(--jb-cta-hover);
+    }
+
+    /* Mobile-only twin of the Book Now button. Lives directly in the bar
+       next to the hamburger rather than inside the drawer - a CTA that
+       needs two taps and a menu to reach is not a CTA. Hidden above the
+       991.98px breakpoint where .jb-nav__desktop (and its own Book Now)
+       comes back. */
+    .jb-nav__book-mobile {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        padding: 0 16px;
+        border-radius: 10px;
+        background: var(--jb-cta);
+        color: #fff;
+        font-size: 14.5px;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background-color .2s ease;
+    }
+
+    .jb-nav__book-mobile:hover,
+    .jb-nav__book-mobile:focus {
+        background: var(--jb-cta-hover);
+        color: #fff;
+        text-decoration: none;
     }
 
     /* ---------- signed-in state ---------- */
@@ -381,8 +438,22 @@
             display: none;
         }
 
+        .jb-nav__book-mobile {
+            display: inline-flex;
+        }
+
         .jb-nav__toggle {
             display: inline-flex;
+        }
+    }
+
+    /* Narrow phones (iPhone SE and similar). The bar holds logo + Book Now +
+       hamburger; trimming the button's padding keeps all three on one line
+       with room to spare rather than wrapping the bar. */
+    @media (max-width: 379.98px) {
+        .jb-nav__book-mobile {
+            padding: 0 12px;
+            font-size: 13.5px;
         }
     }
 
@@ -414,8 +485,8 @@
                 <span class="jb-nav__who">{{ $jbUser->name }}</span>
             @endif
 
-            <a class="jb-nav__cta" href="{{ $jbCtaHref }}">{{ $jbCtaLabel }}</a>
-
+            {{-- Auth control sits BEFORE the two CTAs so the far right of the
+                 bar - the most prominent slot - belongs to "Book Now". --}}
             @if ($jbUser)
                 <form method="POST" action="{{ route('logout') }}" class="jb-nav__logout">
                     @csrf
@@ -424,7 +495,16 @@
             @else
                 <a class="jb-nav__link" href="{{ route('login') }}">Sign in</a>
             @endif
+
+            <a class="jb-nav__cta jb-nav__cta--ghost" href="{{ $jbCtaHref }}">{{ $jbCtaLabel }}</a>
+
+            <a class="jb-nav__cta" href="{{ $jbBookHref }}">Book Now</a>
         </div>
+
+        {{-- Mobile-only. Deliberately outside .jb-nav__desktop (which is
+             display:none under 992px) so the primary guest CTA stays in the
+             top bar instead of disappearing into the hamburger. --}}
+        <a class="jb-nav__book-mobile" href="{{ $jbBookHref }}">Book Now</a>
 
         <button class="jb-nav__toggle"
                 type="button"

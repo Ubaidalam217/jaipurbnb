@@ -33,4 +33,16 @@ return [
     // Blade template has to repeat the formatting rule.
     'phone_tel' => preg_replace('/[^0-9+]/', '', (string) $phone),
 
+    // The line behind the floating WhatsApp button (see
+    // views/layouts/partials/whatsapp-float.blade.php). wa.me wants bare
+    // digits including the country code and NO leading "+".
+    //
+    // Deliberately a SEPARATE key from 'phone' above rather than derived
+    // from it: CONTACT_PHONE defaults to an unmistakable placeholder
+    // ("+91 00000 00000") so an unconfigured deployment reads as unset, and
+    // deriving from it would turn the float into a dead link on any server
+    // where that env var has not been filled in. The default here is the
+    // client's real support line, so the button works out of the box.
+    'whatsapp' => preg_replace('/\D/', '', (string) env('CONTACT_WHATSAPP', '916375247348')),
+
 ];

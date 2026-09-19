@@ -1,6 +1,17 @@
 @extends('layouts.base', ['logo5' => true])
 
-@section('title', $property->title . ' - JaipurBnB')
+{{-- The title and meta-description sections are deliberately NOT declared
+     here at the top of the file. Both are built from values computed in the
+     raw PHP block below, and Blade compiles a template top to bottom, so
+     declaring them above that block would read variables that do not exist
+     yet. They live in the meta group immediately after it.
+
+     Note for whoever edits this comment: do not write Blade's raw-PHP opener
+     literally in a comment anywhere in this file. BladeCompiler runs
+     storeUncompiledBlocks() BEFORE it strips comments, so an unpaired opener
+     inside a comment pairs with the real closer further down, swallows
+     everything between them, and silently deletes that span from the
+     compiled view. --}}
 
 @section('body_attribute')
   class="homepage5-body" data-property-id="{{ $property->id }}"
@@ -17,9 +28,26 @@
 
   // data-property-id on <body> above is read by main.js on page load to
   // fire a profile_view beacon - see resources/js/main.js.
+
+  // SEO strings. neighborhood is required at the Form Request layer, but a
+  // row seeded before that rule existed could still be blank, and a title
+  // ending "- Jaipur BnB Stay in " reads as a bug - so the suffix is dropped
+  // rather than left dangling.
+  $jbNeighborhood = trim((string) $property->neighborhood);
+  $jbMetaTitle = $jbNeighborhood !== ''
+      ? $property->title . ' - Jaipur BnB Stay in ' . $jbNeighborhood
+      : $property->title . ' - Jaipur BnB Stay';
+
+  // 150 chars, then the call to action. Str::limit's own ellipsis is left in
+  // place: it is the honest signal that the blurb is truncated. Total lands
+  // around 190 chars, which Google will clip in the SERP - that is expected
+  // and fine, the CTA is there for the social card and for the crawler.
+  $jbMetaDescription = \Illuminate\Support\Str::limit(strip_tags($property->description), 150)
+      . ' Book directly with host on WhatsApp.';
 @endphp
 
-@section('meta_description', \Illuminate\Support\Str::limit(strip_tags($property->description), 155))
+@section('title', $jbMetaTitle)
+@section('meta_description', $jbMetaDescription)
 @section('og_type', 'article')
 @section('og_image', $jbCoverUrl)
 
@@ -49,6 +77,50 @@
         ],
         'numberOfRooms' => $property->bedrooms,
         'petsAllowed' => null,
+    ], fn ($v) => $v !== null && $v !== ''), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+  </script>
+
+  {{--
+    Product schema, client-requested, sitting alongside the LodgingBusiness
+    block above rather than replacing it. Two separate <script> blocks is
+    valid JSON-LD - crawlers read every block on the page - and the two
+    describe the listing from different angles: LodgingBusiness is what the
+    place IS, Product is what is being advertised.
+
+    CAVEAT on the Offer price, and it is a real one. approx_price is the
+    host's own indicative nightly rate; booking happens off-platform over
+    WhatsApp and JaipurBnB never takes payment, so this is not a price the
+    site can be held to the way a shop's checkout price can. That is why the
+    LodgingBusiness block above states a priceRange instead, and why the
+    Offer here is explicitly scoped:
+
+      - availability is InStock, not a stock count we cannot know
+      - priceValidUntil is omitted rather than invented
+      - url points at this page, where the "approx" wording is visible
+
+    If Google ever flags the price as mismatched, drop the offers key and
+    keep name/image/description - those are the parts that earn the rich
+    result anyway.
+  --}}
+  <script type="application/ld+json">
+    {!! json_encode(array_filter([
+        '@context' => 'https://schema.org',
+        '@type' => 'Product',
+        'name' => $jbMetaTitle,
+        'description' => \Illuminate\Support\Str::limit(strip_tags($property->description), 300),
+        'image' => \Illuminate\Support\Str::startsWith($jbCoverUrl, ['http://', 'https://']) ? $jbCoverUrl : url($jbCoverUrl),
+        'category' => $property->stay_type,
+        'brand' => [
+            '@type' => 'Brand',
+            'name' => 'JaipurBnB',
+        ],
+        'offers' => [
+            '@type' => 'Offer',
+            'price' => (string) $property->approx_price,
+            'priceCurrency' => 'INR',
+            'availability' => 'https://schema.org/InStock',
+            'url' => route('properties.show', $property->id),
+        ],
     ], fn ($v) => $v !== null && $v !== ''), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
   </script>
 @endpush

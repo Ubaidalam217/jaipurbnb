@@ -1,6 +1,8 @@
 @extends('layouts.base', ['logo5' => true])
 
-@section('title', 'Contact JaipurBnB')
+@section('title', 'Contact JaipurBnB - Get in Touch for Jaipur Stay Enquiries')
+
+@section('meta_description', 'Reach out to JaipurBnB for authentic Jaipur boutique stay recommendations, host contact, or partnership enquiries.')
 
 @section('content')
   @include('layouts.partials.navbar')

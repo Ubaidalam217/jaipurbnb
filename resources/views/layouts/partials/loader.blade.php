@@ -39,10 +39,24 @@
           ordinary page content. */
     .progress-wrap {
         z-index: 1020;
+
+        /* 2. STACKING WITH THE WHATSAPP FLOAT. The floating WhatsApp button
+              (layouts/partials/whatsapp-float.blade.php) occupies the
+              bottom-right corner: 56px square, inset 24px. This one is lifted
+              clear above it rather than sharing the corner.
+
+                bottom = 24 (float inset) + 56 (float height) + 16 (gap) = 96px
+
+              right is pulled from the SCSS default of 30px to 24px so both
+              buttons are 56px wide on the same 24px gutter and their centres
+              line up vertically. Change one inset and you must change the
+              other - the numbers are load-bearing in both files. */
+        right: 24px;
+        bottom: 96px;
     }
 
     @media (max-width: 767.98px) {
-        /* 2. OVERLAP. At 56px inset 30px from each edge the button sat
+        /* 3. OVERLAP. At 56px inset 30px from each edge the button sat
               directly over the right-hand end of the full-width WhatsApp /
               Call buttons on listing cards and over footer links. Shrinking
               to 44px and tucking it into the corner moves it clear of both.
@@ -52,10 +66,17 @@
               The safe-area inset keeps it above the iOS home indicator on
               notched iPhones; it evaluates to 0px everywhere else, so the
               effective offset stays 14px on Android and on desktop Chrome's
-              device emulation. */
+              device emulation.
+
+              Offsets again mirror the mobile WhatsApp float, which is 52px
+              at right:14px / bottom:14px there:
+
+                bottom = 14 (float inset) + 52 (float height) + 10 (gap) = 76px
+                right  = 14 + 52/2 - 44/2 = 18px, i.e. centred on the 52px
+                         circle below it despite being 8px narrower. */
         .progress-wrap {
-            right: 14px;
-            bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+            right: 18px;
+            bottom: calc(76px + env(safe-area-inset-bottom, 0px));
             height: 44px;
             width: 44px;
         }

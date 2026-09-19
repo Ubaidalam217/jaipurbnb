@@ -67,6 +67,11 @@
 
     @include('layouts.partials.loader')
 
+    {{-- Floating WhatsApp support button. Site-wide by design; the
+         scroll-to-top button in the partial above is offset to stack
+         directly on top of it, so the two never overlap. --}}
+    @include('layouts.partials.whatsapp-float')
+
 
     @yield('content')
 
