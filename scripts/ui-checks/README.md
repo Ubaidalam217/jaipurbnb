@@ -39,7 +39,7 @@ bug that does not exist:
 
 Screenshot a page at a true viewport width:
 
-    D:/node.exe cdp.js shot https://jaipurbnb.com/ 390 out.png --h=720
+    D:/node.exe cdp.cjs shot https://jaipurbnb.com/ 390 out.png --h=720
 
     --full            capture the whole page instead of one viewport
     --to=<selector>   scroll that element to the top first (for sections
@@ -51,14 +51,44 @@ Screenshot a page at a true viewport width:
 
 Read layout geometry (header height, hero boxes, overflow) as JSON:
 
-    D:/node.exe cdp.js eval https://jaipurbnb.com/ 390 probe-hero.js
+    D:/node.exe cdp.cjs eval https://jaipurbnb.com/ 390 probe-hero.js
+    D:/node.exe cdp.cjs eval https://jaipurbnb.com/property/1 1440 probe-scroll.js
+
+`--show-scrollbars` turns off `--hide-scrollbars`. Screenshots normally want
+them hidden so they do not eat layout width, but not when the thing being
+investigated *is* a scrollbar.
+
+## Double-scrollbar regression check
+
+    D:/node.exe scrollcheck.cjs http://127.0.0.1:8123 \
+      "/property/1,/property/2,/property/3,/property/4,/property/5,/property/6,/,/browse,/contact" \
+      1440,1100,768
+
+Exits non-zero if any page paints a scrollbar other than the window's, or if
+content sits below the document's scrollable height (i.e. is clipped and
+unreachable).
+
+Ground truth is `offsetWidth - clientWidth - borders > 0` — a scrollbar
+consumes horizontal space inside its element's border box. That is checked
+rather than computed style because **`body`'s overflow cannot be overridden
+from a stylesheet here**: `html, body { overflow-x: hidden }` in
+`components/_mobile-fixes.scss` makes `<body>` a scroll container (CSS
+Overflow 3 §3.2 — a non-visible `overflow-x` forces the used `overflow-y` to
+`auto`), and a later `body { overflow: visible !important }` rule, in `<head>`
+or at the end of `<body>`, does **not** change the computed value. Only an
+inline `style` attribute does. So the fix for a stray inner scrollbar is
+always to remove whatever is overflowing, never to try to re-open body's
+overflow.
+
+Note for Git Bash: pass path lists with `MSYS_NO_PATHCONV=1`, or MSYS rewrites
+a leading `/property/1` into a Windows path and Chrome rejects the URL.
 
 Measure hero text contrast — one Chrome session, every width × slide:
 
-    D:/node.exe measure.js https://jaipurbnb.com/ prod 390,768,1440 0,1,3
+    D:/node.exe measure.cjs https://jaipurbnb.com/ prod 390,768,1440 0,1,3
     C:/Users/sg/php83/php.exe score.php manifest-prod.json
 
-`measure.js` captures the hero with the copy hidden plus the copy's real
+`measure.cjs` captures the hero with the copy hidden plus the copy's real
 bounding boxes; `score.php` then reports the **brightest** pixel inside each
 box as a contrast ratio against white. Measuring the rendered PNG rather than
 modelling the CSS means the number accounts for the photo, the CSS filter,

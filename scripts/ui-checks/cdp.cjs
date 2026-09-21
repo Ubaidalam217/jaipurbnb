@@ -112,12 +112,17 @@ async function main() {
   const height = parseInt((rest.find((a) => a.startsWith('--h=')) || '--h=900').split('=')[1], 10);
   const mobile = width < 768;
 
+  // Scrollbars are hidden by default so they do not eat layout width in
+  // design screenshots. --show-scrollbars puts them back, which is the whole
+  // point when the thing being investigated IS a scrollbar.
+  const showScrollbars = rest.includes('--show-scrollbars');
+
   const userDir = require('os').tmpdir() + '\\cdp-profile-' + PORT;
   const chrome = spawn(CHROME, [
     `--remote-debugging-port=${PORT}`,
     `--user-data-dir=${userDir}`,
     '--headless=new',
-    '--hide-scrollbars',
+    ...(showScrollbars ? [] : ['--hide-scrollbars']),
     '--no-first-run',
     '--no-default-browser-check',
     '--disable-extensions',
