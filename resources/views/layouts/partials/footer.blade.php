@@ -206,15 +206,19 @@
                     <div class="footer-bottom-area">
                         <div class="footer-menu-area">
                             <div class="footer-logo">
-                                {{-- Logo ink is dark (navy/brown) and the footer is dark charcoal,
-                                     so the transparent SVG sits on a light chip to stay legible. --}}
-                                <a href="{{ url('/') }}" style="display:inline-block;background:#FFFDF7;padding:8px 12px;border-radius:8px;line-height:0;text-decoration:none;">
-                                    {{-- Compact variant (no tagline): even at 70px the tagline in
-                                         the master lockup would render under 3px tall. See the
-                                         header comment in jaipurbnb-logo-compact.svg.
-                                         The inline height also has to beat _footer-1.scss, which
-                                         pins .footer-logo img to 150x48 with object-fit:contain. --}}
-                                    <img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" width="76" height="70" style="height:70px;width:auto;display:block;">
+                                {{-- Same mark + wordmark lockup, and the same two colours, as the
+                                     navbar: .footer3-bottom-section is a WHITE card, not the dark
+                                     charcoal the old comment here claimed. (The light chip that
+                                     used to sit behind the logo was solving a problem that the
+                                     background did not have - white on white.)
+
+                                     #2F3E46 is 11.06:1 and #B34D33 is 5.21:1 on white.
+
+                                     The inline height on the <img> has to beat _footer-1.scss,
+                                     which pins .footer-logo img to 150x48 with object-fit:contain. --}}
+                                <a href="{{ url('/') }}" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;">
+                                    <img src="{{ asset('img/jaipurbnb-mark.svg') }}" alt="" width="52" height="46" style="height:46px;width:auto;display:block;">
+                                    <span style="font-family:'Poppins',system-ui,sans-serif;font-size:23px;font-weight:700;line-height:1;letter-spacing:-.015em;white-space:nowrap;"><span style="color:#2F3E46;">Jaipur</span><span style="color:#B34D33;">BnB</span></span>
                                 </a>
                             </div>
                             <div class="footer-menu">

@@ -91,22 +91,34 @@
        terracotta brand. The second is a golden-hour wash: warm light at the
        top of the frame falling to shadow at the bottom, which is the Pink
        City at dusk rather than a flat scrim. Charcoal is still the anchor at
-       0% so the seam itself stays perfectly opaque. */
+       0% so the seam itself stays perfectly opaque.
+
+       2026-09-21: both layers roughly halved in strength (warm mid-stops
+       .35/.14 -> .18/.07, dark end .38 -> .22, golden wash .18/.34 ->
+       .12/.20). The client's read was that the overlay made the property
+       photo look darker than the photo actually is, and it did.
+
+       This is only safe because the headline no longer depends on this
+       gradient for its contrast - .header-content-area::before below now
+       carries that, so the photo scrim is free to be purely cosmetic. Do
+       NOT delete that rule and leave these values: at 768-991px the copy
+       overlaps the photo, and at these alphas the gradient alone is about
+       2.5:1 against a blown-out highlight. */
     .header-carousel-area3 .main-hero-area .img1::after {
       background:
         linear-gradient(
           to right,
           #2F3E46 0%,
-          rgba(47, 62, 70, .84) 15%,
-          rgba(120, 50, 0, .35) 42%,
-          rgba(120, 50, 0, .14) 68%,
-          rgba(0, 0, 0, .38) 100%
+          rgba(47, 62, 70, .72) 14%,
+          rgba(120, 50, 0, .18) 42%,
+          rgba(120, 50, 0, .07) 68%,
+          rgba(0, 0, 0, .22) 100%
         ),
         linear-gradient(
           to bottom,
-          rgba(224, 168, 106, .18) 0%,
-          rgba(224, 122, 95, .07) 45%,
-          rgba(0, 0, 0, .34) 100%
+          rgba(224, 168, 106, .12) 0%,
+          rgba(224, 122, 95, .05) 45%,
+          rgba(0, 0, 0, .20) 100%
         );
       opacity: 1;
     }
@@ -117,7 +129,7 @@
        looks. Kept low - past ~1.2 saturation the terracotta overlay above
        starts to clip into orange. */
     .header-carousel-area3 .main-hero-area .img1 img {
-      filter: saturate(1.14) contrast(1.06) brightness(1.02);
+      filter: saturate(1.14) contrast(1.05) brightness(1.06);
     }
 
     /* <picture> is an inline wrapper by default, which would collapse the
@@ -133,22 +145,97 @@
        match the overlay above; a neutral charcoal vignette over a warm
        gradient reads as dirt. */
     .header-carousel-area3 .main-hero-area .img1 {
-      box-shadow: inset 0 -90px 90px -60px rgba(38, 24, 16, .88);
+      box-shadow: inset 0 -90px 90px -60px rgba(38, 24, 16, .60);
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Copy scrim - where the hero's text contrast actually comes from.
+     *
+     * The photo scrim above used to do double duty: soften the seam AND
+     * keep white copy legible. Those two jobs want opposite things, and
+     * contrast won, which is why the photo looked murky. Split them: the
+     * gradient on .img1 is now cosmetic only, and this element guarantees
+     * the text has something dark behind it.
+     *
+     * It is painted in #2F3E46 - the SAME token as the hero's charcoal
+     * panel (--ztc-bg-bg-8) - which is the whole trick:
+     *   >= 992px  copy sits on the charcoal panel, so charcoal-on-charcoal
+     *             is literally invisible. Costs nothing.
+     *   768-991px copy overlaps the photo (measured: text runs to x=552,
+     *             the photo starts at x=384). This extends the panel under
+     *             it and fades out past the text.
+     *   < 768px   copy sits fully on the photo; this is a feathered band
+     *             behind just the copy, so the photo can stay bright above
+     *             and below it.
+     * White on solid #2F3E46 is 11.06:1 - the same figure the navbar
+     * relies on - so the headline clears AA with a large margin instead of
+     * the ~4.87:1 it used to scrape by with.
+     *
+     * z-index:-1 puts it behind the copy but still ABOVE .img1: both are
+     * negative-z children of the same stacking context (.main-hero-area),
+     * so they paint in tree order and this comes later.
+     * ------------------------------------------------------------------ */
+    .header-carousel-area3 .main-hero-area .header-content-area::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      top: -70px;
+      right: -180px;
+      bottom: -70px;
+      left: -100%;
+      /* Solid all the way past the copy, then a fade so the panel does not
+         end on a hard vertical edge over the photograph. The fade is 180px
+         and starts at the copy's right edge, so no glyph ever sits on it. */
+      background: linear-gradient(
+        to right,
+        #2F3E46 0%,
+        #2F3E46 calc(100% - 180px),
+        rgba(47, 62, 70, 0) 100%
+      );
+      /* ...and the same treatment on the horizontal edges, via a mask,
+         because CSS backgrounds composite alpha-over rather than multiply -
+         a second gradient could not round off the corners, only stack more
+         darkness on them. Without this the band ends on a hard horizontal
+         line across the photo at 768-991px, which is exactly the kind of
+         seam the gradient above exists to avoid.
+
+         64px of feather inside a 70px inset, so it always resolves in the
+         padding and never under a glyph. */
+      -webkit-mask-image: linear-gradient(to bottom,
+        transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+      mask-image: linear-gradient(to bottom,
+        transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+      pointer-events: none;
     }
 
     @media (max-width: 767.98px) {
       /* On mobile the image is full-width *behind* the copy, so it needs a
-         flat scrim rather than a directional one. Warm in the middle band
-         where the photo shows through, but deliberately heavy at both ends:
-         white body text sits on this, so the scrim carries the contrast. */
+         flat scrim rather than a directional one.
+
+         Previously .74/.72/.86 across the whole hero, which is why the
+         photo was barely readable on a phone. Now that the copy carries
+         its own scrim, this only has to tie the photo to the brand, so it
+         is roughly 40% lighter and the photograph reads as a photograph
+         above and below the copy band. */
       .header-carousel-area3 .main-hero-area .img1::after {
         background: linear-gradient(
           to bottom,
-          rgba(47, 62, 70, .74) 0%,
-          rgba(107, 45, 10, .72) 48%,
-          rgba(20, 26, 30, .86) 100%
+          rgba(47, 62, 70, .44) 0%,
+          rgba(107, 45, 10, .36) 45%,
+          rgba(20, 26, 30, .54) 100%
         );
         opacity: 1;
+      }
+
+      /* Full-bleed on a phone - the copy already spans the column, so the
+         right-hand fade is dropped and only the shared top/bottom mask
+         feathers it. Partial alpha here rather than the solid charcoal
+         used above 768px, so the photograph still reads through the copy
+         band instead of being replaced by a slab. */
+      .header-carousel-area3 .main-hero-area .header-content-area::before {
+        right: -24px;
+        left: -24px;
+        background: rgba(47, 62, 70, .82);
       }
     }
 
@@ -201,7 +288,14 @@
       font-weight: 700;
       letter-spacing: -.02em;
       color: #fff;
-      text-shadow: 0 2px 26px rgba(0, 0, 0, .38);
+      /* Two shadows doing different jobs: the tight 8px one is the
+         belt-and-braces pass for a blown highlight sitting directly under a
+         glyph (WCAG ignores text-shadow, so this is on top of the 11:1 the
+         copy scrim already provides, not instead of it); the wide 26px one
+         is the soft lift that keeps the headline from looking pasted on. */
+      text-shadow:
+        2px 2px 8px rgba(0, 0, 0, .5),
+        0 2px 26px rgba(0, 0, 0, .38);
     }
 
     /* Subheading. Light weight against the bold headline is the whole point
@@ -556,6 +650,179 @@
         min-height: 300px;
       }
     }
+
+    /* ------------------------------------------------------------------ *
+     * "Find your stay in Jaipur" category cards.
+     *
+     * The heading reuses the template's .heading3 block so the type matches
+     * every other section on the page; only the supporting line and the
+     * grid below it are styled here.
+     * ------------------------------------------------------------------ */
+    .jb-cats {
+      padding: 90px 0 10px;
+    }
+
+    .jb-cats__head {
+      max-width: 620px;
+      margin: 0 auto 44px;
+    }
+
+    .jb-cats__head p {
+      color: #5C6B73;
+      font-family: 'Poppins', sans-serif;
+      font-size: 17px;
+      font-weight: 300;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* auto-fit rather than fixed column counts: the cards reflow 3 -> 2 -> 1
+       on their own, and the single 260px minimum is the only number that has
+       to be maintained. */
+    .jb-cats__grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 26px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .jb-cat {
+      display: block;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(20, 26, 30, .06), 0 8px 24px -16px rgba(20, 26, 30, .28);
+      text-decoration: none;
+      transition: transform .28s ease, box-shadow .28s ease;
+    }
+
+    .jb-cat:hover,
+    .jb-cat:focus-visible {
+      transform: scale(1.03);
+      box-shadow: 0 6px 12px rgba(20, 26, 30, .08), 0 26px 46px -22px rgba(20, 26, 30, .45);
+      text-decoration: none;
+    }
+
+    .jb-cat:focus-visible {
+      outline: 3px solid #B34D33;
+      outline-offset: 3px;
+    }
+
+    /* aspect-ratio on the wrapper (not the img) so the box is reserved before
+       the image decodes - these are lazy-loaded, and without it the whole
+       section below would jump as each one arrives. */
+    .jb-cat__media {
+      display: block;
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #EFE7E2;
+    }
+
+    .jb-cat__media img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* The card scales on hover; scaling the photo a further 1.05 inside a
+         clipped box is what makes it read as a photo moving behind a window
+         rather than the whole tile being zoomed. */
+      transition: transform .5s ease;
+    }
+
+    .jb-cat:hover .jb-cat__media img {
+      transform: scale(1.05);
+    }
+
+    .jb-cat__body {
+      display: block;
+      padding: 18px 20px 20px;
+    }
+
+    .jb-cat__name {
+      display: block;
+      color: #2F3E46;
+      font-family: 'Poppins', sans-serif;
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -.01em;
+    }
+
+    /* #7A6A62 on white is 4.8:1 - this is 14px regular, so it needs the full
+       4.5:1, not the 3:1 large-text allowance. */
+    .jb-cat__meta {
+      display: block;
+      margin-top: 5px;
+      color: #7A6A62;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 991.98px) {
+      .jb-cats {
+        padding: 70px 0 6px;
+      }
+
+      .jb-cats__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+      }
+    }
+
+    /* Two up on a phone as well - a single column would push the sixth card
+       roughly three screens down and the section stops working as an index.
+       The type steps down so "Apartments" still fits on one line at 360px. */
+    @media (max-width: 575.98px) {
+      .jb-cats {
+        padding: 56px 0 4px;
+      }
+
+      .jb-cats__grid {
+        gap: 14px;
+      }
+
+      .jb-cats__head {
+        margin-bottom: 32px;
+      }
+
+      .jb-cats__head p {
+        font-size: 15px;
+      }
+
+      .jb-cat__body {
+        padding: 13px 14px 15px;
+      }
+
+      .jb-cat__name {
+        font-size: 16px;
+      }
+
+      .jb-cat__meta {
+        font-size: 13px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .jb-cat,
+      .jb-cat__media img {
+        transition: none;
+      }
+
+      .jb-cat:hover,
+      .jb-cat:focus-visible {
+        transform: none;
+      }
+
+      .jb-cat:hover .jb-cat__media img {
+        transform: none;
+      }
+    }
   </style>
 
   <!-- ===== HERO AREA STARTS ======= -->
@@ -800,6 +1067,57 @@
     </div>
   </div>
   <!-- ===== HERO AREA ENDS ======= -->
+
+  <!-- ===== CATEGORY AREA STARTS ======= -->
+  {{--
+    "Find your stay in Jaipur" - the first thing below the fold, and the
+    browse-shaped entry point for guests who did not use the hero search bar.
+
+    Every card is a plain link into /browse with one filter pre-applied. The
+    filter values come from routes/web.php and are the literal
+    Property::STAY_TYPES / NEIGHBORHOODS strings, because that is what
+    PropertyController::filters() validates against - see the comment there
+    before changing any of them to something more URL-tidy.
+  --}}
+  <section class="jb-cats" aria-labelledby="jb-cats-heading">
+    <div class="container">
+      <div class="heading3 text-center jb-cats__head">
+        <h2 id="jb-cats-heading">Find your stay in Jaipur</h2>
+        <div class="space16"></div>
+        <p>Explore verified stays across Jaipur's most sought-after locations</p>
+      </div>
+
+      <ul class="jb-cats__grid">
+        @foreach ($categories as $category)
+          <li>
+            <a class="jb-cat" href="{{ $category['href'] }}">
+              <span class="jb-cat__media">
+                {{-- Decorative: the card's own label is the link text, so alt
+                     text here would just be read out twice. --}}
+                <img src="{{ asset($category['img']) }}" alt=""
+                     width="{{ $category['w'] }}" height="{{ $category['h'] }}"
+                     loading="lazy" decoding="async">
+              </span>
+              <span class="jb-cat__body">
+                <span class="jb-cat__name">{{ $category['label'] }}</span>
+                {{-- Show the real count once there is one. At zero, fall back
+                     to the descriptive line rather than advertising
+                     "0 stays" on a category the guest can still browse. --}}
+                <span class="jb-cat__meta">
+                  @if ($category['count'] > 0)
+                    {{ $category['count'] }} {{ Str::plural('stay', $category['count']) }}
+                  @else
+                    {{ $category['blurb'] }}
+                  @endif
+                </span>
+              </span>
+            </a>
+          </li>
+        @endforeach
+      </ul>
+    </div>
+  </section>
+  <!-- ===== CATEGORY AREA ENDS ======= -->
 
   <!-- ===== PROPERTY AREA STARTS ======= -->
   <div class="property3-section-area sp6">

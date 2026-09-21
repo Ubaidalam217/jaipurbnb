@@ -56,10 +56,13 @@
 
     /* ---------- bar ---------- */
     .jb-nav {
-        /* Bar height has to clear the logo: 85px logo + 2x10px breathing room.
-           .jb-nav__inner sets height (not min-height), so a logo taller than
-           this would spill out of the bar rather than grow it. */
-        --jb-h: 104px;
+        /* Bar height has to clear the logo. Was 104px to fit an 85px baked
+           SVG lockup; the mark is now 46px with the wordmark set as text
+           beside it, so 84px is the same breathing room around a much
+           smaller element rather than a 104px bar with a hole in it.
+           .jb-nav__inner sets height (not min-height), so anything taller
+           than this spills out of the bar rather than growing it. */
+        --jb-h: 84px;
         position: sticky;
         top: 0;
         z-index: 1030;
@@ -78,42 +81,60 @@
         padding: 0 24px;
     }
 
-    /* ---------- wordmark ---------- */
+    /* ---------- wordmark ----------
+       The logo is a mark + real HTML text, not one baked SVG. The old
+       jaipurbnb-logo-compact.svg drew "Jaipur" and "bnb" as two <text>
+       elements 155 units apart, in Georgia, in two different colours - it
+       read as two words. It could not be fixed inside the SVG either: a file
+       loaded through <img> is an isolated document and cannot reach the
+       page's self-hosted Poppins, so any <text> in it falls back to a system
+       serif. Splitting them gives one Poppins wordmark that matches the rest
+       of the site, scales with the type ramp and is selectable text. */
     .jb-nav__brand {
         display: inline-flex;
         align-items: center;
+        gap: 10px;
         margin-right: auto;
-        font-size: 24px;
-        font-weight: 700;
-        line-height: 1;
-        letter-spacing: -.02em;
-        color: var(--jb-primary);
         text-decoration: none;
         white-space: nowrap;
-        transition: color .2s ease;
+        transition: opacity .2s ease;
     }
 
     .jb-nav__brand:hover,
     .jb-nav__brand:focus {
-        color: var(--jb-cta);
+        opacity: .82;
         text-decoration: none;
     }
 
-    /* Client SVG logo replaces the wordmark; shrink it on small screens. */
-    .navbar-logo {
+    .jb-nav__mark {
         display: block;
+        width: auto;
+        height: 46px;
         background: transparent !important;
     }
 
-    /* Breakpoint matches the --jb-h switch at 991.98px below. It used to be
-       768px, which left 768-992px rendering the full-size logo inside the
-       already-shortened bar. */
-    @media (max-width: 991.98px) {
-        .navbar-logo {
-            /* !important is required: the <img> carries an inline height:85px,
-               which would otherwise outrank this class selector. */
-            height: 65px !important;
-        }
+    /* One word, one family, one weight, one size - the two spans differ ONLY
+       in colour. No space, no gap, no letter-spacing tweak between them:
+       "JaipurBnB" has to read as a single word. */
+    .jb-nav__word {
+        font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -.015em;
+    }
+
+    /* Same charcoal as the hero copy and the nav links (11.06:1 on white). */
+    .jb-nav__word-primary {
+        color: var(--jb-ink);
+    }
+
+    /* #B34D33, not the #E07A5F brand primary: as text on white #E07A5F is
+       only 2.95:1. A brand name is exempt from WCAG 1.4.3, but there is no
+       reason to take the exemption when the deeper terracotta reads as the
+       same hue at 5.21:1. */
+    .jb-nav__word-accent {
+        color: var(--jb-cta);
     }
 
     /* ---------- desktop menu ---------- */
@@ -329,11 +350,13 @@
         border-bottom: 1px solid var(--jb-border);
     }
 
+    /* Same mark + wordmark lockup as the bar. Needs to be a flex row of its
+       own - the drawer header is flex, but this anchor is one of its items,
+       so the img and the wordmark inside it would otherwise stack. */
     .jb-offcanvas__brand {
-        font-size: 20px;
-        font-weight: 700;
-        letter-spacing: -.02em;
-        color: var(--jb-primary);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
         text-decoration: none;
     }
 
@@ -418,28 +441,53 @@
         text-decoration: none;
     }
 
-    /* ---------- breakpoint ---------- */
+    /* ---------- breakpoint ----------
+       This is the hamburger layout: logo + Book Now + burger on one line.
+       It was an 83px bar, which on a 390px phone spent over a tenth of the
+       viewport on chrome before the guest saw a single property. 56px is a
+       standard app-bar height and gets the whole header (56px + the 1px
+       border = 57px) under 60px.
+
+       The three numbers are locked to each other, so change them together:
+         56px bar - 44px hamburger = 6px either side
+         56px bar - 36px mark      = 10px either side
+       The hamburger is the tallest child and is deliberately left at a full
+       44x44 - it is the touch target, and shrinking it to buy header height
+       would be trading the one thing a thumb has to hit. */
     @media (max-width: 991.98px) {
         .jb-nav {
-            /* 65px logo + 2x9px. Was 60px, which the 65px logo overflowed. */
-            --jb-h: 83px;
+            --jb-h: 56px;
         }
 
         .jb-nav__inner {
-            gap: 12px;
-            padding: 0 16px;
+            gap: 10px;
+            padding: 0 14px;
+        }
+
+        .jb-nav__mark {
+            height: 36px;
         }
 
         .jb-nav__brand {
-            font-size: 20px;
+            gap: 8px;
+        }
+
+        .jb-nav__word {
+            font-size: 19px;
         }
 
         .jb-nav__desktop {
             display: none;
         }
 
+        /* 36px keeps the button clear of the 44px hamburger so the burger
+           alone sets the bar height. It is a secondary target next to a
+           full-size one, and still 36px tall by ~84px wide. */
         .jb-nav__book-mobile {
             display: inline-flex;
+            height: 36px;
+            padding: 0 14px;
+            font-size: 14px;
         }
 
         .jb-nav__toggle {
@@ -448,12 +496,21 @@
     }
 
     /* Narrow phones (iPhone SE and similar). The bar holds logo + Book Now +
-       hamburger; trimming the button's padding keeps all three on one line
-       with room to spare rather than wrapping the bar. */
+       hamburger; trimming the button and wordmark keeps all three on one
+       line with room to spare rather than wrapping the bar. Measured at
+       360px: 14+40+8+99+10+80+10+44+14 = 319px used of 360px. */
     @media (max-width: 379.98px) {
         .jb-nav__book-mobile {
-            padding: 0 12px;
+            padding: 0 11px;
             font-size: 13.5px;
+        }
+
+        .jb-nav__word {
+            font-size: 18px;
+        }
+
+        .jb-nav__mark {
+            height: 34px;
         }
     }
 
@@ -468,7 +525,13 @@
 
 <nav class="jb-nav" aria-label="Primary">
     <div class="jb-nav__inner">
-        <a class="jb-nav__brand" href="{{ url('/') }}"><img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" width="93" height="85" style="height: 85px; width: auto; background: transparent;" class="navbar-logo"></a>
+        {{-- alt="" is correct: the mark is decorative now that the brand name
+             is real text beside it. Giving it alt="JaipurBnB" would make a
+             screen reader announce the link as "JaipurBnB JaipurBnB". --}}
+        <a class="jb-nav__brand" href="{{ url('/') }}">
+            <img src="{{ asset('img/jaipurbnb-mark.svg') }}" alt="" width="52" height="46" class="jb-nav__mark">
+            <span class="jb-nav__word"><span class="jb-nav__word-primary">Jaipur</span><span class="jb-nav__word-accent">BnB</span></span>
+        </a>
 
         <div class="jb-nav__desktop">
             <ul class="jb-nav__menu">
@@ -524,7 +587,10 @@
          id="jbMobileNav"
          aria-labelledby="jbMobileNavLabel">
         <div class="jb-offcanvas__header">
-            <a class="jb-offcanvas__brand" id="jbMobileNavLabel" href="{{ url('/') }}"><img src="{{ asset('img/jaipurbnb-logo-compact.svg') }}" alt="JaipurBnB" width="93" height="85" style="height: 85px; width: auto; background: transparent;" class="navbar-logo"></a>
+            <a class="jb-offcanvas__brand" id="jbMobileNavLabel" href="{{ url('/') }}">
+                <img src="{{ asset('img/jaipurbnb-mark.svg') }}" alt="" width="41" height="36" class="jb-nav__mark">
+                <span class="jb-nav__word"><span class="jb-nav__word-primary">Jaipur</span><span class="jb-nav__word-accent">BnB</span></span>
+            </a>
             <button class="jb-offcanvas__close"
                     type="button"
                     data-bs-dismiss="offcanvas"

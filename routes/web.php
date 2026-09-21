@@ -28,7 +28,62 @@ Route::get('/', function () {
     // supplies the listing count, replacing a hardcoded "500+" claim.
     $visible = Property::publiclyVisible();
 
+    // One grouped query per axis for the category-card counts, rather than
+    // six separate COUNT(*)s.
+    $countsBy = fn (string $column) => (clone $visible)
+        ->select($column)
+        ->selectRaw('COUNT(*) as total')
+        ->groupBy($column)
+        ->get()
+        ->pluck('total', $column);
+
+    $stayTypeCounts = $countsBy('stay_type');
+    $neighborhoodCounts = $countsBy('neighborhood');
+
+    /*
+     * Cards for the "Find your stay in Jaipur" section.
+     *
+     * 'value' is the LITERAL Property::STAY_TYPES / NEIGHBORHOODS entry, not
+     * a slug. PropertyController::filters() pushes every incoming
+     * ?stay_type= / ?neighborhood= through oneOf() against those exact
+     * constants and silently drops anything it does not recognise - so a
+     * tidy-looking "?stay_type=haveli" would render the FULL, unfiltered
+     * browse page while still looking like the link worked. That silent
+     * failure is why HomepageCategoriesTest pins every one of these to a
+     * genuinely narrowed result.
+     *
+     * Two labels deliberately differ from their filter value:
+     *   "Old City"  -> "Walled City", the constant's name for the same place.
+     *   "Homestays" -> "Homestay / Guest House". The brief asked for "Entire
+     *                  Homes", but there is no such stay type: the taxonomy
+     *                  is Haveli / Apartment / Villa / Homestay / Hostel.
+     *                  Pointing an "Entire Homes" card at homestays would
+     *                  promise something the filter cannot deliver, so the
+     *                  card is named after what it actually returns.
+     */
+    $categories = collect([
+        ['label' => 'Havelis',    'param' => 'stay_type',    'value' => 'Heritage Haveli / Fort Stay', 'blurb' => 'Heritage courtyards',  'img' => 'img/all-images/gallery/gallery-img2.webp',   'w' => 1024, 'h' => 733],
+        ['label' => 'Villas',     'param' => 'stay_type',    'value' => 'Luxury Villa / Farmhouse',    'blurb' => 'Private pools',        'img' => 'img/all-images/gallery/gallery-img3.webp',   'w' => 1200, 'h' => 800],
+        // Deliberately the modern grey/yellow interior rather than another
+        // warm Rajasthani one: next to the Homestays card the two heritage
+        // interiors read as the same property, which defeats the point of a
+        // category grid. Lower resolution than the rest (396px against a
+        // ~424px card at 1440) but it is the only image here that actually
+        // looks like a city apartment.
+        ['label' => 'Apartments', 'param' => 'stay_type',    'value' => 'Boutique Apartment',          'blurb' => 'Modern city stays',    'img' => 'img/all-images/gallery/gallery-img4.webp',   'w' => 396,  'h' => 316],
+        ['label' => 'Homestays',  'param' => 'stay_type',    'value' => 'Homestay / Guest House',      'blurb' => 'Hosted by locals',     'img' => 'img/all-images/gallery/gallery-img1.webp',   'w' => 1448, 'h' => 1086],
+        ['label' => 'C-Scheme',   'param' => 'neighborhood', 'value' => 'C-Scheme',                    'blurb' => 'Central and leafy',    'img' => 'img/all-images/property/property-img1.webp', 'w' => 450,  'h' => 580],
+        ['label' => 'Old City',   'param' => 'neighborhood', 'value' => 'Walled City',                 'blurb' => 'Inside the Pink City', 'img' => 'img/all-images/gallery/gallery-img5.webp',   'w' => 1200, 'h' => 922],
+    ])->map(function (array $card) use ($stayTypeCounts, $neighborhoodCounts) {
+        $counts = $card['param'] === 'stay_type' ? $stayTypeCounts : $neighborhoodCounts;
+        $card['count'] = (int) ($counts[$card['value']] ?? 0);
+        $card['href'] = route('properties.browse', [$card['param'] => $card['value']]);
+
+        return $card;
+    })->all();
+
     return view('index', [
+        'categories' => $categories,
         'featured'     => (clone $visible)->with('coverImage')->latest()->first(),
         'listingCount' => (clone $visible)->count(),
         // Replaces a hardcoded "17 Neighborhoods Covered" that disagreed
