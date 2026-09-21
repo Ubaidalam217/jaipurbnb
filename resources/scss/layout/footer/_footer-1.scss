@@ -1217,7 +1217,27 @@
 .footer5-bottom-section {
     position: relative;
     z-index: 2;
-    margin-bottom: -160px;
+    // NO negative margin-bottom here. The template ships this as
+    // `margin-bottom: -160px` so the white card can overlap whatever section
+    // follows it - but on the property detail page (the only page using this
+    // variant, see single/index5.blade.php) nothing follows it, so the only
+    // thing the negative margin did was end <body>'s box 160px above the
+    // card's actual bottom edge.
+    //
+    // That produced a SECOND vertical scrollbar on /property/1-6. <body> is a
+    // scroll container here - components/_mobile-fixes.scss sets
+    // `html, body { overflow-x: hidden }`, and per CSS Overflow 3 §3.2 an
+    // overflow-x of hidden forces the used overflow-y to auto - so those 160
+    // stranded pixels were something body could scroll to, and it drew a
+    // 15px bar to say so. Measured: body clientHeight 7512 vs scrollHeight
+    // 7672 at 1440px, alongside the real window scrollbar on <html>.
+    //
+    // Removing it does not move the card (verified: its bottom stays at the
+    // same page offset); it just lets body's box reach it, so the document
+    // grows 7512 -> 7672 and the last 160px becomes part of the normal page
+    // scroll instead of a private one. .footer3-bottom-section - the shared
+    // footer every other page uses - has never had this margin, which is
+    // exactly why the bug was property-pages-only.
     .footer-bottom-area {
         background: var(--ztc-bg-bg-1);
         border-radius: 16px;
