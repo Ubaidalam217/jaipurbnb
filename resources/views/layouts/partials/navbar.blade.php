@@ -223,7 +223,7 @@
        "Book Now" at guests, "List Your Property" / "Dashboard" at hosts.
        Rendering both as filled terracotta buttons would give the bar two
        competing primaries and no visual answer to "what do I click?", so
-       the host CTA is demoted to an outline and "Book Now" keeps the fill.
+       the host CTA is downgraded to an outline and "Book Now" keeps the fill.
 
        Both use --jb-cta (#B34D33), not the #E07A5F brand primary: as text
        or as a border on white, #E07A5F only reaches 2.95:1 and fails WCAG
