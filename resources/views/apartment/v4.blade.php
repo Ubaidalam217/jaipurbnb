@@ -183,15 +183,6 @@
       font-weight: 600;
     }
 
-    /* Sample-listing marker. Sits ON the photo rather than in the text block
-       because the photo is what a guest scans first, and mistaking seeded
-       content for real inventory is the failure this has to prevent - the
-       demo host's WhatsApp number is live and would take a real enquiry
-       about a property that does not exist.
-
-       Amber rather than brand terracotta: this is a system warning, not a
-       feature of the listing, and it must not read as a promotional tag.
-       #B45309 on white is 5.0:1. */
     .apartment-boxarea .img1 {
       position: relative;
     }
@@ -238,27 +229,6 @@
       background: rgba(179, 77, 51, .13);
       border-color: rgba(179, 77, 51, .55);
       color: #B34D33;
-    }
-
-    .jb-demo-badge {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      z-index: 2;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
-      border-radius: 999px;
-      background: #B45309;
-      box-shadow: 0 4px 12px -4px rgba(0, 0, 0, .5);
-      color: #fff;
-      font-family: 'Poppins', sans-serif;
-      font-size: 11.5px;
-      font-weight: 700;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      pointer-events: none;
     }
 
     /* Date filter inputs - matched to the template's own .nice-select
@@ -418,7 +388,7 @@
        amount, un-aligning the grid row by row as images arrived. A fixed
        aspect-ratio reserves the exact same box up front regardless of the
        source photo's real dimensions, and object-fit:cover (already set)
-       crops to fill it. 3:2 matches the two actual demo cover photos most
+       crops to fill it. 3:2 matches the site's own cover photos most
        closely (1320x880 is exactly 3:2). */
     .apartment-inner2-section-area .apartment-boxarea .img1 {
       aspect-ratio: 3 / 2;
@@ -642,9 +612,6 @@
              open the listing. It was previously a bare <img> with no anchor:
              only the title, price and "View" arrow were clickable. --}}
         <div class="img1">
-        @if ($property->is_demo)
-        <span class="jb-demo-badge"><i class="fa-solid fa-flask" aria-hidden="true"></i> Demo listing</span>
-        @endif
         <a href="{{ route('properties.show', $property) }}" style="display:block;" aria-label="View {{ $property->title }}">
         @if ($property->coverImage)
         <img src="{{ $property->coverImage->display_url }}" alt="{{ $property->title }}" />

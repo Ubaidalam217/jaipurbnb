@@ -149,41 +149,6 @@
       font-weight: 600;
     }
 
-    /* Sample-listing marker. A badge alone is not enough on the detail page:
-       this is where the Call / WhatsApp buttons live, and the demo host's
-       number is a real, reachable line. A guest must not be able to get here
-       and send an enquiry about a property that does not exist. So the badge
-       is paired with an explicit sentence next to the contact buttons.
-
-       Amber, not brand terracotta - it is a system warning, not a feature. */
-    .jb-demo-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      margin-bottom: 14px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: #B45309;
-      color: #fff;
-      font-family: 'Poppins', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-    }
-
-    .jb-demo-note {
-      margin: 0 0 4px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(180, 83, 9, .3);
-      background: rgba(180, 83, 9, .08);
-      color: #7A3B06;
-      font-family: 'Poppins', sans-serif;
-      font-size: 12.5px;
-      line-height: 1.55;
-    }
-
     .jb-amenities-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -279,7 +244,7 @@
      * components/_service.scss sets `.service5-section-area { height:
      * 1360px }` with `overflow: visible` (only relaxed to auto at $md/$xs,
      * i.e. below 992px). That is a fixed pixel height baked in for the
-     * template's original demo content. This blade reuses the class for
+     * template's original placeholder content. This blade reuses the class for
      * "At a Glance", whose real content - gallery photo, description,
      * amenities grid, address panel, map - runs well past 1360px on every
      * property (measured ~1985px on a 6-amenity listing at 1440px wide).
@@ -427,9 +392,6 @@
       <div class="row align-items-center">
         <div class="col-lg-5">
           <div class="hero-header header-heading3">
-            @if ($property->is_demo)
-              <span class="jb-demo-badge"><i class="fa-solid fa-flask" aria-hidden="true"></i> Demo listing</span>
-            @endif
             <h2 class="text-anime-style-3">{{ $property->title }}</h2>
             <div class="space20"></div>
             <p data-aos="fade-left" data-aos-duration="800">{{ \Illuminate\Support\Str::limit($property->description, 220) }}</p>
@@ -466,14 +428,6 @@
               @endif
             </div>
             <div class="space24"></div>
-            @if ($property->is_demo)
-              <p class="jb-demo-note">
-                This is sample content used to demonstrate the site. The property
-                is not real and the contact details below belong to a demo
-                account &mdash; please do not send a booking enquiry.
-              </p>
-              <div class="space16"></div>
-            @endif
             <div class="btn-area1">
               @include('layouts.partials.contact-buttons', ['property' => $property])
             </div>
